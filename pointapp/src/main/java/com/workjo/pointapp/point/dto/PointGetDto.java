@@ -9,6 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PointGetDto {
+//    teacher's
     private Long pointId;
     private Integer totalPoint;
     private Integer point;
