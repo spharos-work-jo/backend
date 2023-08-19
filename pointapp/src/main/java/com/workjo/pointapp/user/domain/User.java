@@ -3,14 +3,12 @@ package com.workjo.pointapp.user.domain;
 
 import com.workjo.pointapp.common.domain.Member;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 
+@ToString
 @Builder
 @Entity
 @Getter
@@ -45,6 +43,13 @@ public class User extends Member {
 	private Boolean agreement3rd;
 	@Column(length = 255)
 	private String barcodeImageUrl;
+
+
+	public void initUUID(String UUID) {
+		if (this.UUID == null) {
+			this.UUID = UUID;
+		}
+	}
 
 
 	public void updateAddressAndEmail(String address, String email) {
