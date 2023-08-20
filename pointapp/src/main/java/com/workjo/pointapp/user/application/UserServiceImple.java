@@ -32,6 +32,7 @@ public class UserServiceImple implements UserService {
 		User user = userSignUpDto.toEntity(uuidString);
 
 		user.initUUID(uuidString);
+		user.encodePassword(userSignUpDto.getPassword());
 		userRepository.save(user);
 	}
 
