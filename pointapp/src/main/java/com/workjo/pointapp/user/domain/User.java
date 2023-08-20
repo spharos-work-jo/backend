@@ -1,11 +1,12 @@
 package com.workjo.pointapp.user.domain;
 
 
-import com.workjo.pointapp.common.domain.Member;
+import com.workjo.pointapp.auth.domain.Member;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 @ToString
@@ -55,6 +56,17 @@ public class User extends Member {
 	public void updateAddressAndEmail(String address, String email) {
 		this.address = address;
 		this.email = email;
+	}
+
+
+	@Override
+	public String getUsername() {
+		return loginId;
+	}
+
+
+	public void encodePassword(String password) {
+		this.password = new BCryptPasswordEncoder().encode(password);
 	}
 
 }

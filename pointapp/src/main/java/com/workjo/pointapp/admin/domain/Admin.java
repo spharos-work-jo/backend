@@ -1,8 +1,8 @@
 package com.workjo.pointapp.admin.domain;
 
 
-import com.workjo.pointapp.common.domain.Member;
-import com.workjo.pointapp.common.domain.Role;
+import com.workjo.pointapp.auth.domain.Member;
+import com.workjo.pointapp.auth.domain.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,5 +30,11 @@ public class Admin extends Member {
 	private String name;
 	@Column(length = 1)
 	private Role role;
+
+
+	@Override
+	public String getUsername() {
+		return loginId;
+	}
 
 }
