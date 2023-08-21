@@ -48,7 +48,7 @@ public class UserController {
 
 
 	@Operation(summary = "아이디 중복 확인", description = "유저의 아이디 중복 확인")
-	@GetMapping("/id-check")
+	@PostMapping("/id-check")
 	public ApiResponse<Void> idCheck(@RequestBody UserIdCheckIn userIdCheckIn) {
 		userService.checkCanUseLoginId(userIdCheckIn.getLoginId());
 		return ApiResponse.ofSuccess(null);
