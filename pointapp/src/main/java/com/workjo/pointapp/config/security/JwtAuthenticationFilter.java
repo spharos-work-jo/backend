@@ -44,11 +44,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		final String loginId;
 		log.info("userId - {}", authHeader);
 		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+			//			response.sendError(403);
 			filterChain.doFilter(request, response);
 			return;
 		}
 		jwt = authHeader.substring(7);
-		loginId = jwtTokenProvider.getLoginId(jwt);
+		loginId = jwtTokenProvider.getUUID(jwt);
 		log.info("userId - {}", loginId);
 		if (loginId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			UserDetails userDetails = userDetailsService.loadUserByUsername(loginId);

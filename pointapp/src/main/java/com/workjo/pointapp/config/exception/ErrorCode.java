@@ -15,7 +15,7 @@ public enum ErrorCode {
 	UNKNOWN_ERROR(400, "C012", "알 수 없는 에러"),
 
 	/*로그인*/
-	UNAUTHORIZED(400, "L001", "로그인이 필요합니다."),
+	UNAUTHORIZED(401, "L001", "로그인이 필요합니다."),
 	FAIL_LOGIN(400, "L002", "로그인 실패"),
 	INVALID_TOKEN(401, "L003", "잘못된 토큰입니다."),
 

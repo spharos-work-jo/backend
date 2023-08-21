@@ -30,7 +30,7 @@ public class JwtTokenProvider {
 	private Long EXPIRATION_TIME;
 
 
-	public String getLoginId(String token) {
+	public String getUUID(String token) {
 		return extractClaim(token, Claims::getSubject);
 	}
 
@@ -43,7 +43,7 @@ public class JwtTokenProvider {
 
 	public String generateToken(UserDetails userDetails) {
 		Map<String, Object> claims = new HashMap<>();
-		claims.put("role", userDetails.getAuthorities());  // todo: role 넣기
+		claims.put("role", userDetails.getAuthorities());  // todo: role 하나만 넣기
 		return generateToken(claims, userDetails);
 	}
 
@@ -64,7 +64,7 @@ public class JwtTokenProvider {
 
 
 	public boolean validateToken(String token, UserDetails userDetails) {
-		final String loginId = getLoginId(token);
+		final String loginId = getUUID(token);
 		return (loginId.equals(userDetails.getUsername()) && !isTokenExpired(token));
 	}
 

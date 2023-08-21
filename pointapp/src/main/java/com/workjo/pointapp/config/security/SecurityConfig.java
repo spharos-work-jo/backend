@@ -20,14 +20,17 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-	private final JwtAuthenticationFilter jwtTokenProvider;
+	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 	private final AuthenticationProvider authendicationProvider;
+	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+	private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		log.debug("security filter");
-
+		
+		// TODO: authorizeHttpRequest 추가 필요
 		http
 			.csrf(CsrfConfigurer::disable)
 			.authorizeHttpRequests(
@@ -47,7 +50,10 @@ public class SecurityConfig {
 					.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			)
 			.authenticationProvider(authendicationProvider)
-			.addFilterBefore(jwtTokenProvider, UsernamePasswordAuthenticationFilter.class);
+			.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+			.exceptionHandling((exceptions) -> exceptions
+				.authenticationEntryPoint(jwtAuthenticationEntryPoint)
+				.accessDeniedHandler(jwtAccessDeniedHandler));
 
 		return http.build();
 	}
