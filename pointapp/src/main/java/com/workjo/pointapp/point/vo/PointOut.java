@@ -1,16 +1,20 @@
 package com.workjo.pointapp.point.vo;
 
+import com.workjo.pointapp.point.domain.PointType;
 import lombok.*;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class PointOut {
 
-    private Integer point;
-    private Integer totalPoint;
-    private String pointType;
-    private Boolean used;
+    private Long id;
+    private UUID userUuid;
+    private int totalPoint;
+    private int point;
+    private LocalDateTime regDate;
+    private PointType pointType;
+    private String title;
 
 }

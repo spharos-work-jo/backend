@@ -1,18 +1,20 @@
 package com.workjo.pointapp.point.dto;
 
+import com.workjo.pointapp.point.domain.PointType;
 import lombok.*;
 
-@Setter
-@Getter
-@ToString
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Data
 public class PointGetDto {
-//    teacher's
-    private Long pointId;
-    private Integer totalPoint;
-    private Integer point;
-    private String pointType;
-    private Boolean used;
+
+    private Long id;
+    private UUID userUuid;
+    private int total_point;
+    private int point;
+    private LocalDateTime regDate;
+    private PointType pointType;
+    private String title;
+
 }

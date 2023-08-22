@@ -1,9 +1,10 @@
 package com.workjo.pointapp.point.domain;
 
+import com.workjo.pointapp.common.BaseEnum;
 import lombok.Getter;
 
 @Getter
-public enum PointType implements CodeValue{
+public enum PointType implements BaseEnum {
     EVENT("E", "이벤트"),
     GIFT("G", "선물"),
     COUPON("C", "쿠폰"),
@@ -17,13 +18,4 @@ public enum PointType implements CodeValue{
         this.value = value;
     }
 
-    @Override
-    public String getCode() {
-        return code;
-    }
-
-    @Override
-    public String getValue() {
-        return value;
-    }
 }
