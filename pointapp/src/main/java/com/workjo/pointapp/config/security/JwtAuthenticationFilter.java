@@ -41,17 +41,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	) throws ServletException, IOException {
 		final String authHeader = request.getHeader(AUTHORITIES_HEADER_KEY);
 		final String jwt;
-		final String loginId;
+		final String uuid;
 		log.info("userId - {}", authHeader);
 		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
 			filterChain.doFilter(request, response);
 			return;
 		}
 		jwt = authHeader.substring(7);
-		loginId = jwtTokenProvider.getUUID(jwt);
-		log.info("userId - {}", loginId);
-		if (loginId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-			UserDetails userDetails = userDetailsService.loadUserByUsername(loginId);
+		uuid = jwtTokenProvider.getUUID(jwt);
+		log.info("user uuid - {}", uuid);
+		if (uuid != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+			UserDetails userDetails = userDetailsService.loadUserByUsername(uuid);
 			log.info("userDetails - {} {}", userDetails, userDetails.getUsername());
 			if (jwtTokenProvider.validateToken(jwt, userDetails)) {
 				UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
