@@ -8,6 +8,7 @@ import com.workjo.pointapp.point.dto.PointGetDto;
 import com.workjo.pointapp.point.vo.PointHistoryData;
 import com.workjo.pointapp.point.vo.PointIn;
 import com.workjo.pointapp.point.vo.PointOut;
+import jdk.jfr.Registered;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -27,17 +28,11 @@ public class PointController {
     private final PointService pointService;
 //    private final JwtTokenProvider jwtTokenProvider;
 
-//    @PostMapping("/point/new")
-//    void addPoint(@RequestBody PointIn pointIn) {
-//        log.info("INPUT Object Data is : {}", pointIn);
-//        PointAddDto pointAddDto = PointAddDto.builder()
-//                .pointType(pointIn.getPointType())
-//                .point(pointIn.getPoint())
-//                .used(pointIn.getUsed())
-//                .loginId(pointIn.getLoginId())
-//                .build();
-//        pointService.createPoint(pointAddDto);
-//    }
+    @PostMapping("/point/new")
+    void addPoint(@RequestBody int storeId, @RequestBody int receiptId, @RequestBody UUID userUuid) {
+
+
+    }
 
     @GetMapping("/point")
     public ApiResponse getPointHistory(

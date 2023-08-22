@@ -8,7 +8,7 @@ import java.util.List;
 public class PointHistoryData {
 
     private final int totalPoint;
-    private final int allocatedDuringPeriod;
+    private final int addedDuringPeriod;
     private final int usedDuringPeriod;
     private final List<PointOut> pointList;
 
@@ -17,15 +17,15 @@ public class PointHistoryData {
         this.totalPoint = pointList.get(0).getTotalPoint();
         this.pointList = pointList;
 
-        int allocated = 0, used = 0;
+        int added = 0, used = 0;
         for (PointOut point : pointList) {
             if (point.getPoint() > 0) {
-                allocated += point.getPoint();
+                added += point.getPoint();
             } else {
                 used += -point.getPoint();
             }
         }
-        this.allocatedDuringPeriod = allocated;
+        this.addedDuringPeriod = added;
         this.usedDuringPeriod = used;
     }
 
