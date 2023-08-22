@@ -14,3 +14,9 @@ spring:
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+JWT:
+  secret-key: ${JWT_SECRET}
+  expiration-time: 14400000
+  header: Authorization
+  prefix: Bearer
