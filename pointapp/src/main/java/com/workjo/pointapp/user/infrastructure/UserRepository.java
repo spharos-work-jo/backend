@@ -15,7 +15,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	Optional<User> findByPhoneAndName(String phone, String name);
 	Boolean existsByLoginId(String loginId);
 
-	@Query(value = "select UUID from user limit 1", nativeQuery = true)
-	String findFirstUser();     // todo: remove
+	@Query(value = "select u from User u order by u.id limit 1")
+	Optional<User> findFirstUser();     // todo: remove
 
 }

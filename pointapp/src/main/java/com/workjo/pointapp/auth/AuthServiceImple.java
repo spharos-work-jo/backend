@@ -3,11 +3,13 @@ package com.workjo.pointapp.auth;
 
 import com.workjo.pointapp.auth.vo.LoginRequest;
 import com.workjo.pointapp.auth.vo.LoginResponse;
+import com.workjo.pointapp.config.ModelMapperBean;
 import com.workjo.pointapp.config.exception.CustomException;
 import com.workjo.pointapp.config.exception.ErrorCode;
 import com.workjo.pointapp.config.security.JwtTokenProvider;
 import com.workjo.pointapp.user.application.UserService;
 import com.workjo.pointapp.user.domain.User;
+import com.workjo.pointapp.user.dto.UserGetDto;
 import com.workjo.pointapp.user.dto.UserSignUpDto;
 import com.workjo.pointapp.user.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,8 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImple implements AuthService {
+
+	private final ModelMapperBean modelMapperBean;
 
 	private final UserRepository userRepository;
 	private final JwtTokenProvider jwtTokenProvider;
@@ -66,11 +70,25 @@ public class AuthServiceImple implements AuthService {
 		String uuid;
 		if (authentication == null) {
 			// TODO: remove and throw new CustomException
-			uuid = userRepository.findFirstUser();
+			uuid = userRepository.findFirstUser().orElseThrow().getUUID();
 		} else {
 			uuid = authentication.getName();
 		}
 		return uuid;
+	}
+
+
+	public UserGetDto getCurrentUserDto(Authentication authentication) {
+		UserGetDto userGetDto;
+		if (authentication == null) {
+			// TODO: remove and throw CustomException
+			userGetDto = modelMapperBean.modelMapper().map(
+				userRepository.findFirstUser()
+					.orElseThrow(() -> new CustomException(ErrorCode.NOTFOUND_RESOURCE)), UserGetDto.class);
+		} else {
+			userGetDto = modelMapperBean.modelMapper().map((User) authentication.getDetails(), UserGetDto.class);
+		}
+		return userGetDto;
 	}
 
 }
