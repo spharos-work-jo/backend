@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -58,6 +59,18 @@ public class AuthServiceImple implements AuthService {
 		return LoginResponse.builder()
 			.token(jwtToken)
 			.build();
+	}
+
+
+	public String getCurrentUserUUID(Authentication authentication) {
+		String uuid;
+		if (authentication == null) {
+			// TODO: remove and throw new CustomException
+			uuid = userRepository.findFirstUser();
+		} else {
+			uuid = authentication.getName();
+		}
+		return uuid;
 	}
 
 }

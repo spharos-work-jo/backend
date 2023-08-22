@@ -44,7 +44,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		final String loginId;
 		log.info("userId - {}", authHeader);
 		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-			//			response.sendError(403);
 			filterChain.doFilter(request, response);
 			return;
 		}
