@@ -1,4 +1,4 @@
-package com.workjo.pointapp.auth.domain;
+package com.workjo.pointapp.admin.domain;
 
 
 import com.workjo.pointapp.common.AbstractBaseEnumConverter;
@@ -16,7 +16,6 @@ import java.util.stream.Stream;
 @Getter
 @AllArgsConstructor
 public enum Role implements BaseEnum<Integer, String> {
-	USER(0, "USER"),
 	TOP_ADMIN(1, "TOP_ADMIN"),
 	ADMIN(2, "ADMIN");
 
@@ -28,13 +27,12 @@ public enum Role implements BaseEnum<Integer, String> {
 
 
 	public static Role find(Integer code) {
-		if (code == null) {
-			return USER;
-		} else if (OPERATOR_MAP.containsKey(code)) {
+		if (OPERATOR_MAP.containsKey(code)) {
 			return OPERATOR_MAP.get(code);
 		}
 		throw new IllegalArgumentException("해당 enum 없음");
 	}
+
 
 	@jakarta.persistence.Converter(autoApply = true)
 	static class Converter extends AbstractBaseEnumConverter<Role, Integer, String> {

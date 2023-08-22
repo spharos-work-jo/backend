@@ -1,12 +1,17 @@
 package com.workjo.pointapp.user.domain;
 
 
-import com.workjo.pointapp.auth.domain.Member;
+import com.workjo.pointapp.common.domain.BaseDateTime;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.Collection;
+import java.util.List;
 
 
 @ToString
@@ -17,8 +22,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
-public class User extends Member {
-
+public class User extends BaseDateTime implements UserDetails {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -46,13 +51,6 @@ public class User extends Member {
 	private String barcodeImageUrl;
 
 
-	public void initUUID(String UUID) {
-		if (this.UUID == null) {
-			this.UUID = UUID;
-		}
-	}
-
-
 	public void updateAddressAndEmail(String address, String email) {
 		this.address = address;
 		this.email = email;
@@ -60,8 +58,38 @@ public class User extends Member {
 
 
 	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return List.of();
+	}
+
+
+	@Override
 	public String getUsername() {
-		return loginId;
+		return UUID;
+	}
+
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+
+	@Override
+	public boolean isEnabled() {
+		return true;
 	}
 
 

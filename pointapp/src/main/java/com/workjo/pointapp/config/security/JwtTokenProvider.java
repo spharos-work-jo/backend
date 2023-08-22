@@ -43,7 +43,6 @@ public class JwtTokenProvider {
 
 	public String generateToken(UserDetails userDetails) {
 		Map<String, Object> claims = new HashMap<>();
-		claims.put("role", userDetails.getAuthorities());  // todo: role 하나만 넣기
 		return generateToken(claims, userDetails);
 	}
 

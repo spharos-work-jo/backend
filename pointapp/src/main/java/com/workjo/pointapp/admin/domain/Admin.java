@@ -1,8 +1,6 @@
 package com.workjo.pointapp.admin.domain;
 
 
-import com.workjo.pointapp.auth.domain.Member;
-import com.workjo.pointapp.auth.domain.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Admin extends Member {
+public class Admin {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,11 +28,5 @@ public class Admin extends Member {
 	private String name;
 	@Column(length = 1)
 	private Role role;
-
-
-	@Override
-	public String getUsername() {
-		return loginId;
-	}
 
 }
