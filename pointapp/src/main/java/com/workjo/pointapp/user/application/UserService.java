@@ -6,7 +6,7 @@ import com.workjo.pointapp.user.dto.UserFindDto;
 
 public interface UserService {
 
-	String getUserUUIDByPhoneAndName(UserFindDto userFindDto);
+	String getUserUUIDStringByPhoneAndName(UserFindDto userFindDto);
 	void checkCanUseLoginId(String Id);
 
 }

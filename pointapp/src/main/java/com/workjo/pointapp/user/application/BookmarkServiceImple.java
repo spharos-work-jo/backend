@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 
 @ToString
@@ -25,9 +26,9 @@ public class BookmarkServiceImple implements BookmarkService {
 
 
 	@Override
-	public List<Integer> getUserBookmark(String uuid) {
+	public List<Integer> getUserBookmark(String uuidString) {
 		List<Integer> bookmarkIdlist;
-		Optional<Bookmark> bookmark = bookmarkRepository.getBookmarkByUUID(uuid);
+		Optional<Bookmark> bookmark = bookmarkRepository.getBookmarkByUserUUID(UUID.fromString(uuidString));
 		if (bookmark.isEmpty()) {
 			bookmarkIdlist = BookMarkGetDto.defaultBookmark();
 		} else {

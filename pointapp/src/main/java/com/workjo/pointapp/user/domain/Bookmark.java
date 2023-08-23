@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 
 @Entity
 @Getter
@@ -17,8 +19,8 @@ public class Bookmark {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false, length = 50, name = "UUID")
-	private String UUID;
+	@Column(nullable = false, columnDefinition = "BINARY(16)", name = "UUID")
+	private UUID userUUID;
 
 	@Column
 	private Integer menu1;

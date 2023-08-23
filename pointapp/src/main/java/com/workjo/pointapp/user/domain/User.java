@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 
 @ToString
@@ -23,12 +24,12 @@ import java.util.List;
 @DynamicInsert
 @DynamicUpdate
 public class User extends BaseDateTime implements UserDetails {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(nullable = false, length = 50, name = "UUID")
-	private String UUID; // todo: UUID
+	@Column(nullable = false, columnDefinition = "BINARY(16)", name = "UUID")
+	private UUID UUID;
 	@Column(length = 45)
 	private String loginId;
 	@Column(length = 100)
@@ -65,7 +66,7 @@ public class User extends BaseDateTime implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return UUID;
+		return UUID.toString();
 	}
 
 

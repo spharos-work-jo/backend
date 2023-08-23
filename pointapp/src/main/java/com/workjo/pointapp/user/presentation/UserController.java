@@ -33,7 +33,7 @@ public class UserController {
 	@PostMapping("/find-for-gift")
 	public ApiResponse<String> getUserUUIDByPhoneAndName(@RequestBody UserFindIn userFindIn) {
 		UserFindDto userFindDto = modelMapperBean.modelMapper().map(userFindIn, UserFindDto.class);
-		String uuid = userService.getUserUUIDByPhoneAndName(userFindDto);
+		String uuid = userService.getUserUUIDStringByPhoneAndName(userFindDto);
 		return ApiResponse.ofSuccess(uuid);
 	}
 

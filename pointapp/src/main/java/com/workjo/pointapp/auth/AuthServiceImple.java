@@ -40,9 +40,8 @@ public class AuthServiceImple implements AuthService {
 		userService.checkCanUseLoginId(userSignUpDto.getLoginId());
 
 		UUID uuid = UUID.randomUUID();
-		String uuidString = uuid.toString();
 
-		User user = userSignUpDto.toEntity(uuidString);
+		User user = userSignUpDto.toEntity(uuid);
 		user.encodePassword(userSignUpDto.getPassword());
 		userRepository.save(user);
 	}
@@ -70,7 +69,7 @@ public class AuthServiceImple implements AuthService {
 		String uuid;
 		if (authentication == null) {
 			// TODO: remove and throw new CustomException
-			uuid = userRepository.findFirstUser().orElseThrow().getUUID();
+			uuid = userRepository.findFirstUser().orElseThrow().getUUID().toString();
 		} else {
 			uuid = authentication.getName();
 		}
@@ -86,7 +85,7 @@ public class AuthServiceImple implements AuthService {
 				userRepository.findFirstUser()
 					.orElseThrow(() -> new CustomException(ErrorCode.NOTFOUND_RESOURCE)), UserGetDto.class);
 		} else {
-			userGetDto = modelMapperBean.modelMapper().map((User) authentication.getDetails(), UserGetDto.class);
+			userGetDto = modelMapperBean.modelMapper().map(authentication.getDetails(), UserGetDto.class);
 		}
 		return userGetDto;
 	}
