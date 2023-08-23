@@ -10,6 +10,7 @@ import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -24,16 +25,17 @@ public class BookmarkServiceImple implements BookmarkService {
 
 
 	@Override
-	public BookMarkGetDto getUserBookmark(String uuid) {
-		BookMarkGetDto bookMarkGetDto;
+	public List<Integer> getUserBookmark(String uuid) {
+		List<Integer> bookmarkIdlist;
 		Optional<Bookmark> bookmark = bookmarkRepository.getBookmarkByUUID(uuid);
 		if (bookmark.isEmpty()) {
-			bookMarkGetDto = BookMarkGetDto.defaultBookmark();
+			bookmarkIdlist = BookMarkGetDto.defaultBookmark();
 		} else {
-			bookMarkGetDto = modelMapperBean.modelMapper().map(bookmark, BookMarkGetDto.class);
+			BookMarkGetDto bookMarkGetDto = modelMapperBean.modelMapper().map(bookmark, BookMarkGetDto.class);
+			bookmarkIdlist = bookMarkGetDto.toIdList();
 		}
-		log.debug(bookMarkGetDto.toString());
-		return bookMarkGetDto;
+		log.debug(bookmarkIdlist.toString());
+		return bookmarkIdlist;
 	}
 
 }

@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
-// TODO: menu column 프론트와 논의 후 추가
 @Entity
 @Getter
 @NoArgsConstructor
@@ -23,5 +22,15 @@ public class Bookmark {
 
 	@Column
 	private Integer menu1;
+	@Column
+	private Integer menu2;
+	@Column
+	private Integer menu3;
+	@Column
+	private Integer menu4;
+	@Column
+	private Integer menu5;
+	@Column
+	private Integer menu6;
 
 }

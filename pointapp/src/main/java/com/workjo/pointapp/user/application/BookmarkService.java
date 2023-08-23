@@ -1,11 +1,11 @@
 package com.workjo.pointapp.user.application;
 
 
-import com.workjo.pointapp.user.dto.BookMarkGetDto;
+import java.util.List;
 
 
 public interface BookmarkService {
 
-	BookMarkGetDto getUserBookmark(String uuid);
+	List<Integer> getUserBookmark(String uuid);
 
 }
