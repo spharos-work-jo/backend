@@ -1,9 +1,16 @@
 package com.workjo.pointapp.point.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
-public class PointSave {
+@Getter
+@NoArgsConstructor
+@Builder
+public class PointEarn {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -1,20 +1,20 @@
-package com.workjo.pointapp.point.vo;
+package com.workjo.pointapp.point.dto;
 
 import com.workjo.pointapp.point.domain.PointType;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
-public class PointOut {
+@AllArgsConstructor
+public class PointCreateDto {
 
-    private Long id;
     private UUID userUuid;
-    private int totalPoint;
     private int point;
-    private LocalDateTime regDate;
     private PointType pointType;
     private String title;
-
 }

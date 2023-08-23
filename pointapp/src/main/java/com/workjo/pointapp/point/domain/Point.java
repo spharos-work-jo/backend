@@ -23,7 +23,7 @@ public class Point {
 //    private String userUuid;
 
     @Column(nullable = true, name = "total_point")
-    private int total_point;
+    private int totalPoint;
 
     @Column(nullable = true, name = "point")
     private int point;
