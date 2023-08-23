@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface BookmarkService {
 
-	List<Integer> getUserBookmark(String uuid);
+	List<Integer> getUserBookmark(String uuidString);
 
 }

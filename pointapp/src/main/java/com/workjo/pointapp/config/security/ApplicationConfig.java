@@ -14,6 +14,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.UUID;
+
 
 @Configuration
 @RequiredArgsConstructor
@@ -24,8 +26,8 @@ public class ApplicationConfig {
 
 	@Bean
 	public UserDetailsService userDetailsService() {
-		return UUID -> userRepository.findByUUID(UUID)
-			.orElseThrow(() -> new UsernameNotFoundException("User not found : {}" + UUID));
+		return uuidString -> userRepository.findByUUID(UUID.fromString(uuidString))
+			.orElseThrow(() -> new UsernameNotFoundException("User not found : {}" + uuidString));
 	}
 
 

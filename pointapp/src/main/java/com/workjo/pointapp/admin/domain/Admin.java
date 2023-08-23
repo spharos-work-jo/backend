@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 
 @Builder
 @Getter
@@ -20,8 +22,8 @@ public class Admin {
 	private Long id;
 	@Column(length = 45)
 	private String loginId;
-	@Column(nullable = false, length = 100, name = "UUID")
-	private String UUID; // todo: UUID
+	@Column(nullable = false, columnDefinition = "BINARY(16)", name = "UUID")
+	private UUID UUID;
 	@Column(length = 100)
 	private String password; // todo: Hashing
 	@Column(length = 100)

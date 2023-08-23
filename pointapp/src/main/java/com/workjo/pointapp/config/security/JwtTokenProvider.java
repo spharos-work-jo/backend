@@ -30,7 +30,7 @@ public class JwtTokenProvider {
 	private Long EXPIRATION_TIME;
 
 
-	public String getUUID(String token) {
+	public String getUUIDString(String token) {
 		return extractClaim(token, Claims::getSubject);
 	}
 
@@ -63,7 +63,7 @@ public class JwtTokenProvider {
 
 
 	public boolean validateToken(String token, UserDetails userDetails) {
-		final String loginId = getUUID(token);
+		final String loginId = getUUIDString(token);
 		return (loginId.equals(userDetails.getUsername()) && !isTokenExpired(token));
 	}
 

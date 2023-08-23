@@ -20,10 +20,10 @@ public class UserServiceImple implements UserService {
 
 
 	@Override
-	public String getUserUUIDByPhoneAndName(UserFindDto userFindDto) {
+	public String getUserUUIDStringByPhoneAndName(UserFindDto userFindDto) {
 		User user = userRepository.findByPhoneAndName(userFindDto.getPhone(), userFindDto.getName())
 			.orElseThrow(() -> new CustomException(ErrorCode.NOTFOUND_USER));
-		return user.getUUID();
+		return user.getUUID().toString();
 	}
 
 
