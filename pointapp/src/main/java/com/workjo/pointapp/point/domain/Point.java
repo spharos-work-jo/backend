@@ -20,6 +20,7 @@ public class Point {
 
     @Column(nullable = false, name = "user_uuid")
     private UUID userUuid;
+//    private String userUuid;
 
     @Column(nullable = true, name = "total_point")
     private int total_point;
