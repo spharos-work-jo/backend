@@ -3,8 +3,10 @@ package com.workjo.pointapp.store.presentation;
 
 import com.workjo.pointapp.auth.AuthService;
 import com.workjo.pointapp.common.ApiResponse;
+import com.workjo.pointapp.config.ModelMapperBean;
 import com.workjo.pointapp.store.application.FavoriteStoreService;
 import com.workjo.pointapp.store.application.StoreService;
+import com.workjo.pointapp.store.dto.StoreGetDto;
 import com.workjo.pointapp.store.vo.StoreGetOut;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,6 +27,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StoreController {
 
+	private final ModelMapperBean modelMapperBean;
 	private final AuthService authService;
 
 	private final StoreService storeService;
@@ -35,8 +38,8 @@ public class StoreController {
 	@GetMapping("/fav")
 	public ApiResponse<List<StoreGetOut>> getStoreListFavorite(Authentication authentication) {
 		String uuidString = authService.getCurrentUserUUID(authentication);
-		List<StoreGetOut> favoriteStoreList = favoriteStoreService.getFavoriteStoreListByUserUUIDString(uuidString);
-		return ApiResponse.ofSuccess(favoriteStoreList);
+		List<StoreGetDto> favoriteStoreList = favoriteStoreService.getFavoriteStoreListByUserUUIDString(uuidString);
+		return ApiResponse.ofSuccess(favoriteStoreList.stream().map(o -> modelMapperBean.modelMapper().map(o, StoreGetOut.class)).toList());
 	}
 
 }

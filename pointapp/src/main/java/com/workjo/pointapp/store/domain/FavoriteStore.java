@@ -23,7 +23,7 @@ public class FavoriteStore {
 	@Column(nullable = false, columnDefinition = "BINARY(16)", name = "user_uuid")
 	private UUID UUID;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "store_id")
 	private Store store;
 
