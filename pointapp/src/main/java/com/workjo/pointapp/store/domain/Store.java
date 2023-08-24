@@ -32,7 +32,7 @@ public class Store {
 	private String detailAddress;
 
 	@Column
-	private Long partnerId;
+	private Integer partnerId;
 
 	@Column(columnDefinition = "tinyint default 1")
 	private Boolean used;
