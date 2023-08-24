@@ -7,5 +7,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IPointEarnRepository extends JpaRepository<PointEarn, Long> {
-//    PointEarn savePointEarn(PointEarn pointEarn);
 }
