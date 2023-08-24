@@ -8,7 +8,7 @@ public enum PointType implements BaseEnum {
     EVENT("E", "이벤트"),
     GIFT("G", "선물"),
     COUPON("C", "전환"),
-    BILL ("B", "계산"),
+    EARN("B", "계산"),
     ETC("T", "기타");
 
     private String code;

@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
-public class PointGetDto {
+public class PointDto {
 
     private Long id;
     private UUID userUuid;

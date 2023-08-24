@@ -1,14 +1,18 @@
 package com.workjo.pointapp.point.presentation;
 
 import com.workjo.pointapp.common.ApiResponse;
+import com.workjo.pointapp.config.exception.CustomException;
+import com.workjo.pointapp.config.exception.ErrorCode;
 import com.workjo.pointapp.point.application.pointpolicy.IPointPolicy;
 import com.workjo.pointapp.point.application.IPointService;
-import com.workjo.pointapp.point.dto.PointGetDto;
-import com.workjo.pointapp.point.dto.PointHistoryReqDto;
-import com.workjo.pointapp.point.vo.PointEarnRequest;
-import com.workjo.pointapp.point.vo.PointHistoryRequest;
-import com.workjo.pointapp.point.vo.PointHistoryResponse;
-import com.workjo.pointapp.point.vo.PointResponse;
+import com.workjo.pointapp.point.dto.PointDto;
+import com.workjo.pointapp.point.dto.PointEarnDto;
+import com.workjo.pointapp.point.dto.PointHistoryDto;
+import com.workjo.pointapp.point.vo.Request.PointEarnReq;
+import com.workjo.pointapp.point.vo.Request.PointHistoryReq;
+import com.workjo.pointapp.point.vo.Response.PointEarnRes;
+import com.workjo.pointapp.point.vo.Response.PointHistoryRes;
+import com.workjo.pointapp.point.vo.Response.PointEntityRes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -25,43 +29,54 @@ public class PointController {
 
     private final IPointService pointService;
     private final IPointPolicy pointPolicy;
+    private final ModelMapper modelMapper;
 //    private final JwtTokenProvider jwtTokenProvider;
 
 
     @PostMapping("/point/new")
-    void earnPoint(@RequestParam PointEarnRequest request) {
+    public ApiResponse<PointEarnRes> earnPoint
+            (
+                    @RequestParam PointEarnReq request
+            ) {
         //find bill from db,
         // check if already saved point from bill
         // else get paidPrice from bill
-        int pointAmount = pointPolicy.getPoint(request.getPaidPrice());
-        pointService.
+        PointEarnDto dto = new PointEarnDto();
+        modelMapper.map(request, dto);
+        pointService.earnPoint(dto);
 
+        PointEarnRes response = new PointEarnRes();
+        return ApiResponse.ofSuccess(response);
     }
 
 
     @GetMapping("/point")
-    public ApiResponse getPointHistory(@RequestParam PointHistoryRequest request,
-                                       @RequestHeader String token) {
+    public ApiResponse<PointHistoryRes> getPointHistory
+            (
+                    @RequestParam PointHistoryReq request,
+                    @RequestHeader String token
+            ) {
+
         if (token == null) {
-            return null;
+            throw new CustomException(ErrorCode.UNAUTHORIZED);
         }
-//        UUID uuid = jwtTokenProvider.getUuid(token);
-        UUID uuid = UUID.randomUUID();// delete
 
-        ModelMapper modelMapper = new ModelMapper();
-        PointHistoryReqDto requestDto = new PointHistoryReqDto();
-        modelMapper.map(request, requestDto);
+        PointHistoryDto dto = new PointHistoryDto();
+        modelMapper.map(request, dto);
+        UUID userUuid = null;//jwtTokenProvider.getUuid(token);
+        dto.setUserUuid(userUuid);
 
-        List<PointGetDto> pointListByUser = pointService.getPointHistoryOfUser(uuid, requestDto);
+        List<PointDto> pointDtoList = pointService.getPointHistoryOfUser(dto);
+        List<PointEntityRes> pointVoList = pointDtoList.stream().map(
+                pointDto -> {
+                    PointEntityRes pointEntityRes = new PointEntityRes();
+                    modelMapper.map(pointDto, pointEntityRes);
+                    return pointEntityRes;
+                }
+        ).collect(Collectors.toList());
 
-        List<PointResponse> pointOutList = pointListByUser.stream().map(pointGetDto -> {
-            PointResponse pointOut = new PointResponse();
-            modelMapper.map(pointGetDto, pointOut);
-            return pointOut;
-        }).collect(Collectors.toList());
 
-
-        return ApiResponse.ofSuccess(new PointHistoryResponse(pointOutList));
+        return ApiResponse.ofSuccess(new PointHistoryRes(pointVoList));
     }
 
 }

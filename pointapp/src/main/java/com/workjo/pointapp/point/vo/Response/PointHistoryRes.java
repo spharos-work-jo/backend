@@ -1,4 +1,4 @@
-package com.workjo.pointapp.point.vo;
+package com.workjo.pointapp.point.vo.Response;
 
 import lombok.Builder;
 import lombok.Value;
@@ -6,21 +6,20 @@ import lombok.Value;
 import java.util.List;
 
 @Value
-@Builder
-public class PointHistoryResponse {
+public class PointHistoryRes {
 
     private final int totalPoint;
     private final int addedDuringPeriod;
     private final int usedDuringPeriod;
-    private final List<PointResponse> pointList;
+    private final List<PointEntityRes> pointList;
 
 
-    public PointHistoryResponse(List<PointResponse> pointList) {
+    public PointHistoryRes(List<PointEntityRes> pointList) {
         this.totalPoint = pointList.get(0).getTotalPoint();
         this.pointList = pointList;
 
         int added = 0, used = 0;
-        for (PointResponse point : pointList) {
+        for (PointEntityRes point : pointList) {
             if (point.getPoint() > 0) {
                 added += point.getPoint();
             } else {

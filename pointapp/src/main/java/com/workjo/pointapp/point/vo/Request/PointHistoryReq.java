@@ -1,4 +1,4 @@
-package com.workjo.pointapp.point.vo;
+package com.workjo.pointapp.point.vo.Request;
 
 import com.workjo.pointapp.point.domain.PointType;
 import lombok.Value;
@@ -6,7 +6,7 @@ import lombok.Value;
 import java.time.LocalDateTime;
 
 @Value
-public class PointHistoryRequest {
+public class PointHistoryReq {
     private LocalDateTime historyStartDate;
     private LocalDateTime historyEndDate;
     private PointType pointType;

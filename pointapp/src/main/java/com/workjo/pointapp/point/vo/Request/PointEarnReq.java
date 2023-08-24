@@ -1,6 +1,7 @@
-package com.workjo.pointapp.point.vo;
+package com.workjo.pointapp.point.vo.Request;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,9 +12,11 @@ import java.util.UUID;
 @Getter
 @Builder
 @NoArgsConstructor
-public class PointEarnRequest {
+@AllArgsConstructor
+public class PointEarnReq {
     int paidPrice; // doesn't need if receipt/bill db implemented
-    int storeId;
-    int receiptId;
+    Long storeId;
+    Long partnerId;
+    Long receiptId;
     UUID userUuid;
 }

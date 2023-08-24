@@ -1,18 +1,17 @@
 package com.workjo.pointapp.point.domain;
 
-import com.workjo.pointapp.user.domain.User;
-import com.workjo.pointapp.user.domain.User;
+import com.workjo.pointapp.common.domain.BaseDateTime;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
-public class Point {
+@AllArgsConstructor
+@Builder
+public class Point extends BaseDateTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +19,6 @@ public class Point {
 
     @Column(nullable = false, name = "user_uuid")
     private UUID userUuid;
-//    private String userUuid;
 
     @Column(nullable = true, name = "total_point")
     private int totalPoint;
@@ -28,14 +26,13 @@ public class Point {
     @Column(nullable = true, name = "point")
     private int point;
 
-    @Column(nullable = false, name = "reg_date")
-    private LocalDateTime regDate;
-
     @Column(nullable = false, name = "type")
     private PointType pointType;
 
     @Column(nullable = true, name = "title")
     private String title;
 
+//    @Column(nullable = false, name = "description")
+//    private String description;
 
 }

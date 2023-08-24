@@ -1,4 +1,4 @@
-package com.workjo.pointapp.point.vo;
+package com.workjo.pointapp.point.vo.Response;
 
 import com.workjo.pointapp.point.domain.PointType;
 import lombok.*;
@@ -7,9 +7,8 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
-@Builder
 @NoArgsConstructor
-public class PointResponse {
+public class PointEntityRes {
 
     private Long id;
     private UUID userUuid;
