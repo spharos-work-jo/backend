@@ -26,5 +26,7 @@ public class SsgPartner {
 	private String imageUrl;
 	@Column(columnDefinition = "tinyint default 1")
 	private Boolean isProvideReceipt;
+	@Column(columnDefinition = "tinyint default 1")
+	private Boolean isAccumPoint;
 
 }
