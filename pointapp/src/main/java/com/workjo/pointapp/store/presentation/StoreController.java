@@ -37,7 +37,7 @@ public class StoreController {
 	@Operation(summary = "단골 매장 조회", description = "현재 로그인한 유저의 단골 매장 리스트 조회")
 	@GetMapping("/fav")
 	public ApiResponse<List<StoreGetOut>> getStoreListFavorite(Authentication authentication) {
-		String uuidString = authService.getCurrentUserUUID(authentication);
+		String uuidString = authService.getCurrentUserUUID(authentication).toString();
 		List<StoreGetDto> favoriteStoreList = favoriteStoreService.getFavoriteStoreListByUserUUIDString(uuidString);
 		return ApiResponse.ofSuccess(favoriteStoreList.stream().map(o -> modelMapperBean.modelMapper().map(o, StoreGetOut.class)).toList());
 	}

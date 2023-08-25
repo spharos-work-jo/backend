@@ -65,13 +65,13 @@ public class AuthServiceImple implements AuthService {
 	}
 
 
-	public String getCurrentUserUUID(Authentication authentication) {
-		String uuid;
+	public UUID getCurrentUserUUID(Authentication authentication) {
+		UUID uuid;
 		if (authentication == null) {
 			// TODO: remove and throw new CustomException
-			uuid = userRepository.findFirstUser().orElseThrow().getUUID().toString();
+			uuid = userRepository.findFirstUser().orElseThrow().getUUID();
 		} else {
-			uuid = authentication.getName();
+			uuid = UUID.fromString(authentication.getName());
 		}
 		return uuid;
 	}

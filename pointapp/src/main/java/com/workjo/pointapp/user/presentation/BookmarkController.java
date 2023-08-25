@@ -31,7 +31,7 @@ public class BookmarkController {
 
 	@GetMapping("")
 	public ApiResponse<List<Integer>> getBookmarkByLoginUser(Authentication authentication) {
-		String uuid = authService.getCurrentUserUUID(authentication);
+		String uuid = authService.getCurrentUserUUID(authentication).toString();
 		log.debug(uuid);
 		List<Integer> bookmarkList = bookmarkService.getUserBookmark(uuid);
 		return ApiResponse.ofSuccess(bookmarkList);
