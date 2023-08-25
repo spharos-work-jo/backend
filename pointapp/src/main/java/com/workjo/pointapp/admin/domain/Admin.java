@@ -1,13 +1,13 @@
 package com.workjo.pointapp.admin.domain;
 
 
-import com.workjo.pointapp.common.domain.Member;
-import com.workjo.pointapp.common.domain.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.UUID;
 
 
 @Builder
@@ -15,15 +15,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Admin extends Member {
+public class Admin {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column(length = 45)
 	private String loginId;
-	@Column(nullable = false, length = 100, name = "UUID")
-	private String UUID; // todo: UUID
+	@Column(nullable = false, columnDefinition = "BINARY(16)", name = "UUID")
+	private UUID UUID;
 	@Column(length = 100)
 	private String password; // todo: Hashing
 	@Column(length = 100)

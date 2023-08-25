@@ -4,6 +4,8 @@ package com.workjo.pointapp.user.dto;
 import com.workjo.pointapp.user.domain.User;
 import lombok.*;
 
+import java.util.UUID;
+
 
 @Builder
 @ToString
@@ -21,10 +23,10 @@ public class UserSignUpDto {
 	private String address;
 
 
-	public User toEntity(String uuidString) {
+	public User toEntity(UUID uuid) {
 		return User.builder()
 			.loginId(this.getLoginId())
-			.UUID(uuidString)
+			.UUID(uuid)
 			.name(this.getName())
 			.password(this.getPassword())
 			.email(this.getEmail())
