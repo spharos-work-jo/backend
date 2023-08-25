@@ -7,12 +7,14 @@ import com.workjo.pointapp.user.dto.UserGetDto;
 import com.workjo.pointapp.user.dto.UserSignUpDto;
 import org.springframework.security.core.Authentication;
 
+import java.util.UUID;
+
 
 public interface AuthService {
 
 	void signUp(UserSignUpDto userSignUpDto);
 	LoginResponse authenticate(LoginRequest loginRequest);
-	String getCurrentUserUUID(Authentication authentication);
+	UUID getCurrentUserUUID(Authentication authentication);
 
 	UserGetDto getCurrentUserDto(Authentication authentication);
 
