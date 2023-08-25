@@ -11,4 +11,6 @@ public interface FavoriteStoreService {
 
 	List<StoreGetDto> getFavoriteStoreListByUserUUID(UUID uuid);
 
+	void createFavoriteStore(Long id, UUID uuid);
+
 }

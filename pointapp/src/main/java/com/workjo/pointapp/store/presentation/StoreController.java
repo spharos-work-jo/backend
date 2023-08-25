@@ -13,9 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -41,6 +39,14 @@ public class StoreController {
 		UUID uuid = authService.getCurrentUserUUID(authentication);
 		List<StoreGetDto> favoriteStoreList = favoriteStoreService.getFavoriteStoreListByUserUUID(uuid);
 		return ApiResponse.ofSuccess(favoriteStoreList.stream().map(o -> modelMapperBean.modelMapper().map(o, StoreGetOut.class)).toList());
+	}
+
+
+	@Operation(summary = "단골 매장 추가", description = "매장 아이디로 단골매장 추가")
+	@PostMapping("/fav/{storeId}")
+	public ApiResponse<Void> createFavoriteStore(@PathVariable Long storeId, Authentication authentication) {
+		favoriteStoreService.createFavoriteStore(storeId, authService.getCurrentUserUUID(authentication));
+		return ApiResponse.ofSuccess(null);
 	}
 
 }
