@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public interface FavoriteStoreRepository extends JpaRepository<FavoriteStore, Long> {
 
-	@Query("select f from FavoriteStore f join fetch f.store where f.UUID =:uuid")
+	@Query("select f from FavoriteStore f join fetch f.store where f.UUID =:uuid and f.store.used = true")
 	List<FavoriteStore> getByUUID(UUID uuid);
 
 }

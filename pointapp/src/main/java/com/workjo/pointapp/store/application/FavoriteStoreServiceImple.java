@@ -27,9 +27,9 @@ public class FavoriteStoreServiceImple implements FavoriteStoreService {
 
 
 	@Override
-	public List<StoreGetDto> getFavoriteStoreListByUserUUIDString(String uuidString) {
+	public List<StoreGetDto> getFavoriteStoreListByUserUUID(UUID uuid) {
 		List<StoreGetDto> resultList;
-		List<FavoriteStore> favoriteStoreList = favoriteStoreRepository.getByUUID(UUID.fromString(uuidString));
+		List<FavoriteStore> favoriteStoreList = favoriteStoreRepository.getByUUID(uuid);
 
 		if (favoriteStoreList == null || favoriteStoreList.isEmpty()) {
 			resultList = Collections.emptyList();
