@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @Tag(name = "Store Controller", description = "매장 조회, 단골 매장")
@@ -37,8 +38,8 @@ public class StoreController {
 	@Operation(summary = "단골 매장 조회", description = "현재 로그인한 유저의 단골 매장 리스트 조회")
 	@GetMapping("/fav")
 	public ApiResponse<List<StoreGetOut>> getStoreListFavorite(Authentication authentication) {
-		String uuidString = authService.getCurrentUserUUID(authentication).toString();
-		List<StoreGetDto> favoriteStoreList = favoriteStoreService.getFavoriteStoreListByUserUUIDString(uuidString);
+		UUID uuid = authService.getCurrentUserUUID(authentication);
+		List<StoreGetDto> favoriteStoreList = favoriteStoreService.getFavoriteStoreListByUserUUID(uuid);
 		return ApiResponse.ofSuccess(favoriteStoreList.stream().map(o -> modelMapperBean.modelMapper().map(o, StoreGetOut.class)).toList());
 	}
 
