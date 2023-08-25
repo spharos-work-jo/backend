@@ -1,18 +1,19 @@
-package com.workjo.pointapp.partner.vo;
+package com.workjo.pointapp.alarm.vo;
 
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import com.workjo.pointapp.alarm.domain.AlarmType;
 import lombok.Getter;
 
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Getter
-public class SsgPartnerGetDto {
+public class AlarmGetOut {
 
-	private String partnerName;
-	private String description;
-	private String homeUrl;
-	private String imageUrl;
+	private Long id;
+	private String content;
+	private Boolean isCheck;
+	private AlarmType type;
 
 }
