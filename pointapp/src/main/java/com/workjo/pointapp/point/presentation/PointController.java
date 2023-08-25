@@ -1,5 +1,6 @@
 package com.workjo.pointapp.point.presentation;
 
+import com.workjo.pointapp.auth.AuthService;
 import com.workjo.pointapp.common.ApiResponse;
 import com.workjo.pointapp.config.exception.CustomException;
 import com.workjo.pointapp.config.exception.ErrorCode;
@@ -16,6 +17,7 @@ import com.workjo.pointapp.point.vo.Response.PointEntityRes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -30,14 +32,14 @@ public class PointController {
     private final IPointService pointService;
     private final IPointPolicy pointPolicy;
     private final ModelMapper modelMapper;
-//    private final JwtTokenProvider jwtTokenProvider;
+    private final AuthService authService;
 
 
     @PostMapping("/point/new")
     public ApiResponse<PointEarnRes> earnPoint
             (
                     @RequestParam PointEarnReq request
-            ) {
+            ) {//todo bill db 연결하기
         //find bill from db,
         // check if already saved point from bill
         // else get paidPrice from bill
@@ -54,16 +56,13 @@ public class PointController {
     public ApiResponse<PointHistoryRes> getPointHistory
             (
                     @RequestParam PointHistoryReq request,
-                    @RequestHeader String token
+                    Authentication auth
             ) {
 
-        if (token == null) {
-            throw new CustomException(ErrorCode.UNAUTHORIZED);
-        }
 
         PointHistoryDto dto = new PointHistoryDto();
         modelMapper.map(request, dto);
-        UUID userUuid = null;//jwtTokenProvider.getUuid(token);
+        UUID userUuid = authService.getCurrentUserUUID(auth);
         dto.setUserUuid(userUuid);
 
         List<PointDto> pointDtoList = pointService.getPointHistoryOfUser(dto);
@@ -80,3 +79,4 @@ public class PointController {
     }
 
 }
+

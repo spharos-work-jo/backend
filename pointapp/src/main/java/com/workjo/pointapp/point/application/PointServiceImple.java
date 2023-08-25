@@ -57,7 +57,7 @@ public class PointServiceImple implements IPointService {
                 storeId(earnDto.getStoreId()).
                 pointId(createdPoint.getId()).
                 partnerId(earnDto.getPartnerId()).
-                receiptDisplayable(true /* find from bill db*/).
+                receiptDisplayable(true /* todo find from bill db*/).
                 build();
         pointEarnRepository.save(pointEarn);
 
