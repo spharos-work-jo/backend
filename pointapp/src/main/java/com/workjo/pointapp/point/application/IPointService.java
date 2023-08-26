@@ -12,5 +12,5 @@ public interface IPointService {
 
     List<PointDto> getPointHistoryOfUser(PointHistoryDto requestDto);
 
-    boolean earnPoint(PointEarnDto pointEarnDto);
+    void earnPoint(PointEarnDto pointEarnDto);
 }

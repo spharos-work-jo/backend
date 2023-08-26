@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -32,11 +33,12 @@ public class PointServiceImple implements IPointService {
     private final ModelMapper modelMapper;
 
     @Override
-    public boolean earnPoint(PointEarnDto earnDto) {//todo 적립 요청된 포인트 정산 처리 schedule 구현
+    public void earnPoint(PointEarnDto earnDto) {//todo 적립 요청된 포인트 정산 처리 schedule 구현
 //        todo bill이 포인트 적립에 이미 사용되었는지 확인
         // Bill bill = billRepository.findBillBy(storeId, receiptId, UUID userUuid)
         // if bill.getIsUsedToPoint
-        // return false;
+        // dto.isSaved = false;
+        // return;
 
 
         // 포인트 엔티티 생성 및 포인트 테이블 저장
@@ -45,33 +47,35 @@ public class PointServiceImple implements IPointService {
         PointCreateDto createDto = new PointCreateDto(
                 earnDto.getUserUuid(),
                 pointAmount,
-                PointType.EARN,
-                PointType.EARN.getCode()/* change later*/
+                PointType.BILL,
+                PointType.BILL.getCode()/* change later*/
         );
-        Point createdPoint = this.createPoint(createDto);
+        Point createdPoint = this.createPointOrNull(createDto);
+        if (createdPoint == null) {
+            earnDto.setIsSucceeded(false);//todo exception으로 바꾸기
+            return;
+        }
 
+        earnDto.setPointId(createdPoint.getId());
+        earnDto.setReceiptDisplayable(true);/* todo find from bill db*/
         // 포인트 적립 테이블 저장
-        PointEarn pointEarn = PointEarn.builder().
-                receiptId(earnDto.getReceiptId()).
-                paidPrice(earnDto.getPaidPrice()).
-                storeId(earnDto.getStoreId()).
-                pointId(createdPoint.getId()).
-                partnerId(earnDto.getPartnerId()).
-                receiptDisplayable(true /* todo find from bill db*/).
-                build();
-        pointEarnRepository.save(pointEarn);
+        PointEarn pointEarn = new PointEarn();
+        modelMapper.map(earnDto, pointEarn);
 
-        return true;
+        PointEarn savedEntity = pointEarnRepository.save(pointEarn);
+        earnDto.setIsSucceeded(savedEntity != null);
     }
-
-
 
 
     @Override
     public List<PointDto> getPointHistoryOfUser(PointHistoryDto dto) {
         List<Point> pointList = pointRepository.
-                findByUserUuidAndPointTypeAndRegDateBetweenOrderByRegDate
+                findByUserUuidAndPointTypeAndRegDateBetweenOrderByRegDateDesc
                         (dto.getUserUuid(), dto.getPointType(), dto.getHistoryStartDate(), dto.getHistoryEndDate());
+        if (pointList == null) {
+            return new ArrayList<PointDto>();
+        }
+
 
         List<PointDto> pointDtoList = pointList.stream().map(
                 point -> {
@@ -80,25 +84,29 @@ public class PointServiceImple implements IPointService {
                     return pointDto;
                 }
         ).collect(Collectors.toList());
-//        log.info("pointList is : {}", pointList);
 
         return pointDtoList;
     }
 
 
-    private Point createPoint(PointCreateDto createDto) {
-        int lastTotalPoint = findLastPointOfUser(createDto.getUserUuid()).getTotalPoint();
-        int nowTotalPoint = createDto.getPoint() + lastTotalPoint;
+    private Point createPointOrNull(PointCreateDto createDto) {
+        int totalBeforeCreate = getTotalPoint(createDto.getUserUuid());
+        int totalAfterCreate = createDto.getPoint() + totalBeforeCreate;
 
         Point point = Point.builder().
-                totalPoint(nowTotalPoint).
+                totalPoint(totalAfterCreate).
                 build();
         modelMapper.map(createDto, point);
 
         return pointRepository.save(point);
     }
 
-    private Point findLastPointOfUser(UUID userUuid) { //consider server cache
-        return pointRepository.findFirstByUserUuidOrderByRegDateDesc(userUuid);
+    private int getTotalPoint(UUID userUuid) { //todo consider server cache
+        Point point = pointRepository.findFirstByUserUuidOrderByRegDateDesc(userUuid);
+        if (point == null) {
+            return 0;
+        }
+
+        return point.getTotalPoint();
     }
 }

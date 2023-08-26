@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Repository
 public interface IPointRepository extends JpaRepository<Point, Long> {
-    List<Point> findByUserUuidAndPointTypeAndRegDateBetweenOrderByRegDate(UUID userUuid, PointType pointType, LocalDateTime historyEndDate, LocalDateTime historyStartDate);
+    List<Point> findByUserUuidAndPointTypeAndRegDateBetweenOrderByRegDateDesc(UUID userUuid, PointType pointType, LocalDateTime historyEndDate, LocalDateTime historyStartDate);
 
     Point findFirstByUserUuidOrderByRegDateDesc(UUID userUuid);
 
