@@ -4,6 +4,7 @@ package com.workjo.pointapp.store.application;
 import com.workjo.pointapp.config.ModelMapperBean;
 import com.workjo.pointapp.partner.application.SSGPartnerService;
 import com.workjo.pointapp.store.domain.FavoriteStore;
+import com.workjo.pointapp.store.domain.Store;
 import com.workjo.pointapp.store.dto.StoreGetDto;
 import com.workjo.pointapp.store.infrastructure.FavoriteStoreRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,9 +28,9 @@ public class FavoriteStoreServiceImple implements FavoriteStoreService {
 
 
 	@Override
-	public List<StoreGetDto> getFavoriteStoreListByUserUUIDString(String uuidString) {
+	public List<StoreGetDto> getFavoriteStoreListByUserUUID(UUID uuid) {
 		List<StoreGetDto> resultList;
-		List<FavoriteStore> favoriteStoreList = favoriteStoreRepository.getByUUID(UUID.fromString(uuidString));
+		List<FavoriteStore> favoriteStoreList = favoriteStoreRepository.getByUUID(uuid);
 
 		if (favoriteStoreList == null || favoriteStoreList.isEmpty()) {
 			resultList = Collections.emptyList();
@@ -41,6 +42,15 @@ public class FavoriteStoreServiceImple implements FavoriteStoreService {
 			resultList = StoreGetDto.setDtoListPartnerImageByPartnerList(resultList, ssgPartnerService.getSsgPartnerSimpleListByIdList(idList));
 		}
 		return resultList;
+	}
+
+
+	@Override
+	public void createFavoriteStore(Long id, UUID uuid) {
+		favoriteStoreRepository.save(FavoriteStore.builder()
+			.store(Store.builder().id(id).build())
+			.UUID(uuid)
+			.build());
 	}
 
 }

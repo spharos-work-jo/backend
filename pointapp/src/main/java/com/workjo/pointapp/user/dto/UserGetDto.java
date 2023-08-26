@@ -12,6 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 public class UserGetDto {
 
+	private Long id;
 	private String loginId;
 	private String userName;
 	private String email;

@@ -31,4 +31,7 @@ public class Alarm extends BaseRegDateTime {
 	@Column(columnDefinition = "tinyint default 0")
 	private Boolean isCheck;
 
+	@Column(length = 1)
+	private AlarmType type;
+
 }

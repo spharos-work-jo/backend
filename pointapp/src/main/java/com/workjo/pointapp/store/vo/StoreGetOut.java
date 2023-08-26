@@ -1,9 +1,12 @@
 package com.workjo.pointapp.store.vo;
 
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
 
 
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Getter
 public class StoreGetOut {
 
@@ -12,7 +15,6 @@ public class StoreGetOut {
 	private String gungu;
 	private String detailAddress;
 	private Integer partnerId;
-	private Boolean used;
 	private String imageUrl;
 
 }

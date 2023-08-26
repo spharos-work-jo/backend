@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +32,12 @@ public class UserServiceImple implements UserService {
 	@Override
 	public void checkCanUseLoginId(String loginId) {
 		if (userRepository.existsByLoginId(loginId)) throw new CustomException(ErrorCode.DUPLICATE_RESOURCE);
+	}
+
+
+	@Override
+	public User getUserByUUID(UUID uuid) {
+		return userRepository.findByUUID(uuid).orElseThrow(() -> new CustomException(ErrorCode.NOTFOUND_RESOURCE));
 	}
 
 }
