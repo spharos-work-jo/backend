@@ -3,6 +3,7 @@ package com.workjo.pointapp.store.dto;
 
 import com.workjo.pointapp.partner.dao.SsgPartnerSimpleDao;
 import lombok.*;
+import org.locationtech.jts.geom.Point;
 
 import java.util.Comparator;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class StoreGetDto {
 
+	private Long id;
 	private String storeName;
 	private String sido;
 	private String gungu;
@@ -23,6 +25,10 @@ public class StoreGetDto {
 	private Integer partnerId;
 	private Boolean used;
 	private String imageUrl;
+
+	private Point location;
+	private Double la;
+	private Double lo;
 
 
 	public static List<StoreGetDto> setDtoListPartnerImageByPartnerList(List<StoreGetDto> storeDtoList, List<SsgPartnerSimpleDao> partnerImageList) {
@@ -42,6 +48,12 @@ public class StoreGetDto {
 			}
 		}
 		return storeDtoList;
+	}
+
+
+	public void setLaLoByLocation() {
+		this.la = location.getY();
+		this.lo = location.getX();
 	}
 
 }
