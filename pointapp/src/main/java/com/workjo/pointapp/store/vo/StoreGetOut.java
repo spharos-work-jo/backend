@@ -10,6 +10,7 @@ import lombok.Getter;
 @Getter
 public class StoreGetOut {
 
+	private Long id;
 	private String storeName;
 	private String sido;
 	private String gungu;
