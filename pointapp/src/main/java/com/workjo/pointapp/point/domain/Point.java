@@ -33,6 +33,6 @@ public class Point extends BaseDateTime {
     private String title;
 
 //    @Column(nullable = false, name = "description")
-//    private String description;
+//    private String description;//todo description 쓸지말지 정하기
 
 }

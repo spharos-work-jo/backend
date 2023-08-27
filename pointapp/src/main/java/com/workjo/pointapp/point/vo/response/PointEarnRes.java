@@ -1,4 +1,4 @@
-package com.workjo.pointapp.point.vo.Response;
+package com.workjo.pointapp.point.vo.response;
 
 import com.workjo.pointapp.point.dto.PointEarnDto;
 import lombok.AllArgsConstructor;

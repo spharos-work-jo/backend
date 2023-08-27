@@ -1,4 +1,4 @@
-package com.workjo.pointapp.point.vo.Request;
+package com.workjo.pointapp.point.vo.request;
 
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
@@ -7,8 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.UUID;
 
 
 @Getter

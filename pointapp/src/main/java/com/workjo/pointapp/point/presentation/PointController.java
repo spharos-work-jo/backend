@@ -7,11 +7,13 @@ import com.workjo.pointapp.point.application.IPointService;
 import com.workjo.pointapp.point.dto.PointDto;
 import com.workjo.pointapp.point.dto.PointEarnDto;
 import com.workjo.pointapp.point.dto.PointHistoryDto;
-import com.workjo.pointapp.point.vo.Request.PointEarnReq;
-import com.workjo.pointapp.point.vo.Request.PointHistoryReq;
-import com.workjo.pointapp.point.vo.Response.PointEarnRes;
-import com.workjo.pointapp.point.vo.Response.PointHistoryRes;
-import com.workjo.pointapp.point.vo.Response.PointEntityRes;
+import com.workjo.pointapp.point.vo.request.PointGiftReq;
+import com.workjo.pointapp.point.vo.response.PointGiftRes;
+import com.workjo.pointapp.point.vo.request.PointEarnReq;
+import com.workjo.pointapp.point.vo.request.PointHistoryReq;
+import com.workjo.pointapp.point.vo.response.PointEarnRes;
+import com.workjo.pointapp.point.vo.response.PointHistoryRes;
+import com.workjo.pointapp.point.vo.response.PointEntityRes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -25,7 +27,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/point")
 public class PointController {
 
     private final IPointService pointService;
@@ -34,7 +36,17 @@ public class PointController {
     private final AuthService authService;
 
 
-    @PostMapping("/point/new")
+//    @PostMapping("/gift")
+//    public ApiResponse<PointGiftRes>(
+//    @RequestBody
+//    PointGiftReq request)
+//
+//    {
+////todo 포인트 선물 시 이름/전화번호로 사용자의 이름/로그인 id 조회, 보내려는 사용자 맞는지 확인 후 선물할 포인트 량과 포인트 비밀번호 입력해서 보냄, 이를 고려해서 api 상세하게 수정 후 구현할것
+//    }
+
+
+    @PostMapping("/new")
     public ApiResponse<PointEarnRes> earnPoint
             (
                     @RequestBody PointEarnReq request
@@ -56,7 +68,7 @@ public class PointController {
     }
 
 
-    @PostMapping("/point")
+    @PostMapping("/history")
     public ApiResponse<PointHistoryRes> getPointHistory
             (
                     @RequestBody PointHistoryReq request,
