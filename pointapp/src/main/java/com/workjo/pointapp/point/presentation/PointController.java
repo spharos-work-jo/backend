@@ -36,16 +36,14 @@ public class PointController {
     private final AuthService authService;
 
 
-    @
-
-    PostMapping("/gift")
-    public ApiResponse<PointGiftRes>(
-    @RequestBody
-    PointGiftReq request)
-
-    {
-//todo 포인트 선물 시 이름/전화번호로 사용자의 이름/로그인 id 조회, 보내려는 사용자 맞는지 확인 후 선물할 포인트 량과 포인트 비밀번호 입력해서 보냄, 이를 고려해서 api 상세하게 수정 후 구현할것
-    }
+//    @PostMapping("/gift")
+//    public ApiResponse<PointGiftRes>(
+//    @RequestBody
+//    PointGiftReq request)
+//
+//    {
+////todo 포인트 선물 시 이름/전화번호로 사용자의 이름/로그인 id 조회, 보내려는 사용자 맞는지 확인 후 선물할 포인트 량과 포인트 비밀번호 입력해서 보냄, 이를 고려해서 api 상세하게 수정 후 구현할것
+//    }
 
 
     @PostMapping("/new")

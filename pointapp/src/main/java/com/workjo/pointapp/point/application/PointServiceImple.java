@@ -69,9 +69,7 @@ public class PointServiceImple implements IPointService {
 
     @Override
     public List<PointDto> getPointHistoryOfUser(PointHistoryDto dto) {
-        List<Point> pointList = pointRepository.
-                findByUserUuidAndPointTypeAndRegDateBetweenOrderByRegDateDesc
-                        (dto.getUserUuid(), dto.getPointType(), dto.getHistoryStartDate(), dto.getHistoryEndDate());
+        List<Point> pointList = this.getPointHistory(dto);
         if (pointList == null) {
             return new ArrayList<PointDto>();
         }
@@ -90,6 +88,12 @@ public class PointServiceImple implements IPointService {
 
 
     //todo refactoring : dao code below, if wanna refactor, search repository used code and separate them all
+    private List<Point> getPointHistory(PointHistoryDto dto) {
+        return pointRepository.
+                findByUserUuidAndPointTypeAndRegDateBetweenOrderByRegDateDesc
+                        (dto.getUserUuid(), dto.getPointType(), dto.getHistoryStartDate(), dto.getHistoryEndDate());
+    }
+
     private Point createUsablePoint(PointCreateDto createDto) {
         int totalBeforeCreate = getTotalPoint(createDto.getUserUuid());
         int totalAfterCreate = createDto.getPoint() + totalBeforeCreate;
