@@ -30,10 +30,10 @@ public class User extends BaseDateTime implements UserDetails {
 	private Long id;
 	@Column(nullable = false, columnDefinition = "BINARY(16)", name = "UUID")
 	private UUID UUID;
-	@Column(length = 45)
+	@Column(nullable = false, length = 45)
 	private String loginId;
-	@Column(length = 100)
-	private String password; // todo: Hashing
+	@Column(nullable = false, length = 100)
+	private String password;
 	@Column(length = 45)
 	private String name;
 	@Column(length = 45)
