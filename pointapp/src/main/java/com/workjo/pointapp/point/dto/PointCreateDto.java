@@ -17,4 +17,5 @@ public class PointCreateDto {
     private int point;
     private PointType pointType;
     private String title;
+    private int totalPoint;
 }
