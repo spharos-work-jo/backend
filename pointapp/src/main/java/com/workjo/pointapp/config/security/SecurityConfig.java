@@ -29,7 +29,7 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		log.debug("security filter");
-		
+
 		// TODO: authorizeHttpRequest 추가 필요
 		http
 			.csrf(CsrfConfigurer::disable)
@@ -37,10 +37,7 @@ public class SecurityConfig {
 				authorizeHttpRequests -> authorizeHttpRequests
 					.requestMatchers("/api/v1/user/find-for-gift")
 					.authenticated()
-			)
-			.authorizeHttpRequests(
-				authorizeHttpRequests -> authorizeHttpRequests
-					.requestMatchers("/api/v1/**", "/swagger-ui/**", "/swagger-resources/**", "/api-docs/**")
+					.requestMatchers("/error", "/api/v1/**", "/swagger-ui/**", "/swagger-resources/**", "/api-docs/**")
 					.permitAll()
 					.anyRequest()
 					.authenticated()
