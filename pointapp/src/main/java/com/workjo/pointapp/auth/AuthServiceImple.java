@@ -49,7 +49,7 @@ public class AuthServiceImple implements AuthService {
 
 	public LoginResponse authenticate(LoginRequest loginRequest) {
 		User user = userRepository.findByLoginId(loginRequest.getLoginId())
-			.orElseThrow(() -> new CustomException(ErrorCode.NOTFOUND_USER));
+			.orElseThrow(() -> new CustomException(ErrorCode.FAIL_LOGIN));
 
 		authenticationManager.authenticate(
 			new UsernamePasswordAuthenticationToken(
