@@ -1,10 +1,6 @@
 package com.workjo.pointapp.point.dto;
 
-import com.workjo.pointapp.point.domain.PointEarn;
-import com.workjo.pointapp.point.vo.Request.PointEarnReq;
-import com.workjo.pointapp.point.vo.Response.PointEarnRes;
 import lombok.Data;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.UUID;
 

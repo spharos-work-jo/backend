@@ -1,6 +1,5 @@
-package com.workjo.pointapp.point.vo.Response;
+package com.workjo.pointapp.point.vo.response;
 
-import lombok.Builder;
 import lombok.Value;
 
 import java.util.ArrayList;
