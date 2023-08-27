@@ -46,6 +46,7 @@ public class PointServiceImple implements IPointService {
         // 포인트 엔티티 생성 및 포인트 테이블 저장
 //        int pointAmount =  pointPolicy.getPoint(bill.getPaidPrice);
         int point = pointPolicy.getPoint(earnDto.getPaidPrice());
+
         PointCreateDto createDto = new PointCreateDto(
                 earnDto.getUserUuid(),
                 point,
@@ -92,14 +93,14 @@ public class PointServiceImple implements IPointService {
     private Point createUsablePoint(PointCreateDto createDto) {
         int totalBeforeCreate = getTotalPoint(createDto.getUserUuid());
         int totalAfterCreate = createDto.getPoint() + totalBeforeCreate;
-        createDto.setPoint(totalAfterCreate);
+        createDto.setTotalPoint(totalAfterCreate);
 
         return this.savePoint(createDto);
     }
 
     private Point createNotUsablePoint(PointCreateDto createDto) {
         int totalPoint = getTotalPoint(createDto.getUserUuid());
-        createDto.setPoint(totalPoint);
+        createDto.setTotalPoint(totalPoint);
 
 
         return this.savePoint(createDto);
