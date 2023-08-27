@@ -48,6 +48,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			return;
 		}
 		jwt = authHeader.substring(7);
+
+		// TODO: 리팩토링
+		if (!jwtTokenProvider.validateToken(jwt)) {
+			filterChain.doFilter(request, response);
+			return;
+		}
+
 		uuidString = jwtTokenProvider.getUUIDString(jwt);
 		log.info("user uuidString - {}", uuidString);
 		if (uuidString != null && SecurityContextHolder.getContext().getAuthentication() == null) {
