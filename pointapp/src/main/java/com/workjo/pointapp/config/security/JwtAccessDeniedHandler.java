@@ -32,7 +32,7 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
 
 		response.setContentType("application/json; charset=utf-8");
 		response.setCharacterEncoding("utf-8");
-		response.setStatus(ErrorCode.UNAUTHORIZED.getStatus());
+		response.setStatus(ErrorCode.UNAUTHORIZED.getStatus().value());
 
 		String result = objectMapper.writeValueAsString(ApiResponse.ofError(ErrorCode.UNAUTHORIZED));
 		PrintWriter out = response.getWriter();
