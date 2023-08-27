@@ -1,5 +1,7 @@
 package com.workjo.pointapp.point.application;
 
+import com.workjo.pointapp.config.exception.CustomException;
+import com.workjo.pointapp.config.exception.ErrorCode;
 import com.workjo.pointapp.point.application.pointpolicy.IPointPolicy;
 import com.workjo.pointapp.point.domain.Point;
 import com.workjo.pointapp.point.domain.PointEarn;
@@ -43,18 +45,16 @@ public class PointServiceImple implements IPointService {
 
         // 포인트 엔티티 생성 및 포인트 테이블 저장
 //        int pointAmount =  pointPolicy.getPoint(bill.getPaidPrice);
-        int pointAmount = pointPolicy.getPoint(earnDto.getPaidPrice());
+        int point = pointPolicy.getPoint(earnDto.getPaidPrice());
+
         PointCreateDto createDto = new PointCreateDto(
                 earnDto.getUserUuid(),
-                pointAmount,
+                point,
                 PointType.BILL,
-                PointType.BILL.getCode()/* change later*/
+                PointType.BILL.getCode()/* change later*/,
+                0
         );
-        Point createdPoint = this.createPointOrNull(createDto);
-        if (createdPoint == null) {
-            earnDto.setIsSucceeded(false);//todo exception으로 바꾸기
-            return;
-        }
+        Point createdPoint = this.createNotUsablePoint(createDto);
 
         earnDto.setPointId(createdPoint.getId());
         earnDto.setReceiptDisplayable(true);/* todo find from bill db*/
@@ -89,17 +89,34 @@ public class PointServiceImple implements IPointService {
     }
 
 
-    private Point createPointOrNull(PointCreateDto createDto) {
+    //todo refactoring : dao code below, if wanna refactor, search repository used code and separate them all
+    private Point createUsablePoint(PointCreateDto createDto) {
         int totalBeforeCreate = getTotalPoint(createDto.getUserUuid());
         int totalAfterCreate = createDto.getPoint() + totalBeforeCreate;
+        createDto.setTotalPoint(totalAfterCreate);
 
-        Point point = Point.builder().
-                totalPoint(totalAfterCreate).
-                build();
-        modelMapper.map(createDto, point);
-
-        return pointRepository.save(point);
+        return this.savePoint(createDto);
     }
+
+    private Point createNotUsablePoint(PointCreateDto createDto) {
+        int totalPoint = getTotalPoint(createDto.getUserUuid());
+        createDto.setTotalPoint(totalPoint);
+
+
+        return this.savePoint(createDto);
+    }
+
+    private Point savePoint(PointCreateDto dto) {
+        Point point = new Point();
+        modelMapper.map(dto, point);
+
+        Point savePoint = pointRepository.save(point);
+        if (savePoint == null) {
+            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR/*todo 에러코드쪽 디버깅 되면 POINTSAVEFAILED 에러코드 정의해서 쓰기*/);
+        }
+        return savePoint;
+    }
+
 
     private int getTotalPoint(UUID userUuid) { //todo consider server cache
         Point point = pointRepository.findFirstByUserUuidOrderByRegDateDesc(userUuid);

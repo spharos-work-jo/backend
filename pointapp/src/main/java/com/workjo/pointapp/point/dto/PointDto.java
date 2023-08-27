@@ -11,7 +11,7 @@ public class PointDto {
 
     private Long id;
     private UUID userUuid;
-    private int total_point;
+    private int totalPoint;
     private int point;
     private LocalDateTime regDate;
     private PointType pointType;
