@@ -20,11 +20,10 @@ public enum ErrorCode {
 
 	/*유저*/
 	NOT_FOUND_USER(HttpStatus.NOT_FOUND, "U001", "존재하지 않는 유저입니다."),
+	FIND_SELF(HttpStatus.BAD_REQUEST, "U002", "나에게는 선물할 수 없어요!"),
 
 	/*포인트*/
-
-	INVALID_POINT_REPLY_TYPE(HttpStatus.INTERNAL_SERVER_ERROR,"P002","유효하지 않은 포인트 선물 응답");
-
+	INVALID_POINT_REPLY_TYPE(HttpStatus.INTERNAL_SERVER_ERROR, "P002", "유효하지 않은 포인트 선물 응답");
 
 	private final HttpStatus status;
 	private final String code;
