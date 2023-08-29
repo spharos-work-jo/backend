@@ -1,8 +1,8 @@
 package com.workjo.pointapp.auth;
 
 
+import com.workjo.pointapp.auth.dto.LoginInfoDto;
 import com.workjo.pointapp.auth.vo.LoginRequest;
-import com.workjo.pointapp.auth.vo.LoginResponse;
 import com.workjo.pointapp.config.ModelMapperBean;
 import com.workjo.pointapp.config.exception.CustomException;
 import com.workjo.pointapp.config.exception.ErrorCode;
@@ -47,7 +47,7 @@ public class AuthServiceImple implements AuthService {
 	}
 
 
-	public LoginResponse authenticate(LoginRequest loginRequest) {
+	public LoginInfoDto authenticate(LoginRequest loginRequest) {
 		User user = userRepository.findByLoginId(loginRequest.getLoginId())
 			.orElseThrow(() -> new CustomException(ErrorCode.FAIL_LOGIN));
 
@@ -59,9 +59,10 @@ public class AuthServiceImple implements AuthService {
 		);
 
 		String jwtToken = jwtTokenProvider.generateToken(user);
-		return LoginResponse.builder()
-			.token(jwtToken)
-			.build();
+		LoginInfoDto loginInfoDto = modelMapperBean.modelMapper().map(user, LoginInfoDto.class);
+		loginInfoDto.setUuid(user.getUUID().toString());
+		loginInfoDto.setToken(jwtToken);
+		return loginInfoDto;
 	}
 
 
@@ -85,7 +86,7 @@ public class AuthServiceImple implements AuthService {
 				userRepository.findFirstUser()
 					.orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESOURCE)), UserGetDto.class);
 		} else {
-			userGetDto = modelMapperBean.modelMapper().map(authentication.getDetails(), UserGetDto.class);
+			userGetDto = modelMapperBean.modelMapper().map(authentication.getPrincipal(), UserGetDto.class);
 		}
 		return userGetDto;
 	}

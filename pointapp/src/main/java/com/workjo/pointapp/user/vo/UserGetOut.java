@@ -11,7 +11,7 @@ import lombok.Getter;
 public class UserGetOut {
 
 	private String loginId;
-	private String userName;
+	private String name;
 	private String email;
 	private String phone;
 	private String address;
