@@ -24,7 +24,7 @@ public class UserServiceImple implements UserService {
 	@Override
 	public String getUserUUIDStringByPhoneAndName(UserFindDto userFindDto) {
 		User user = userRepository.findByPhoneAndName(userFindDto.getPhone(), userFindDto.getName())
-			.orElseThrow(() -> new CustomException(ErrorCode.NOTFOUND_USER));
+			.orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
 		return user.getUUID().toString();
 	}
 
@@ -37,7 +37,7 @@ public class UserServiceImple implements UserService {
 
 	@Override
 	public User getUserByUUID(UUID uuid) {
-		return userRepository.findByUUID(uuid).orElseThrow(() -> new CustomException(ErrorCode.NOTFOUND_RESOURCE));
+		return userRepository.findByUUID(uuid).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESOURCE));
 	}
 
 }
