@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ErrorCode {
 
-	NOTFOUND_RESOURCE(HttpStatus.NOT_FOUND, "C001", "해당 자원이 존재하지 않습니다."),
+	NOT_FOUND_RESOURCE(HttpStatus.NOT_FOUND, "C001", "해당 자원이 존재하지 않습니다."),
 	DUPLICATE_RESOURCE(HttpStatus.CONFLICT, "C002", "이미 존재하는 데이터입니다."),
 	METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "C003", "Method Not Allowed"),
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "C004", "Internal Server Error"),
@@ -19,7 +19,12 @@ public enum ErrorCode {
 	FAIL_LOGIN(HttpStatus.BAD_REQUEST, "L002", "로그인 실패"),
 
 	/*유저*/
-	NOTFOUND_USER(HttpStatus.NOT_FOUND, "U001", "존재하지 않는 유저입니다.");
+	NOT_FOUND_USER(HttpStatus.NOT_FOUND, "U001", "존재하지 않는 유저입니다."),
+
+	/*포인트*/
+
+	INVALID_POINT_REPLY_TYPE(HttpStatus.INTERNAL_SERVER_ERROR,"P002","유효하지 않은 포인트 선물 응답");
+
 
 	private final HttpStatus status;
 	private final String code;
