@@ -39,7 +39,7 @@ public class UserController {
 	@PostMapping("/find-for-gift")
 	public ApiResponse<String> getUserUUIDByPhoneAndName(@RequestBody UserFindIn userFindIn, Authentication authentication) {
 		UserGetDto userDto = authService.getCurrentUserDto(authentication);
-		if (userFindIn.getName().equals(userDto.getUserName()) && userFindIn.getPhone().equals(userDto.getPhone())) {
+		if (userFindIn.getName().equals(userDto.getName()) && userFindIn.getPhone().equals(userDto.getPhone())) {
 			throw new CustomException(ErrorCode.FIND_SELF);
 		}
 		UserFindDto userFindDto = modelMapperBean.modelMapper().map(userFindIn, UserFindDto.class);
