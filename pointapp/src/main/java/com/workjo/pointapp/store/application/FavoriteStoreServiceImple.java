@@ -53,4 +53,10 @@ public class FavoriteStoreServiceImple implements FavoriteStoreService {
 			.build());
 	}
 
+
+	@Override
+	public void deleteFavoriteStore(Long storeId, UUID uuid) {
+		favoriteStoreRepository.deleteByUUIDAndStoreId(uuid, storeId);
+	}
+
 }
