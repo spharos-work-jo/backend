@@ -62,4 +62,12 @@ public class StoreController {
 		return ApiResponse.ofSuccess(null);
 	}
 
+
+	@Operation(summary = "단골 매장 삭제", description = "매장 아이디로 단골매장 삭제")
+	@DeleteMapping("/fav/{storeId}")
+	public ApiResponse<Void> deleteFavoriteStore(@PathVariable Long storeId, Authentication authentication) {
+		favoriteStoreService.deleteFavoriteStore(storeId, authService.getCurrentUserUUID(authentication));
+		return ApiResponse.ofSuccess(null);
+	}
+
 }
