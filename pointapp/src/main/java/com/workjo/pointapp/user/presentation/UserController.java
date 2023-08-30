@@ -9,17 +9,16 @@ import com.workjo.pointapp.config.exception.ErrorCode;
 import com.workjo.pointapp.user.application.UserService;
 import com.workjo.pointapp.user.dto.UserFindDto;
 import com.workjo.pointapp.user.dto.UserGetDto;
+import com.workjo.pointapp.user.dto.UserPwDto;
 import com.workjo.pointapp.user.vo.UserFindIn;
 import com.workjo.pointapp.user.vo.UserIdCheckIn;
+import com.workjo.pointapp.user.vo.UserUpdatePwIn;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @Tag(name = "User Controller", description = "유저 기능")
@@ -51,6 +50,15 @@ public class UserController {
 	@PostMapping("/id-check")
 	public ApiResponse<Void> idCheck(@RequestBody UserIdCheckIn userIdCheckIn) {
 		userService.checkCanUseLoginId(userIdCheckIn.getLoginId());
+		return ApiResponse.ofSuccess(null);
+	}
+
+
+	@Operation(summary = "비밀번호 수정", description = "로그인한 유저 비밀번호 수정")
+	@PatchMapping("/pwd")
+	public ApiResponse<Void> updatePassword(@RequestBody UserUpdatePwIn userUpdatePwIn, Authentication authentication) {
+		UserPwDto userPwDto = modelMapperBean.modelMapper().map(userUpdatePwIn, UserPwDto.class);
+		userService.updatePasswordLoginUser(userPwDto, authentication);
 		return ApiResponse.ofSuccess(null);
 	}
 
