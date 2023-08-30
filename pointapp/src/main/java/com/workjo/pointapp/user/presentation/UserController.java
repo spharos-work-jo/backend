@@ -1,7 +1,7 @@
 package com.workjo.pointapp.user.presentation;
 
 
-import com.workjo.pointapp.auth.AuthService;
+import com.workjo.pointapp.auth.AuthUtils;
 import com.workjo.pointapp.common.ApiResponse;
 import com.workjo.pointapp.config.ModelMapperBean;
 import com.workjo.pointapp.config.exception.CustomException;
@@ -32,13 +32,12 @@ public class UserController {
 	private final ModelMapperBean modelMapperBean;
 
 	private final UserService userService;
-	private final AuthService authService;
 
 
 	@Operation(summary = "선물할 유저 UUID 찾기", description = "핸드폰 번호와 실명으로 다른 유저의 UUID 조회, 선물하기에서 사용")
 	@PostMapping("/find-for-gift")
 	public ApiResponse<String> getUserUUIDByPhoneAndName(@RequestBody UserFindIn userFindIn, Authentication authentication) {
-		UserGetDto userDto = authService.getCurrentUserDto(authentication);
+		UserGetDto userDto = AuthUtils.getCurrentUserDto(authentication);
 		if (userFindIn.getName().equals(userDto.getName()) && userFindIn.getPhone().equals(userDto.getPhone())) {
 			throw new CustomException(ErrorCode.FIND_SELF);
 		}

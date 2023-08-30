@@ -1,7 +1,7 @@
 package com.workjo.pointapp.user.presentation;
 
 
-import com.workjo.pointapp.auth.AuthService;
+import com.workjo.pointapp.auth.AuthUtils;
 import com.workjo.pointapp.common.ApiResponse;
 import com.workjo.pointapp.config.ModelMapperBean;
 import com.workjo.pointapp.user.application.BookmarkService;
@@ -26,12 +26,11 @@ public class BookmarkController {
 	private final ModelMapperBean modelMapperBean;
 
 	private final BookmarkService bookmarkService;
-	private final AuthService authService;
 
 
 	@GetMapping("")
 	public ApiResponse<List<Integer>> getBookmarkByLoginUser(Authentication authentication) {
-		String uuid = authService.getCurrentUserUUID(authentication).toString();
+		String uuid = AuthUtils.getCurrentUserUUID(authentication).toString();
 		log.debug(uuid);
 		List<Integer> bookmarkList = bookmarkService.getUserBookmark(uuid);
 		return ApiResponse.ofSuccess(bookmarkList);
