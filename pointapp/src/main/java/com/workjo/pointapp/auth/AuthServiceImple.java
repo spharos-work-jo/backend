@@ -9,14 +9,12 @@ import com.workjo.pointapp.config.exception.ErrorCode;
 import com.workjo.pointapp.config.security.JwtTokenProvider;
 import com.workjo.pointapp.user.application.UserService;
 import com.workjo.pointapp.user.domain.User;
-import com.workjo.pointapp.user.dto.UserGetDto;
 import com.workjo.pointapp.user.dto.UserSignUpDto;
 import com.workjo.pointapp.user.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -63,32 +61,6 @@ public class AuthServiceImple implements AuthService {
 		loginInfoDto.setUuid(user.getUUID().toString());
 		loginInfoDto.setToken(jwtToken);
 		return loginInfoDto;
-	}
-
-
-	public UUID getCurrentUserUUID(Authentication authentication) {
-		UUID uuid;
-		if (authentication == null) {
-			// TODO: remove and throw new CustomException
-			uuid = userRepository.findFirstUser().orElseThrow().getUUID();
-		} else {
-			uuid = UUID.fromString(authentication.getName());
-		}
-		return uuid;
-	}
-
-
-	public UserGetDto getCurrentUserDto(Authentication authentication) {
-		UserGetDto userGetDto;
-		if (authentication == null) {
-			// TODO: remove and throw CustomException
-			userGetDto = modelMapperBean.modelMapper().map(
-				userRepository.findFirstUser()
-					.orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESOURCE)), UserGetDto.class);
-		} else {
-			userGetDto = modelMapperBean.modelMapper().map(authentication.getPrincipal(), UserGetDto.class);
-		}
-		return userGetDto;
 	}
 
 }

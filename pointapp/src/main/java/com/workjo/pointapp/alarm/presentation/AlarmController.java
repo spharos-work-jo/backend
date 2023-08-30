@@ -5,6 +5,7 @@ import com.workjo.pointapp.alarm.application.AlarmService;
 import com.workjo.pointapp.alarm.dto.AlarmGetDto;
 import com.workjo.pointapp.alarm.vo.AlarmGetOut;
 import com.workjo.pointapp.auth.AuthService;
+import com.workjo.pointapp.auth.AuthUtils;
 import com.workjo.pointapp.common.ApiResponse;
 import com.workjo.pointapp.config.ModelMapperBean;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -31,21 +32,21 @@ public class AlarmController {
 
 	@GetMapping("")
 	public ApiResponse<List<AlarmGetOut>> getUserAlarmList(Authentication authentication) {
-		List<AlarmGetDto> alarmGetDtoList = alarmService.findAlarmByUserId(authService.getCurrentUserDto(authentication).getId());
+		List<AlarmGetDto> alarmGetDtoList = alarmService.findAlarmByUserId(AuthUtils.getCurrentUserDto(authentication).getId());
 		return ApiResponse.ofSuccess(alarmGetDtoList.stream().map(o -> modelMapperBean.privateStrictModelMapper().map(o, AlarmGetOut.class)).toList());
 	}
-	
+
 
 	@PatchMapping("/{alarmId}")
 	public ApiResponse<Void> readOneAlarm(@PathVariable Long alarmId, Authentication authentication) {
-		alarmService.readAlarm(authService.getCurrentUserDto(authentication).getId(), alarmId);
+		alarmService.readAlarm(AuthUtils.getCurrentUserDto(authentication).getId(), alarmId);
 		return ApiResponse.ofSuccess(null);
 	}
 
 
 	@PatchMapping("/read-all")
 	public ApiResponse<Void> readOneAlarm(Authentication authentication) {
-		alarmService.readAllAlarm(authService.getCurrentUserDto(authentication).getId());
+		alarmService.readAllAlarm(AuthUtils.getCurrentUserDto(authentication).getId());
 		return ApiResponse.ofSuccess(null);
 	}
 
