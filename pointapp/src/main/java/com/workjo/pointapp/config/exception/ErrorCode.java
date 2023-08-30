@@ -23,7 +23,10 @@ public enum ErrorCode {
 	FIND_SELF(HttpStatus.BAD_REQUEST, "U002", "나에게는 선물할 수 없어요!"),
 
 	/*포인트*/
-	INVALID_POINT_REPLY_TYPE(HttpStatus.INTERNAL_SERVER_ERROR, "P002", "유효하지 않은 포인트 선물 응답");
+	INVALID_POINT_REPLY_TYPE(HttpStatus.INTERNAL_SERVER_ERROR, "P002", "유효하지 않은 포인트 선물 응답"),
+
+	/*store*/
+	DUPLICATE_FAV_STORE(HttpStatus.CONFLICT, "T001", "이미 등록된 단골매장입니다");
 
 	private final HttpStatus status;
 	private final String code;
