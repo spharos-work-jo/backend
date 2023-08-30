@@ -2,11 +2,14 @@ package com.workjo.pointapp.store.application;
 
 
 import com.workjo.pointapp.config.ModelMapperBean;
+import com.workjo.pointapp.config.exception.CustomException;
+import com.workjo.pointapp.config.exception.ErrorCode;
 import com.workjo.pointapp.partner.application.SSGPartnerService;
 import com.workjo.pointapp.store.domain.FavoriteStore;
 import com.workjo.pointapp.store.domain.Store;
 import com.workjo.pointapp.store.dto.StoreGetDto;
 import com.workjo.pointapp.store.infrastructure.FavoriteStoreRepository;
+import com.workjo.pointapp.store.infrastructure.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,7 +25,7 @@ import java.util.UUID;
 public class FavoriteStoreServiceImple implements FavoriteStoreService {
 
 	private final ModelMapperBean modelMapperBean;
-
+	private final StoreRepository storeRepository;
 	private final FavoriteStoreRepository favoriteStoreRepository;
 	private final SSGPartnerService ssgPartnerService;
 
@@ -47,8 +50,13 @@ public class FavoriteStoreServiceImple implements FavoriteStoreService {
 
 	@Override
 	public void createFavoriteStore(Long id, UUID uuid) {
+		Store store = storeRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESOURCE));
+		if (favoriteStoreRepository.existsByStoreAndUUID(store, uuid)) {
+			throw new CustomException(ErrorCode.DUPLICATE_FAV_STORE);
+		}
+
 		favoriteStoreRepository.save(FavoriteStore.builder()
-			.store(Store.builder().id(id).build())
+			.store(store)
 			.UUID(uuid)
 			.build());
 	}

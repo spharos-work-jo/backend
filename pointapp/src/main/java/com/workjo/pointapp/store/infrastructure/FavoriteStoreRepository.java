@@ -2,6 +2,7 @@ package com.workjo.pointapp.store.infrastructure;
 
 
 import com.workjo.pointapp.store.domain.FavoriteStore;
+import com.workjo.pointapp.store.domain.Store;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -21,5 +22,7 @@ public interface FavoriteStoreRepository extends JpaRepository<FavoriteStore, Lo
 	@Transactional
 	@Query("delete from FavoriteStore f where f.UUID = :uuid and f.store.id = :storeId")
 	void deleteByUUIDAndStoreId(@Param("uuid") UUID uuid, @Param("storeId") Long storeId);
+
+	Boolean existsByStoreAndUUID(Store store, UUID uuid);
 
 }
