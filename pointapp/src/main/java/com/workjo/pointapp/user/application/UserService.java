@@ -16,4 +16,6 @@ public interface UserService {
 	User getUserByUUID(UUID uuid);
 	void updatePasswordLoginUser(UserPwDto userPwDto, Authentication authentication);
 
+	void updatePointPasswordLoginUser(String pointPw, Authentication authentication);
+
 }

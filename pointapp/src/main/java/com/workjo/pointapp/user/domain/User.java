@@ -98,4 +98,9 @@ public class User extends BaseDateTime implements UserDetails {
 		this.password = new BCryptPasswordEncoder().encode(password);
 	}
 
+
+	public void encodePointPassword(String pointPassword) {
+		this.pointPassword = new BCryptPasswordEncoder().encode(pointPassword);
+	}
+
 }

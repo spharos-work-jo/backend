@@ -7,6 +7,7 @@ import com.workjo.pointapp.user.dto.UserGetDto;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.UUID;
 
@@ -36,6 +37,17 @@ public class AuthUtils {
 			userGetDto = modelMapper.map(authentication.getPrincipal(), UserGetDto.class);
 		}
 		return userGetDto;
+	}
+
+
+	public static UserDetails getUserDetail(Authentication authentication) {
+		UserDetails userDetails;
+		if (authentication == null) {
+			throw new CustomException(ErrorCode.UNAUTHORIZED);
+		} else {
+			userDetails = (UserDetails) authentication.getPrincipal();
+		}
+		return userDetails;
 	}
 
 }

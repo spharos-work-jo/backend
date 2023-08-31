@@ -12,6 +12,7 @@ import com.workjo.pointapp.user.dto.UserGetDto;
 import com.workjo.pointapp.user.dto.UserPwDto;
 import com.workjo.pointapp.user.vo.UserFindIn;
 import com.workjo.pointapp.user.vo.UserIdCheckIn;
+import com.workjo.pointapp.user.vo.UserUpdatePointPwIn;
 import com.workjo.pointapp.user.vo.UserUpdatePwIn;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -59,6 +60,15 @@ public class UserController {
 	public ApiResponse<Void> updatePassword(@RequestBody UserUpdatePwIn userUpdatePwIn, Authentication authentication) {
 		UserPwDto userPwDto = modelMapperBean.modelMapper().map(userUpdatePwIn, UserPwDto.class);
 		userService.updatePasswordLoginUser(userPwDto, authentication);
+		return ApiResponse.ofSuccess(null);
+	}
+
+
+	@Operation(summary = "포인트 비밀번호 수정 및 등록", description = "포인트 비밀번호 수정, 기존에 등록하지 않았을 경우 등록 처리")
+	@PatchMapping("/point-pwd")
+	public ApiResponse<Void> updatePointPassword(@RequestBody UserUpdatePointPwIn userUpdatePointPwIn, Authentication authentication) {
+		userService.updatePointPasswordLoginUser(userUpdatePointPwIn.getPointPw(), authentication);
+		log.info(AuthUtils.getUserDetail(authentication).toString());
 		return ApiResponse.ofSuccess(null);
 	}
 
