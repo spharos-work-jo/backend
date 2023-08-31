@@ -28,7 +28,12 @@ public class PointGift extends BaseDateTime {
     @Column(nullable = false, name = "sent_point_id")
     private Long sentPointId;
 
-    @Column(nullable = false, name = "given_point_id")
-    private Long givenPointId;
+    @Column(nullable = true, name = "given_point_id")//todo result_point_id로 고치기
+    private Long receivedPointId;
 
+    @Column(nullable = false, name = "to_user_uuid")
+    private UUID toUserUuid;
+
+    @Column(nullable = false, name = "from_user_uuid")
+    private UUID fromUserUuid;
 }

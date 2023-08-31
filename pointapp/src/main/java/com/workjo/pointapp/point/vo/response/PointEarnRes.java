@@ -1,6 +1,6 @@
 package com.workjo.pointapp.point.vo.response;
 
-import com.workjo.pointapp.point.dto.PointEarnDto;
+import com.workjo.pointapp.point.dto.earn.PointEarnDto;
 import lombok.AllArgsConstructor;
 import lombok.Value;
 

@@ -13,8 +13,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-
 public class PointEarnReq {
     Long partnerId;
     int paidPrice; // doesn't need if receipt/bill db implemented

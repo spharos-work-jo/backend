@@ -11,9 +11,9 @@ public class PointTypeConverter extends AbstractBaseEnumConverter {
         super(clazz);
     }
 
-    @Override
-    public Object convertToDatabaseColumn(Object attribute) {
-        return null;
-    }
+//    @Override
+//    public Object convertToDatabaseColumn(Object attribute) {
+//        return null;
+//    }
 }
 

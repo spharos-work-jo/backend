@@ -83,7 +83,7 @@ public class AuthServiceImple implements AuthService {
 			// TODO: remove and throw CustomException
 			userGetDto = modelMapperBean.modelMapper().map(
 				userRepository.findFirstUser()
-					.orElseThrow(() -> new CustomException(ErrorCode.NOTFOUND_RESOURCE)), UserGetDto.class);
+					.orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESOURCE)), UserGetDto.class);
 		} else {
 			userGetDto = modelMapperBean.modelMapper().map(authentication.getDetails(), UserGetDto.class);
 		}

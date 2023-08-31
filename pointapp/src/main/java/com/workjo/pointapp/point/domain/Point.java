@@ -21,10 +21,10 @@ public class Point extends BaseDateTime {
     private UUID userUuid;
 
     @Column(nullable = true, name = "total_point")
-    private int totalPoint;
+    private Integer totalPoint;
 
-    @Column(nullable = true, name = "point")
-    private int point;
+    @Column(nullable = false, name = "point")
+    private Integer point;
 
     @Column(nullable = false, name = "type")
     private PointType pointType;

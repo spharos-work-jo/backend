@@ -1,4 +1,4 @@
-package com.workjo.pointapp.point.dto;
+package com.workjo.pointapp.point.dto.common;
 
 import com.workjo.pointapp.point.domain.PointType;
 import jakarta.persistence.Column;
@@ -11,11 +11,11 @@ import java.util.UUID;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class PointCreateDto {
-
     private UUID userUuid;
     private int point;
     private PointType pointType;
     private String title;
-    private int totalPoint;
 }

@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PointHistoryReq {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate historyStartDate;

@@ -1,4 +1,4 @@
-package com.workjo.pointapp.point.dto;
+package com.workjo.pointapp.point.dto.common;
 
 import com.workjo.pointapp.point.domain.PointType;
 import lombok.*;
@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
-public class PointDto {
+public class PointEntityDto {
 
     private Long id;
     private UUID userUuid;
