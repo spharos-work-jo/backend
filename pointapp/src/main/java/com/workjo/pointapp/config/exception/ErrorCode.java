@@ -26,7 +26,10 @@ public enum ErrorCode {
 	INVALID_POINT_REPLY_TYPE(HttpStatus.INTERNAL_SERVER_ERROR, "P002", "유효하지 않은 포인트 선물 응답"),
 
 	/*store*/
-	DUPLICATE_FAV_STORE(HttpStatus.CONFLICT, "T001", "이미 등록된 단골매장입니다");
+	DUPLICATE_FAV_STORE(HttpStatus.CONFLICT, "T001", "이미 등록된 단골매장입니다"),
+
+	/*sms message*/
+	EXTERNAL_NCP_SERVER_ERROR(HttpStatus.NOT_FOUND, "F001", "인증번호 발송에 실패하였습니다");
 
 	private final HttpStatus status;
 	private final String code;
