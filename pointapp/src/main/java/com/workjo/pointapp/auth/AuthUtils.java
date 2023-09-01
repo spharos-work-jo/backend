@@ -3,11 +3,14 @@ package com.workjo.pointapp.auth;
 
 import com.workjo.pointapp.config.exception.CustomException;
 import com.workjo.pointapp.config.exception.ErrorCode;
+import com.workjo.pointapp.user.domain.User;
 import com.workjo.pointapp.user.dto.UserGetDto;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.UUID;
 
@@ -16,6 +19,7 @@ import java.util.UUID;
 public class AuthUtils {
 
 	private static final ModelMapper modelMapper = new ModelMapper();
+	private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
 	public static UUID getCurrentUserUUID(Authentication authentication) {
@@ -48,6 +52,12 @@ public class AuthUtils {
 			userDetails = (UserDetails) authentication.getPrincipal();
 		}
 		return userDetails;
+	}
+
+
+	public static Boolean isEqualPointPw(String pointPw, Authentication authentication) {
+		User user = (User) AuthUtils.getUserDetail(authentication);
+		return passwordEncoder.matches(pointPw, user.getPointPassword());
 	}
 
 }
