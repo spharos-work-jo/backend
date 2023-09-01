@@ -8,5 +8,6 @@ import lombok.Getter;
 public class CertPhoneReq {
 
 	String phone;
+	String certCode;
 
 }

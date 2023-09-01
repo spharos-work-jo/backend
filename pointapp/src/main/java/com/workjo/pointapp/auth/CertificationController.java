@@ -1,8 +1,10 @@
 package com.workjo.pointapp.auth;
 
 
+import com.workjo.pointapp.auth.dto.CertPhoneDto;
 import com.workjo.pointapp.auth.vo.CertPhoneReq;
 import com.workjo.pointapp.common.ApiResponse;
+import com.workjo.pointapp.config.ModelMapperBean;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +22,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class CertificationController {
 
+	private final ModelMapperBean modelMapperBean;
+
 	private final CertService certService;
 
 
 	@Operation(summary = "휴대폰 인증번호 보내기")
 	@PostMapping("/phone")
 	public ApiResponse<Void> sendPhoneSms(@RequestBody CertPhoneReq certPhoneReq) {
-		certService.sendSmsCertMessage(certPhoneReq.getPhone());
+		certService.sendSmsCertCodeMessage(certPhoneReq.getPhone());
+		return ApiResponse.ofSuccess(null);
+	}
+
+
+	@Operation(summary = "휴대폰 인증번호 확인")
+	@PostMapping("/phone/confirm")
+	public ApiResponse<Void> confirmPhoneSms(@RequestBody CertPhoneReq certPhoneReq) {
+		CertPhoneDto certPhoneDto = modelMapperBean.modelMapper().map(certPhoneReq, CertPhoneDto.class);
+		certService.confirmSmsCertCodeMessage(certPhoneDto);
 		return ApiResponse.ofSuccess(null);
 	}
 
