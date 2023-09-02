@@ -29,7 +29,9 @@ public enum ErrorCode {
 	DUPLICATE_FAV_STORE(HttpStatus.CONFLICT, "T001", "이미 등록된 단골매장입니다"),
 
 	/*sms message*/
-	EXTERNAL_NCP_SERVER_ERROR(HttpStatus.NOT_FOUND, "F001", "인증번호 발송에 실패하였습니다");
+	EXTERNAL_NCP_SERVER_ERROR(HttpStatus.SERVICE_UNAVAILABLE, "F001", "인증번호 발송에 실패하였습니다"),
+	CERT_CODE_EXPIRED(HttpStatus.BAD_REQUEST, "F002", "인증번호가 만료되었습니다"),
+	CERT_CODE_INVALID(HttpStatus.BAD_REQUEST, "F002", "인증번호가 유효하지 않습니다");
 
 	private final HttpStatus status;
 	private final String code;
