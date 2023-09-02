@@ -3,6 +3,8 @@ package com.workjo.pointapp.config.exception;
 
 import com.workjo.pointapp.common.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.QueryTimeoutException;
+import org.springframework.data.redis.RedisConnectionFailureException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -38,6 +40,20 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ApiResponse<Void>> methodArgumentValidException() {
 		return new ResponseEntity<>(ApiResponse.ofError(ErrorCode.BAD_REQUEST), ErrorCode.BAD_REQUEST.getStatus());
+	}
+
+
+	@ExceptionHandler(RedisConnectionFailureException.class)
+	public ResponseEntity<ApiResponse<Void>> handleRedisConnectionFailureException() {
+		log.error("fail to connect redis");
+		return new ResponseEntity<>(ApiResponse.ofError(ErrorCode.INTERNAL_SERVER_ERROR), ErrorCode.INTERNAL_SERVER_ERROR.getStatus());
+	}
+
+
+	@ExceptionHandler(QueryTimeoutException.class)
+	public ResponseEntity<ApiResponse<Void>> handleQueryTimeoutException(QueryTimeoutException e) {
+		log.error("fail to execute query, {}", e.getMessage());
+		return new ResponseEntity<>(ApiResponse.ofError(ErrorCode.INTERNAL_SERVER_ERROR), ErrorCode.INTERNAL_SERVER_ERROR.getStatus());
 	}
 
 
