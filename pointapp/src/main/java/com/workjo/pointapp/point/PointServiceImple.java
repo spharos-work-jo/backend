@@ -163,7 +163,7 @@ public class PointServiceImple implements IPointService {
         log.info("total before gift : " + totalBeforeCreate);
         int totalAfterCreate = createDto.getPoint() + totalBeforeCreate;
         if (totalAfterCreate < 0) {
-            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);//todo 에러코드 추가, invalid point gift amount
+            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
         log.info("total after gift : " + totalAfterCreate);
 
@@ -254,7 +254,7 @@ public class PointServiceImple implements IPointService {
         PointGift saved = pointGiftRepository.save(pointGift);
 
         if (saved == null) {
-            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);//todo 에러코드 추가: ENTITY_SAVE_FAILED
+            throw new CustomException(ErrorCode.ENTITY_SAVE_FAILED);
         }
         return modelMapper.map(saved, PointGiftEntityDto.class);
     }

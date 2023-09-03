@@ -1,6 +1,7 @@
 package com.workjo.pointapp.point;
 
 import com.workjo.pointapp.auth.AuthService;
+import com.workjo.pointapp.auth.AuthUtils;
 import com.workjo.pointapp.common.ApiResponse;
 import com.workjo.pointapp.config.exception.CustomException;
 import com.workjo.pointapp.config.exception.ErrorCode;
@@ -53,9 +54,9 @@ public class PointController {
                     Authentication auth
             ) {
         //todo 포인트 패스워드 고려해 리팩토링
-        UUID fromUserUuid = authService.getCurrentUserUUID(auth);
+        UUID fromUserUuid = AuthUtils.getCurrentUserUUID(auth);
         UUID toUserUuid = UUID.fromString(request.getToUserUuid());
-        if (fromUserUuid.equals(toUserUuid)) {
+        if (fromUserUuid.equals(toUserUuid) || request.getPoint() <= 0) {
             throw new CustomException(ErrorCode.BAD_REQUEST);
         }
 
@@ -101,7 +102,7 @@ public class PointController {
     @PostMapping("/addtest/{point}")//todo 테스트용 코드
     public ApiResponse addPoint(Authentication auth, @PathVariable int point) {
         CreatePointDto createDto = new CreatePointDto(
-                authService.getCurrentUserUUID(auth),
+                AuthUtils.getCurrentUserUUID(auth),
                 point,
                 PointType.ETC,
                 "테스트"
@@ -115,7 +116,7 @@ public class PointController {
 
     @GetMapping("/gifts/receiveds/unreplieds")
     public ApiResponse<GetReceivedPointGiftsInfoRes> getUnrepliedReceivedGifts(Authentication auth) {
-        GetReceivedPointGiftsDto dto = new GetReceivedPointGiftsDto(authService.getCurrentUserUUID(auth));
+        GetReceivedPointGiftsDto dto = new GetReceivedPointGiftsDto(AuthUtils.getCurrentUserUUID(auth));
         pointService.findReceivedGifts(dto);
 
         List<PointGiftInfoRes> giftInfoVoList = dto.getResult().stream().map(
@@ -169,7 +170,7 @@ public class PointController {
         modelMapper.map(request, dto);
         dto.setHistoryStartDate(request.getHistoryStartDate().atStartOfDay());
         dto.setHistoryEndDate(request.getHistoryEndDate().atTime(LocalTime.MAX));
-        dto.setUserUuid(authService.getCurrentUserUUID(auth));
+        dto.setUserUuid(AuthUtils.getCurrentUserUUID(auth));
         log.info(String.format("%s %s", request.getHistoryStartDate().toString(), request.getHistoryEndDate().toString()));
         log.info(dto.toString());
 
