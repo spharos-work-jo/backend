@@ -23,12 +23,10 @@ public class Store {
 	private Long id;
 	@Column(length = 45)
 	private String storeName;
-	@Column(length = 20)
-	private String sido;
-	@Column(length = 20)
-	private String gungu;
+	@Column(length = 10)
+	private String gunguCode;
 	@Column(length = 100)
-	private String detailAddress;
+	private String address;
 	@Column
 	private Integer partnerId;
 	@Column(columnDefinition = "tinyint default 1")
