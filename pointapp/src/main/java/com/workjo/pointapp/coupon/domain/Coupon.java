@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 
 @Builder
@@ -23,12 +23,14 @@ public class Coupon extends BaseDateTime {
 	private Long id;
 	@Column(length = 45)
 	private String name;
+	@Column(length = 45)
+	private String description;
 	@Column
 	private Integer couponValue;
 	@Column
-	private LocalDateTime startDate;
+	private LocalDate startDate;
 	@Column
-	private LocalDateTime endDate;
+	private LocalDate endDate;
 	@Column
 	private Integer downloadCount;
 	@Column
