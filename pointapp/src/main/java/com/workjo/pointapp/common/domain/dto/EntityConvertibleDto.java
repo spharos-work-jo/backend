@@ -1,20 +1,18 @@
 package com.workjo.pointapp.common.domain.dto;
 
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.ModelMap;
 
-public abstract class EntityConvertibleDto<E> implements IEntityConvertible<E> {
+public abstract class EntityConvertibleDto<D extends EntityConvertibleDto, E> implements IEntityConvertible<D> {
     private final ModelMapper modelMapper;
-    private final Class<E> entityType;
+    private final Class<D> entityType;
 
-//    public final E toEntity() {
-//        Class<E> entityType;
-//        Class<E> entity = modelMapper.map(this, entityType.class);
+//    public final D toEntity() {
+//        Class<D> entityType;
+//        Class<D> entity = modelMapper.map(this, entityType.class);
 //    }
 
-    protected EntityConvertibleDto(@Autowired ModelMapper modelMapper, Class<E> entityType) {
+    protected EntityConvertibleDto(@Autowired ModelMapper modelMapper, Class<D> entityType) {
         this.modelMapper = modelMapper;
         this.entityType = entityType;
     }
