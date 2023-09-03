@@ -5,7 +5,7 @@ spring:
     default: local
 
 server:
-  port: 8000
+  port: 80
 
 springdoc:
   swagger-ui:
@@ -21,3 +21,16 @@ springdoc:
   default-produces-media-type: application/json
   paths-to-match:
     - /api/v1/**
+
+external-api:
+  naver-sms:
+    service-id: ${NCP_SERVICE_ID}
+    access-key: ${NCP_ACCESS_KEY}
+    secret-key: ${NCP_SECRET_KEY}
+    from: ${NCP_SENDER_PHONE}
+
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: full

@@ -1,22 +1,20 @@
 package com.workjo.pointapp.auth;
 
 
+import com.workjo.pointapp.auth.dto.LoginInfoDto;
 import com.workjo.pointapp.auth.vo.LoginRequest;
-import com.workjo.pointapp.auth.vo.LoginResponse;
 import com.workjo.pointapp.config.ModelMapperBean;
 import com.workjo.pointapp.config.exception.CustomException;
 import com.workjo.pointapp.config.exception.ErrorCode;
 import com.workjo.pointapp.config.security.JwtTokenProvider;
 import com.workjo.pointapp.user.application.UserService;
 import com.workjo.pointapp.user.domain.User;
-import com.workjo.pointapp.user.dto.UserGetDto;
 import com.workjo.pointapp.user.dto.UserSignUpDto;
 import com.workjo.pointapp.user.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -47,7 +45,7 @@ public class AuthServiceImple implements AuthService {
 	}
 
 
-	public LoginResponse authenticate(LoginRequest loginRequest) {
+	public LoginInfoDto authenticate(LoginRequest loginRequest) {
 		User user = userRepository.findByLoginId(loginRequest.getLoginId())
 			.orElseThrow(() -> new CustomException(ErrorCode.FAIL_LOGIN));
 
@@ -59,35 +57,10 @@ public class AuthServiceImple implements AuthService {
 		);
 
 		String jwtToken = jwtTokenProvider.generateToken(user);
-		return LoginResponse.builder()
-			.token(jwtToken)
-			.build();
-	}
-
-
-	public UUID getCurrentUserUUID(Authentication authentication) {
-		UUID uuid;
-		if (authentication == null) {
-			// TODO: remove and throw new CustomException
-			uuid = userRepository.findFirstUser().orElseThrow().getUUID();
-		} else {
-			uuid = UUID.fromString(authentication.getName());
-		}
-		return uuid;
-	}
-
-
-	public UserGetDto getCurrentUserDto(Authentication authentication) {
-		UserGetDto userGetDto;
-		if (authentication == null) {
-			// TODO: remove and throw CustomException
-			userGetDto = modelMapperBean.modelMapper().map(
-				userRepository.findFirstUser()
-					.orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESOURCE)), UserGetDto.class);
-		} else {
-			userGetDto = modelMapperBean.modelMapper().map(authentication.getDetails(), UserGetDto.class);
-		}
-		return userGetDto;
+		LoginInfoDto loginInfoDto = modelMapperBean.modelMapper().map(user, LoginInfoDto.class);
+		loginInfoDto.setUuid(user.getUUID().toString());
+		loginInfoDto.setToken(jwtToken);
+		return loginInfoDto;
 	}
 
 }

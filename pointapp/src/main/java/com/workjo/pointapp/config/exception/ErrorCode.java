@@ -20,11 +20,18 @@ public enum ErrorCode {
 
 	/*유저*/
 	NOT_FOUND_USER(HttpStatus.NOT_FOUND, "U001", "존재하지 않는 유저입니다."),
+	FIND_SELF(HttpStatus.BAD_REQUEST, "U002", "나에게는 선물할 수 없어요!"),
 
 	/*포인트*/
+	INVALID_POINT_REPLY_TYPE(HttpStatus.INTERNAL_SERVER_ERROR, "P002", "유효하지 않은 포인트 선물 응답"),
 
-	INVALID_POINT_REPLY_TYPE(HttpStatus.INTERNAL_SERVER_ERROR,"P002","유효하지 않은 포인트 선물 응답");
+	/*store*/
+	DUPLICATE_FAV_STORE(HttpStatus.CONFLICT, "T001", "이미 등록된 단골매장입니다"),
 
+	/*sms message*/
+	EXTERNAL_NCP_SERVER_ERROR(HttpStatus.SERVICE_UNAVAILABLE, "F001", "인증번호 발송에 실패하였습니다"),
+	CERT_CODE_EXPIRED(HttpStatus.BAD_REQUEST, "F002", "인증번호가 만료되었습니다"),
+	CERT_CODE_INVALID(HttpStatus.BAD_REQUEST, "F002", "인증번호가 유효하지 않습니다");
 
 	private final HttpStatus status;
 	private final String code;

@@ -1,6 +1,7 @@
 package com.workjo.pointapp.auth;
 
 
+import com.workjo.pointapp.auth.dto.LoginInfoDto;
 import com.workjo.pointapp.auth.vo.LoginRequest;
 import com.workjo.pointapp.auth.vo.LoginResponse;
 import com.workjo.pointapp.auth.vo.UserSignUpIn;
@@ -29,7 +30,8 @@ public class AuthController {
 
 	@PostMapping("/login")
 	public ApiResponse<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
-		return ApiResponse.ofSuccess(authService.authenticate(loginRequest));
+		LoginInfoDto loginInfoDto = authService.authenticate(loginRequest);
+		return ApiResponse.ofSuccess(modelMapperBean.modelMapper().map(loginInfoDto, LoginResponse.class));
 	}
 
 

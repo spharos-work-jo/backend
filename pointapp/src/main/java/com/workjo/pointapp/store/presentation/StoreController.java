@@ -1,7 +1,7 @@
 package com.workjo.pointapp.store.presentation;
 
 
-import com.workjo.pointapp.auth.AuthService;
+import com.workjo.pointapp.auth.AuthUtils;
 import com.workjo.pointapp.common.ApiResponse;
 import com.workjo.pointapp.config.ModelMapperBean;
 import com.workjo.pointapp.store.application.FavoriteStoreService;
@@ -28,7 +28,6 @@ import java.util.UUID;
 public class StoreController {
 
 	private final ModelMapperBean modelMapperBean;
-	private final AuthService authService;
 
 	private final StoreService storeService;
 	private final FavoriteStoreService favoriteStoreService;
@@ -49,7 +48,7 @@ public class StoreController {
 	@Operation(summary = "단골 매장 조회", description = "현재 로그인한 유저의 단골 매장 리스트 조회")
 	@GetMapping("/fav")
 	public ApiResponse<List<StoreGetOut>> getStoreListFavorite(Authentication authentication) {
-		UUID uuid = authService.getCurrentUserUUID(authentication);
+		UUID uuid = AuthUtils.getCurrentUserUUID(authentication);
 		List<StoreGetDto> favoriteStoreList = favoriteStoreService.getFavoriteStoreListByUserUUID(uuid);
 		return ApiResponse.ofSuccess(favoriteStoreList.stream().map(o -> modelMapperBean.modelMapper().map(o, StoreGetOut.class)).toList());
 	}
@@ -58,7 +57,15 @@ public class StoreController {
 	@Operation(summary = "단골 매장 추가", description = "매장 아이디로 단골매장 추가")
 	@PostMapping("/fav/{storeId}")
 	public ApiResponse<Void> createFavoriteStore(@PathVariable Long storeId, Authentication authentication) {
-		favoriteStoreService.createFavoriteStore(storeId, authService.getCurrentUserUUID(authentication));
+		favoriteStoreService.createFavoriteStore(storeId, AuthUtils.getCurrentUserUUID(authentication));
+		return ApiResponse.ofSuccess(null);
+	}
+
+
+	@Operation(summary = "단골 매장 삭제", description = "매장 아이디로 단골매장 삭제")
+	@DeleteMapping("/fav/{storeId}")
+	public ApiResponse<Void> deleteFavoriteStore(@PathVariable Long storeId, Authentication authentication) {
+		favoriteStoreService.deleteFavoriteStore(storeId, AuthUtils.getCurrentUserUUID(authentication));
 		return ApiResponse.ofSuccess(null);
 	}
 
