@@ -12,6 +12,7 @@ public enum ErrorCode {
 	DUPLICATE_RESOURCE(HttpStatus.CONFLICT, "C002", "이미 존재하는 데이터입니다."),
 	METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "C003", "Method Not Allowed"),
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "C004", "Internal Server Error"),
+	ENTITY_SAVE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR,"C005", "db 저장 실패"),
 	BAD_REQUEST(HttpStatus.BAD_REQUEST, "C011", "잘못된 요청입니다."),
 
 	/*로그인*/
@@ -23,6 +24,7 @@ public enum ErrorCode {
 	FIND_SELF(HttpStatus.BAD_REQUEST, "U002", "나에게는 선물할 수 없어요!"),
 
 	/*포인트*/
+	INVALID_POINT_GIFT_AMOUNT(HttpStatus.BAD_REQUEST, "P001", "유효하지 않은 포인트 선물 입력"),
 	INVALID_POINT_REPLY_TYPE(HttpStatus.INTERNAL_SERVER_ERROR, "P002", "유효하지 않은 포인트 선물 응답"),
 
 	/*store*/
