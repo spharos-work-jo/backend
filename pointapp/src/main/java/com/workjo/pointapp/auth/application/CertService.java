@@ -1,4 +1,4 @@
-package com.workjo.pointapp.auth;
+package com.workjo.pointapp.auth.application;
 
 
 import com.workjo.pointapp.auth.dto.CertPhoneDto;
