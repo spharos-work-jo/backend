@@ -1,4 +1,4 @@
-package com.workjo.pointapp.point.common;
+package com.workjo.pointapp.point.common.infrastructure;
 
 import com.workjo.pointapp.point.common.domain.Point;
 import com.workjo.pointapp.point.common.domain.PointType;
