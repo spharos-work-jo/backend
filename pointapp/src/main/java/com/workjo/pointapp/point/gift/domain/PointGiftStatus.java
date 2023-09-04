@@ -6,9 +6,14 @@ import lombok.Getter;
 
 @AllArgsConstructor
 public enum PointGiftStatus implements BaseEnum<Character, String> {
-    WAIT('W', "WAIT"),
-    ACCEPT('A', "ACCEPT"),
-    REJECT('R', "REJECT");
+//    WAIT('W', "WAIT"),
+//    ACCEPT('A', "ACCEPT"),
+//    REJECT('R', "REJECT");
+
+
+    WAIT('0', "WAIT"),
+    ACCEPT('1', "ACCEPT"),
+    REJECT('2', "REJECT");
 
     private Character code;
     private String value;
