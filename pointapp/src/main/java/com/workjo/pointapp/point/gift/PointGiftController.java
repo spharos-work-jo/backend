@@ -34,10 +34,10 @@ public class PointGiftController {
 
     private final IPointService pointService;
     private final ModelMapper modelMapper;
-    private IPointGiftService pointGiftService;
+    private final IPointGiftService pointGiftService;
 
 
-    @PostMapping("/gifts/give")
+    @PostMapping("/give")
     public ApiResponse<GivePointGiftRes> givePointGift
             (
                     @RequestBody GivePointGiftReq request,
@@ -62,7 +62,7 @@ public class PointGiftController {
     }
 
 
-    @PatchMapping("/gifts/{pointGiftId}/{giftReply}")
+    @PatchMapping("/{pointGiftId}/{giftReply}")
     public ApiResponse replyPointGift
             (
                     @PathVariable("pointGiftId") Long pointGiftId,
@@ -89,7 +89,7 @@ public class PointGiftController {
     }
 
 
-    @GetMapping("/gifts/receiveds/unreplieds")
+    @GetMapping("/receiveds/unreplieds")
     public ApiResponse<GetReceivedPointGiftsInfoRes> getUnrepliedReceivedGifts(Authentication auth) {
         GetReceivedPointGiftsDto dto = new GetReceivedPointGiftsDto(AuthUtils.getCurrentUserUUID(auth));
         pointGiftService.findReceivedUnrepliedGifts(dto, pointService);

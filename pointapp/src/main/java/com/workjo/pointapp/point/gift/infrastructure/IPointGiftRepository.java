@@ -1,4 +1,4 @@
-package com.workjo.pointapp.point.gift;
+package com.workjo.pointapp.point.gift.infrastructure;
 
 import com.workjo.pointapp.point.gift.domain.PointGift;
 import org.springframework.data.jpa.repository.JpaRepository;

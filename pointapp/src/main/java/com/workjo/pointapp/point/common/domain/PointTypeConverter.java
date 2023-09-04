@@ -1,15 +1,14 @@
 package com.workjo.pointapp.point.common.domain;
 
 import com.workjo.pointapp.common.AbstractBaseEnumConverter;
+import com.workjo.pointapp.common.BaseEnum;
+import jakarta.persistence.Converter;
 
-public class PointTypeConverter extends AbstractBaseEnumConverter {
-    public PointTypeConverter(Class clazz) {
-        super(clazz);
+@Converter(autoApply = true)
+public class PointTypeConverter extends AbstractBaseEnumConverter<PointType, String, String> {
+    public PointTypeConverter() {
+        super(PointType.class);
     }
 
-//    @Override
-//    public Object convertToDatabaseColumn(Object attribute) {
-//        return null;
-//    }
 }
 
