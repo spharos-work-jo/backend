@@ -1,4 +1,4 @@
-package com.workjo.pointapp.point.earn;
+package com.workjo.pointapp.point.earn.infrastructure;
 
 import com.workjo.pointapp.point.earn.domain.PointEarn;
 import org.springframework.data.jpa.repository.JpaRepository;
