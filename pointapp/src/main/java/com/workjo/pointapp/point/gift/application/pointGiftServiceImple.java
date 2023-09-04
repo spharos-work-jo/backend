@@ -6,7 +6,7 @@ import com.workjo.pointapp.point.common.application.IPointService;
 import com.workjo.pointapp.point.common.domain.PointType;
 import com.workjo.pointapp.point.common.dto.CreatePointDto;
 import com.workjo.pointapp.point.common.dto.PointEntityDto;
-import com.workjo.pointapp.point.gift.IPointGiftRepository;
+import com.workjo.pointapp.point.gift.infrastructure.IPointGiftRepository;
 import com.workjo.pointapp.point.gift.domain.PointGift;
 import com.workjo.pointapp.point.gift.domain.PointGiftStatus;
 import com.workjo.pointapp.point.gift.dto.*;
@@ -15,7 +15,6 @@ import com.workjo.pointapp.user.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

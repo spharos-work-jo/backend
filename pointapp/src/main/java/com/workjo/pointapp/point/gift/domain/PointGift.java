@@ -23,7 +23,7 @@ public class PointGift extends BaseDateTime {
     private String message;
 
     @Column(nullable = false, name = "gift_status")
-    private char giftStatus;
+    private PointGiftStatus giftStatus;
 
     @Column(nullable = false, name = "sent_point_id")
     private Long sentPointId;
