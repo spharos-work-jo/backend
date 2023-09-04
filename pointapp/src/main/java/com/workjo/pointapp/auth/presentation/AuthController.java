@@ -6,6 +6,7 @@ import com.workjo.pointapp.auth.domain.OauthProviderType;
 import com.workjo.pointapp.auth.dto.LoginDto;
 import com.workjo.pointapp.auth.dto.LoginInfoDto;
 import com.workjo.pointapp.auth.dto.OauthUserCreateDto;
+import com.workjo.pointapp.auth.dto.OauthUserLoginDto;
 import com.workjo.pointapp.auth.vo.LoginResponse;
 import com.workjo.pointapp.auth.vo.UserSignUpIn;
 import com.workjo.pointapp.auth.vo.request.LoginRequest;
@@ -63,7 +64,8 @@ public class AuthController {
 		if (provider == null) {
 			throw new CustomException(ErrorCode.BAD_REQUEST);
 		}
-		LoginInfoDto loginInfoDto = authService.oauthAuthenticate(oauthLoginReq);
+		OauthUserLoginDto oauthUserLoginDto = modelMapperBean.modelMapper().map(oauthLoginReq, OauthUserLoginDto.class);
+		LoginInfoDto loginInfoDto = authService.oauthAuthenticate(oauthUserLoginDto);
 		return ApiResponse.ofSuccess(modelMapperBean.modelMapper().map(loginInfoDto, LoginResponse.class));
 	}
 
