@@ -2,6 +2,7 @@ package com.workjo.pointapp.auth.presentation;
 
 
 import com.workjo.pointapp.auth.AuthService;
+import com.workjo.pointapp.auth.domain.OauthProviderType;
 import com.workjo.pointapp.auth.dto.LoginDto;
 import com.workjo.pointapp.auth.dto.LoginInfoDto;
 import com.workjo.pointapp.auth.dto.OauthUserCreateDto;
@@ -12,6 +13,8 @@ import com.workjo.pointapp.auth.vo.request.OauthLoginCreateReq;
 import com.workjo.pointapp.auth.vo.request.OauthLoginReq;
 import com.workjo.pointapp.common.ApiResponse;
 import com.workjo.pointapp.config.ModelMapperBean;
+import com.workjo.pointapp.config.exception.CustomException;
+import com.workjo.pointapp.config.exception.ErrorCode;
 import com.workjo.pointapp.user.dto.UserSignUpDto;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -53,17 +56,26 @@ public class AuthController {
 	}
 
 
-	@Operation(summary = "간편로그인", description = "간편로그인")
+	@Operation(summary = "간편로그인", description = "간편로그인, provider : NAVER, KAKAO, APPLE (대문자 필수)")
 	@PostMapping("/oauth-login")
 	public ApiResponse<LoginResponse> oauthLogin(@RequestBody OauthLoginReq oauthLoginReq) {
+		OauthProviderType provider = OauthProviderType.find(oauthLoginReq.getProvider());
+		if (provider == null) {
+			throw new CustomException(ErrorCode.BAD_REQUEST);
+		}
 		LoginInfoDto loginInfoDto = authService.oauthAuthenticate(oauthLoginReq);
 		return ApiResponse.ofSuccess(modelMapperBean.modelMapper().map(loginInfoDto, LoginResponse.class));
 	}
 
 
-	@Operation(summary = "통합로그인 및 간편로그인 연동", description = "간편로그인 연동되지 않은 유저의 통합로그인시 사용")
+	@Operation(summary = "통합로그인 및 간편로그인 연동", description = "간편로그인 연동되지 않은 유저의 통합로그인시 사용, provider : NAVER, KAKAO, APPLE (대문자 필수)")
 	@PostMapping("/oauth-login-create")
 	public ApiResponse<LoginResponse> oauthLoginCreate(@RequestBody OauthLoginCreateReq oauthLoginCreateReq) {
+		OauthProviderType provider = OauthProviderType.find(oauthLoginCreateReq.getProvider());
+		if (provider == null) {
+			throw new CustomException(ErrorCode.BAD_REQUEST);
+		}
+
 		// 통합로그인
 		LoginDto loginDto = modelMapperBean.privateStrictModelMapper().map(oauthLoginCreateReq, LoginDto.class);
 		LoginInfoDto loginInfoDto = authService.authenticate(loginDto);
