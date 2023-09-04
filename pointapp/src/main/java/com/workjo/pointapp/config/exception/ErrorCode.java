@@ -12,12 +12,13 @@ public enum ErrorCode {
 	DUPLICATE_RESOURCE(HttpStatus.CONFLICT, "C002", "이미 존재하는 데이터입니다."),
 	METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "C003", "Method Not Allowed"),
 	INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "C004", "Internal Server Error"),
-	ENTITY_SAVE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR,"C005", "db 저장 실패"),
+	ENTITY_SAVE_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "C005", "db 저장 실패"),
 	BAD_REQUEST(HttpStatus.BAD_REQUEST, "C011", "잘못된 요청입니다."),
 
 	/*로그인*/
 	UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "L001", "로그인이 필요합니다."),
 	FAIL_LOGIN(HttpStatus.BAD_REQUEST, "L002", "로그인 실패"),
+	NEED_INTERGRATED_LOGIN(HttpStatus.NOT_FOUND, "L003", "통합ID 로그인이 필요합니다"),
 
 	/*유저*/
 	NOT_FOUND_USER(HttpStatus.NOT_FOUND, "U001", "존재하지 않는 유저입니다."),

@@ -1,8 +1,12 @@
 package com.workjo.pointapp.auth;
 
 
+import com.workjo.pointapp.auth.domain.UserOauth;
+import com.workjo.pointapp.auth.dto.LoginDto;
 import com.workjo.pointapp.auth.dto.LoginInfoDto;
-import com.workjo.pointapp.auth.vo.LoginRequest;
+import com.workjo.pointapp.auth.dto.OauthUserCreateDto;
+import com.workjo.pointapp.auth.infrastructure.UserOauthRepository;
+import com.workjo.pointapp.auth.vo.request.OauthLoginReq;
 import com.workjo.pointapp.config.ModelMapperBean;
 import com.workjo.pointapp.config.exception.CustomException;
 import com.workjo.pointapp.config.exception.ErrorCode;
@@ -28,6 +32,7 @@ public class AuthServiceImple implements AuthService {
 	private final ModelMapperBean modelMapperBean;
 
 	private final UserRepository userRepository;
+	private final UserOauthRepository userOauthRepository;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final AuthenticationManager authenticationManager;
 	private final UserService userService;
@@ -45,17 +50,51 @@ public class AuthServiceImple implements AuthService {
 	}
 
 
-	public LoginInfoDto authenticate(LoginRequest loginRequest) {
-		User user = userRepository.findByLoginId(loginRequest.getLoginId())
+	@Override
+
+	public LoginInfoDto authenticate(LoginDto loginDto) {
+		User user = userRepository.findByLoginId(loginDto.getLoginId())
 			.orElseThrow(() -> new CustomException(ErrorCode.FAIL_LOGIN));
 
 		authenticationManager.authenticate(
 			new UsernamePasswordAuthenticationToken(
 				user.getUsername(),
-				loginRequest.getPassword()
+				loginDto.getPassword()
 			)
 		);
 
+		return this.setLoginInfoDto(user);
+	}
+
+
+	@Override
+	public LoginInfoDto oauthAuthenticate(OauthLoginReq oauthLoginRequest) {
+		UserOauth userOauth = userOauthRepository.findByOauthId(oauthLoginRequest.getOauthId())
+			.orElseThrow(() -> new CustomException(ErrorCode.NEED_INTERGRATED_LOGIN));
+		return this.setLoginInfoDto(userOauth.getUser());
+	}
+
+
+	@Override
+	public void createUserOauth(OauthUserCreateDto oauthUserCreateDto) {
+		User user = userRepository.findByUUID(oauthUserCreateDto.getUuid())
+			.orElseThrow(() -> new CustomException(ErrorCode.FAIL_LOGIN));
+		userOauthRepository.save(UserOauth.builder()
+			.user(user)
+			.oauthId(oauthUserCreateDto.getOauthId())
+			.provider(oauthUserCreateDto.getProvider())
+			.build());
+	}
+
+
+	/**
+	 * user 정보를 LoginInfoDto로 변환
+	 * AuthService 내부에서만 사용
+	 *
+	 * @param user 유저 객체
+	 * @return LoginInfoDto 정상적으로 로그인시 response
+	 */
+	private LoginInfoDto setLoginInfoDto(User user) {
 		String jwtToken = jwtTokenProvider.generateToken(user);
 		LoginInfoDto loginInfoDto = modelMapperBean.modelMapper().map(user, LoginInfoDto.class);
 		loginInfoDto.setUuid(user.getUUID().toString());

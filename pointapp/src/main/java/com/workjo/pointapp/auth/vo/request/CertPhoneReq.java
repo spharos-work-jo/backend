@@ -1,4 +1,4 @@
-package com.workjo.pointapp.auth.vo;
+package com.workjo.pointapp.auth.vo.request;
 
 
 import lombok.Getter;

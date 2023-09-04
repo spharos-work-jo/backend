@@ -1,6 +1,7 @@
-package com.workjo.pointapp.auth;
+package com.workjo.pointapp.auth.application;
 
 
+import com.workjo.pointapp.auth.CertUtils;
 import com.workjo.pointapp.auth.domain.PhoneCertCode;
 import com.workjo.pointapp.auth.dto.CertPhoneDto;
 import com.workjo.pointapp.auth.feignclient.NaverSmsClient;

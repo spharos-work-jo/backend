@@ -1,8 +1,9 @@
-package com.workjo.pointapp.auth;
+package com.workjo.pointapp.auth.presentation;
 
 
+import com.workjo.pointapp.auth.application.CertService;
 import com.workjo.pointapp.auth.dto.CertPhoneDto;
-import com.workjo.pointapp.auth.vo.CertPhoneReq;
+import com.workjo.pointapp.auth.vo.request.CertPhoneReq;
 import com.workjo.pointapp.common.ApiResponse;
 import com.workjo.pointapp.config.ModelMapperBean;
 import io.swagger.v3.oas.annotations.Operation;
