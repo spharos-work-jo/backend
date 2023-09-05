@@ -3,11 +3,13 @@ package com.workjo.pointapp.common.domain.dto;
 import com.workjo.pointapp.config.ModelMapperBean;
 import org.modelmapper.ModelMapper;
 
+
 public abstract class VoConvertibleEntityDto
         <D extends VoConvertibleEntityDto<D, E, R>, E, R>
         implements IEntityConvertible<E>, IResponseVoConvertible<R> {
 
     private final static ModelMapper modelMapper = (new ModelMapperBean()).modelMapper();
+
 
     private final Class<D> dtoType;
     private final ConvertInfo<E> entity;

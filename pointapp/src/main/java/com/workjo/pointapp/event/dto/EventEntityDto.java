@@ -6,6 +6,7 @@ import com.workjo.pointapp.event.domain.Event;
 import com.workjo.pointapp.event.domain.EventType;
 import com.workjo.pointapp.event.vo.response.EventEntityRes;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
@@ -23,6 +24,7 @@ public class EventEntityDto extends VoConvertibleEntityDto<EventEntityDto, Event
     private String imageUrl;
 
 
+    @Builder
     public EventEntityDto() {
         super(
                 EventEntityDto.class,
@@ -31,17 +33,6 @@ public class EventEntityDto extends VoConvertibleEntityDto<EventEntityDto, Event
         );
     }
 
-
-    public EventEntityDto(Class<EventEntityDto> dtoType, ConvertInfo<Event> entity, ConvertInfo<EventEntityRes> response, Long id, Long partnerId, String name, LocalDateTime startDate, LocalDateTime endDate, EventType type, String imageUrl) {
-        super(dtoType, entity, response);
-        this.id = id;
-        this.partnerId = partnerId;
-        this.name = name;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.type = type;
-        this.imageUrl = imageUrl;
-    }
 
     @Override
     protected void additionalEntityDataConvert(Event entity) {
