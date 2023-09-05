@@ -1,8 +1,7 @@
 package com.workjo.pointapp.point.history;
 
-import com.workjo.pointapp.auth.AuthUtils;
 import com.workjo.pointapp.common.ApiResponse;
-import com.workjo.pointapp.point.common.application.IPointService;
+import com.workjo.pointapp.point.common.domain.PointType;
 import com.workjo.pointapp.point.common.dto.PointEntityDto;
 import com.workjo.pointapp.point.common.vo.response.PointEntityRes;
 import com.workjo.pointapp.point.history.application.IPointHistoryService;
@@ -36,29 +35,38 @@ public class PointHistoryController {
                     @RequestBody PointHistoryReq request,
                     Authentication auth
             ) {
-        // todo save_use 고려해서 리팩토링
-        // todo 선물 보낸 뒤 거절되어 돌아오면 전체 적립에 카운트되는지 확인
-        // dto 생성
-        GetPointHistoryDto dto = new GetPointHistoryDto(request.getPointTypeCode());
-        modelMapper.map(request, dto);
-        dto.setHistoryStartDate(request.getHistoryStartDate().atStartOfDay());
-        dto.setHistoryEndDate(request.getHistoryEndDate().atTime(LocalTime.MAX));
-        dto.setUserUuid(AuthUtils.getCurrentUserUUID(auth));
-        log.info(String.format("%s %s", request.getHistoryStartDate().toString(), request.getHistoryEndDate().toString()));
-        log.info(dto.toString());
+
+        GetPointHistoryDto dto = GetPointHistoryDto.builder()
+                .pointTypesToSearch
+                        (mapValueToEnum(request.getPointTypesToSearch()))
+                .historyStartDate
+                        (request.getHistoryStartDate().atStartOfDay())
+                .historyEndDate
+                        (request.getHistoryEndDate().atTime(LocalTime.MAX))
+                .build();
+
+//        log.info(String.format("%s %s", request.getHistoryStartDate().toString(), request.getHistoryEndDate().toString()));
+//        log.info(dto.toString());
 
         // dto로 찾은 포인트 내역 request Vo로 변환
-        List<PointEntityDto> pointEntityDtoList = pointHistoryService.getPointHistoryOfUser(dto);
-        List<PointEntityRes> pointVoList = pointEntityDtoList.stream().map(
-                pointEntityDto -> {
-                    PointEntityRes pointEntityRes = new PointEntityRes();
-                    modelMapper.map(pointEntityDto, pointEntityRes);
-                    return pointEntityRes;
-                }
-        ).collect(Collectors.toList());
+        List<PointEntityDto> pointHistoryDto =
+                pointHistoryService.getPointHistoryOfUser(dto);
+
+        List<PointEntityRes> pointHistoryVo = pointHistoryDto.stream()
+                .map(pointEntityDto ->
+                        modelMapper.map(pointEntityDto, PointEntityRes.class))
+                .collect(Collectors.toList());
 
 
-        return ApiResponse.ofSuccess(new GetPointHistoryRes(pointVoList));
+        return ApiResponse.ofSuccess
+                (GetPointHistoryRes.of(pointHistoryVo));
     }
 
+
+    private List<PointType> mapValueToEnum(List<String> pointTypeValues) {
+
+        return pointTypeValues.stream()
+                .map(PointType::valueOf)
+                .collect(Collectors.toList());
+    }
 }

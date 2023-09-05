@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.util.UUID;
 
+@SuppressWarnings("DefaultAnnotationParam")
 @Entity
 @Getter
 @NoArgsConstructor
@@ -30,10 +31,7 @@ public class Point extends BaseDateTime {
     @Column(nullable = false, name = "type")
     private PointType pointType;
 
-    @Column(nullable = true, name = "title")
+    @Column(nullable = true, name = "title",length = 3)
     private String title;
-
-//    @Column(nullable = false, name = "description")
-//    private String description;//todo description 쓸지말지 정하기
 
 }

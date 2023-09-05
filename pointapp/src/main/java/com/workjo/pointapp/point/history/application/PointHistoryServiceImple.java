@@ -21,28 +21,28 @@ public class PointHistoryServiceImple implements IPointHistoryService {
     private final IPointRepository pointRepository;
 
     @Override
-    public List<PointEntityDto> getPointHistoryOfUser(GetPointHistoryDto dto) {
-        List<Point> pointList = this.getPointHistory(dto);
+    public List<PointEntityDto> getPointHistoryOfUser(GetPointHistoryDto historyDto) {
+
+        List<Point> pointList = this.getPointHistory(historyDto);
+
         if (pointList == null) {
-            return new ArrayList<PointEntityDto>();
+            return new ArrayList<>();
         }
 
-        List<PointEntityDto> pointEntityDtoList = pointList.stream().map(
-                point -> {
-                    PointEntityDto pointEntityDto = new PointEntityDto();
-                    modelMapper.map(point, pointEntityDto);
-                    return pointEntityDto;
-                }
-        ).collect(Collectors.toList());
+        List<PointEntityDto> pointEntitiesDto;
+        pointEntitiesDto = pointList.stream()
+                .filter(pointDto -> historyDto.isTypeToSearch(pointDto.getPointType()))
+                .map(point -> modelMapper.map(point, PointEntityDto.class))
+                .collect(Collectors.toList());
 
-        return pointEntityDtoList;
+        return pointEntitiesDto;
     }
 
 
-    private List<Point> getPointHistory(GetPointHistoryDto dto)
-    {
+    private List<Point> getPointHistory(GetPointHistoryDto dto) {
+
         return pointRepository.
-                findByUserUuidAndPointTypeAndRegDateBetweenOrderByRegDateDesc
-                        (dto.getUserUuid(), dto.getPointType(), dto.getHistoryStartDate(), dto.getHistoryEndDate());
+                findByUserUuidAndPointTypeInAndRegDateBetweenOrderByRegDateDesc
+                        (dto.getUserUuid(), dto.getPointTypesToSearch(), dto.getHistoryStartDate(), dto.getHistoryEndDate());
     }
 }
