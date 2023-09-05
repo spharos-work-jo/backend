@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("ConstantConditions")
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -67,7 +68,6 @@ public class pointGiftServiceImple implements IPointGiftService {
 
     @Override
     public void replyPointGift(ReplyPointGiftDto giftReplyDto, IPointService pointService) {
-        //todo check: 프론트에서 미수락 받은 포인트선물 정보 그대로 넘겨주지 않으면 pointGift id로 조회해서 수정해야함
         PointGiftEntityDto repliedGiftDto = giftReplyDto.getPointGiftEntityDto();
         CreatePointDto createPointDto = CreatePointDto.builder()
                 .point(giftReplyDto.getPoint())
@@ -114,15 +114,14 @@ public class pointGiftServiceImple implements IPointGiftService {
     private List<PointGiftEntityDto> findReceivedPointGifts(UUID toUserUuid) {
         List<PointGift> receivedGifts = pointGiftRepository.findByToUserUuidAndGiftStatus(toUserUuid, PointGiftStatus.WAIT.getCode());
         if (receivedGifts.isEmpty()) {
-            return new ArrayList<PointGiftEntityDto>();
+            return new ArrayList<>();
         }
 
-        List<PointGiftEntityDto> dtoPointGifts = receivedGifts.stream().map(
-                pointGift -> {
-                    PointGiftEntityDto dto = modelMapper.map(pointGift, PointGiftEntityDto.class);
-                    return dto;
-                }
-        ).collect(Collectors.toList());
+        List<PointGiftEntityDto> dtoPointGifts;
+        dtoPointGifts = receivedGifts.stream()
+                .map(pointGift ->
+                        modelMapper.map(pointGift, PointGiftEntityDto.class))
+                .collect(Collectors.toList());
 
         return dtoPointGifts;
     }
