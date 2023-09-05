@@ -10,17 +10,17 @@ import java.util.Objects;
 public abstract class AbstractBaseEnumConverter<E extends Enum<E> & BaseEnum<T, K>, T, K> implements AttributeConverter<E, T> {
     private final Class<E> clazz;
 
-    public AbstractBaseEnumConverter(Class<E> clazz) {
+    protected AbstractBaseEnumConverter(Class<E> clazz) {
         this.clazz = clazz;
     }
 
     @Override
-    public T convertToDatabaseColumn(E attribute) {
+    public final T convertToDatabaseColumn(E attribute) {
         return attribute.getCode();
     }
 
     @Override
-    public E convertToEntityAttribute(T dbData) {
+    public final E convertToEntityAttribute(T dbData) {
         if (Objects.isNull(dbData)) {
             return null;
         }
