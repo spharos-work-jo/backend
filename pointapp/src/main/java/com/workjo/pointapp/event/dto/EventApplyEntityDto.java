@@ -4,10 +4,7 @@ import com.workjo.pointapp.common.domain.dto.ConvertInfo;
 import com.workjo.pointapp.common.domain.dto.VoConvertibleEntityDto;
 import com.workjo.pointapp.event.domain.EventApply;
 import com.workjo.pointapp.event.vo.response.EventApplyEntityRes;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -25,6 +22,8 @@ public class EventApplyEntityDto
     private UUID userUuid;
     private LocalDateTime updateDate;
 
+
+    @Builder
     public EventApplyEntityDto() {
         super(
                 EventApplyEntityDto.class,
