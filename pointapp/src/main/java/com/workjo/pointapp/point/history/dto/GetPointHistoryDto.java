@@ -19,8 +19,4 @@ public class GetPointHistoryDto {
     public boolean isTypeToSearch(PointType type) {
         return this.pointTypesToSearch.contains(type);
     }
-
-
-    //todo pointService.pointHistory 결과값도 여기 저장하도록 수정
-
 }

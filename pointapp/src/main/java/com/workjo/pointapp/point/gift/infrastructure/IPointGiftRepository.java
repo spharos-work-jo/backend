@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Repository
 public interface IPointGiftRepository extends JpaRepository<PointGift, Long> {
-    List<PointGift> findByToUserUuid(UUID toUserUuid);//todo 리스트 원소 optional로 수정
+    List<PointGift> findByToUserUuid(UUID toUserUuid);
 
     Optional<PointGift> findById(Long id);
 
