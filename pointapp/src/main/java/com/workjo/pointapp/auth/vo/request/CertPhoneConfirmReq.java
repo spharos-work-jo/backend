@@ -6,9 +6,11 @@ import lombok.Getter;
 
 
 @Getter
-public class CertPhoneReq {
+public class CertPhoneConfirmReq {
 
 	@NotBlank
 	String phone;
+	@NotBlank
+	String certCode;
 
 }

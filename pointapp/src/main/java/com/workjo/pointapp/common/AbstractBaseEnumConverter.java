@@ -8,7 +8,8 @@ import java.util.Objects;
 
 //구현체에서 @Converter(autoApply=true) 지정할것
 public abstract class AbstractBaseEnumConverter<E extends Enum<E> & BaseEnum<T, K>, T, K> implements AttributeConverter<E, T> {
-    private final Class<E> clazz;
+
+	private final Class<E> clazz;
 
     protected AbstractBaseEnumConverter(Class<E> clazz) {
         this.clazz = clazz;

@@ -5,8 +5,8 @@ import com.workjo.pointapp.auth.domain.UserOauth;
 import com.workjo.pointapp.auth.dto.LoginDto;
 import com.workjo.pointapp.auth.dto.LoginInfoDto;
 import com.workjo.pointapp.auth.dto.OauthUserCreateDto;
+import com.workjo.pointapp.auth.dto.OauthUserLoginDto;
 import com.workjo.pointapp.auth.infrastructure.UserOauthRepository;
-import com.workjo.pointapp.auth.vo.request.OauthLoginReq;
 import com.workjo.pointapp.config.ModelMapperBean;
 import com.workjo.pointapp.config.exception.CustomException;
 import com.workjo.pointapp.config.exception.ErrorCode;
@@ -51,7 +51,6 @@ public class AuthServiceImple implements AuthService {
 
 
 	@Override
-
 	public LoginInfoDto authenticate(LoginDto loginDto) {
 		User user = userRepository.findByLoginId(loginDto.getLoginId())
 			.orElseThrow(() -> new CustomException(ErrorCode.FAIL_LOGIN));
@@ -68,8 +67,8 @@ public class AuthServiceImple implements AuthService {
 
 
 	@Override
-	public LoginInfoDto oauthAuthenticate(OauthLoginReq oauthLoginRequest) {
-		UserOauth userOauth = userOauthRepository.findByOauthId(oauthLoginRequest.getOauthId())
+	public LoginInfoDto oauthAuthenticate(OauthUserLoginDto oauthUserLoginDto) {
+		UserOauth userOauth = userOauthRepository.findByOauthIdAndProvider(oauthUserLoginDto.getOauthId(), oauthUserLoginDto.getProvider())
 			.orElseThrow(() -> new CustomException(ErrorCode.NEED_INTERGRATED_LOGIN));
 		return this.setLoginInfoDto(userOauth.getUser());
 	}
@@ -79,6 +78,12 @@ public class AuthServiceImple implements AuthService {
 	public void createUserOauth(OauthUserCreateDto oauthUserCreateDto) {
 		User user = userRepository.findByUUID(oauthUserCreateDto.getUuid())
 			.orElseThrow(() -> new CustomException(ErrorCode.FAIL_LOGIN));
+
+		if (userOauthRepository.existsByOauthIdAndProvider(oauthUserCreateDto.getOauthId(), oauthUserCreateDto.getProvider())
+			|| userOauthRepository.existsByUserAndProvider(user, oauthUserCreateDto.getProvider())) {
+			throw new CustomException(ErrorCode.DUPLICATE_RESOURCE);
+		}
+
 		userOauthRepository.save(UserOauth.builder()
 			.user(user)
 			.oauthId(oauthUserCreateDto.getOauthId())
