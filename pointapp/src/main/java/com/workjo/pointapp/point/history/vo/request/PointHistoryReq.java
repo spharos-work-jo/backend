@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -17,6 +18,5 @@ public class PointHistoryReq {
     private LocalDate historyStartDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate historyEndDate;
-    private String pointTypeCode;
-    private int saveUse;
+    private List<String> pointTypesToSearch;
 }

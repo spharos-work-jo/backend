@@ -7,13 +7,13 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum PointType implements BaseEnum<String, String> {
-    EVENT("E", "이벤트"),
-    GIFT("G", "선물"),
-    COUPON("C", "전환"),
-    EARN("N", "적립"),
-    USE("U","사용"),
-    EXPIRE("X", "만료"),
-    ETC("T", "기타");
+    EVENT("ER", "EVENT_REWARD"),
+    GIFT("G", "GIFT"),
+    COUPON("C", "COUPON"),
+    EARN("E", "EARN"),
+    USE("U", "USE"),
+    EXPIRE("EX", "EXPIRE"),
+    ETC("ET", "ETC");
 
     private String code;
     private String value;
