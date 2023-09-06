@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -51,6 +52,7 @@ public class AuthServiceImple implements AuthService {
 
 
 	@Override
+	@Transactional(readOnly = true)
 	public LoginInfoDto authenticate(LoginDto loginDto) {
 		User user = userRepository.findByLoginId(loginDto.getLoginId())
 			.orElseThrow(() -> new CustomException(ErrorCode.FAIL_LOGIN));
