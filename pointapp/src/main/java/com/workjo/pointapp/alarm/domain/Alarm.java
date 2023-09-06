@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "alarm")
 public class Alarm extends BaseRegDateTime {
 
 	@Id
@@ -25,13 +26,13 @@ public class Alarm extends BaseRegDateTime {
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@Column(length = 100)
+	@Column(name = "content", length = 100)
 	private String content;
 
-	@Column(columnDefinition = "tinyint default 0")
+	@Column(name = "is_check", columnDefinition = "tinyint default 0")
 	private Boolean isCheck;
 
-	@Column(length = 1)
+	@Column(name = "type", length = 1)
 	private AlarmType type;
 
 }

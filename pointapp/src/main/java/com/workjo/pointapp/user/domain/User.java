@@ -23,6 +23,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @DynamicInsert
 @DynamicUpdate
+@Table(name = "user")
 public class User extends BaseDateTime implements UserDetails {
 
 	@Id
@@ -30,25 +31,25 @@ public class User extends BaseDateTime implements UserDetails {
 	private Long id;
 	@Column(nullable = false, columnDefinition = "BINARY(16)", name = "UUID")
 	private UUID UUID;
-	@Column(nullable = false, length = 45)
+	@Column(nullable = false, length = 45, name = "login_id")
 	private String loginId;
-	@Column(nullable = false, length = 100)
+	@Column(nullable = false, length = 100, name = "password")
 	private String password;
-	@Column(length = 45)
+	@Column(length = 45, name = "name")
 	private String name;
-	@Column(length = 45)
+	@Column(length = 45, name = "email")
 	private String email;
-	@Column(length = 20)
+	@Column(length = 20, name = "phone")
 	private String phone;
-	@Column(length = 100)
+	@Column(length = 100, name = "address")
 	private String address;
-	@Column(columnDefinition = "tinyint default 1")
+	@Column(columnDefinition = "tinyint default 1", name = "account_use")
 	private Boolean accountUse;
-	@Column(length = 100)
-	private String pointPassword; // todo: Hashing
-	@Column(columnDefinition = "tinyint default 0")
+	@Column(length = 100, name = "point_password")
+	private String pointPassword;
+	@Column(columnDefinition = "tinyint default 0", name = "agreement3rd")
 	private Boolean agreement3rd;
-	@Column(length = 255)
+	@Column(length = 255, name = "barcode_image_url")
 	private String barcodeImageUrl;
 
 

@@ -16,34 +16,38 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "coupon")
 public class Coupon extends BaseDateTime {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(length = 45)
+	@Column(length = 45, name = "name")
 	private String name;
-	@Column(length = 45)
+	@Column(length = 45, name = "description")
 	private String description;
-	@Column
+	@Column(name = "coupon_value")
 	private Integer couponValue;
-	@Column
+	@Column(name = "start_date")
 	private LocalDate startDate;
-	@Column
+	@Column(name = "end_date")
 	private LocalDate endDate;
-	@Column
+	@Column(name = "download_count")
 	private Integer downloadCount;
-	@Column
+	@Column(name = "total_count")
 	private Integer totalCount;
-	@Column(nullable = false)
+	@Column(nullable = false, name = "serial_number")
 	private Integer serialNumber;
-	@Column(length = 255)
+	@Column(length = 255, name = "image_url")
 	private String imageUrl;
-	@Column
+	@Column(name = "event_id")
 	private Long eventId;
-	@Column(length = 3)
+	@Column(length = 3, name = "type")
 	private CouponType type;
-	@Column(length = 500)
+	@Column(length = 500, name = "guideline")
 	private String guideline;
+	@ManyToOne
+	@JoinColumn(name = "partner_id")
+	private CouponPartner couponPartner;
 
 }

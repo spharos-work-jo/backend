@@ -20,10 +20,20 @@ spring:
     show-sql: true
 
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    master:
+      hikari:
+        jdbc-url: jdbc:mysql://master-db/ssgpoint?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+        read-only: false
+        username: ${MASTER_DB_USERNAME}
+        password: ${MASTER_DB_PASSWORD}
+        driver-class-name: com.mysql.cj.jdbc.Driver
+    slave:
+      hikari:
+        jdbc-url: jdbc:mysql://slave-db/ssgpoint?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+        read-only: true
+        username: ${SLAVE_DB_USERNAME}
+        password: ${SLAVE_DB_PASSWORD}
+        driver-class-name: com.mysql.cj.jdbc.Driver
 
 JWT:
   secret-key: ${JWT_SECRET}

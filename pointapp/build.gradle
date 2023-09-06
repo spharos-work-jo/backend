@@ -44,6 +44,8 @@ dependencies {
     // OpenFeign
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.0.3'
 
+    implementation 'com.google.guava:guava:30.1.1-jre'
+
 
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5',
             'io.jsonwebtoken:jjwt-jackson:0.11.5'

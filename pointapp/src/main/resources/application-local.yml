@@ -17,10 +17,20 @@ spring:
     show-sql: true
 
   datasource:
-    url: jdbc:mysql://localhost:3306/ssgpoint
-    username: root
-    password: 1234
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    master:
+      hikari:
+        jdbc-url: jdbc:mysql://localhost:3306/ssgpoint
+        read-only: false
+        username: root
+        password: 1234
+        driver-class-name: com.mysql.cj.jdbc.Driver
+    slave:
+      hikari:
+        jdbc-url: jdbc:mysql://localhost:3306/ssgpoint
+        read-only: true
+        username: root
+        password: 1234
+        driver-class-name: com.mysql.cj.jdbc.Driver
 
 logging:
   level:

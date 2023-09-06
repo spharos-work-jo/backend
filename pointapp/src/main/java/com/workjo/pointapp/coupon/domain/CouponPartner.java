@@ -14,15 +14,16 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "coupon_partner")
 public class CouponPartner extends BaseDateTime {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(length = 45)
+	@Column(length = 45, name = "name")
 	private String name;
-	@Column(length = 255)
+	@Column(length = 255, name = "image_url")
 	private String imageUrl;
 
 }
