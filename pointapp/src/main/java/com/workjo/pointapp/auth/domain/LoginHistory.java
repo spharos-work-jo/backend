@@ -16,16 +16,17 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "login_history")
 public class LoginHistory extends BaseRegDateTime {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false, columnDefinition = "BINARY(16)", name = "UUID")
+	@Column(nullable = false, columnDefinition = "BINARY(16)", name = "user_uuid")
 	private UUID userUUID;
 
-	@Column(length = 20)
+	@Column(length = 20, name = "access_ip")
 	private String accessIp;
 
 }

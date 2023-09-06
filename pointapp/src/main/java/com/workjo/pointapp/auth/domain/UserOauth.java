@@ -12,12 +12,13 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
+@Table(name = "user_oauth")
 public class UserOauth extends BaseRegDateTime {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(length = 45)
+	@Column(length = 45, name = "oauth_id")
 	private String oauthId;
 
 	@Enumerated(EnumType.STRING)

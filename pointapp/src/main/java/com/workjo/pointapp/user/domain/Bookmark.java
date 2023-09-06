@@ -13,13 +13,14 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "bookmark")
 public class Bookmark {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false, columnDefinition = "BINARY(16)", name = "UUID")
+	@Column(nullable = false, columnDefinition = "BINARY(16)", name = "user_uuid")
 	private UUID userUUID;
 
 	@Column

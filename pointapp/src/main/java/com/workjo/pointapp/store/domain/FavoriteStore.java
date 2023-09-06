@@ -15,6 +15,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "favorite_store")
 public class FavoriteStore {
 
 	@Id
