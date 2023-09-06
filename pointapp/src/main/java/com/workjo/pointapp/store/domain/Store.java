@@ -14,6 +14,7 @@ import org.locationtech.jts.geom.Point;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "store")
 public class Store {
 
 	@Column
