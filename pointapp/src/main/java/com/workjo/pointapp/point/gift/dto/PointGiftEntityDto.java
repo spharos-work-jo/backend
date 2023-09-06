@@ -20,6 +20,7 @@ import java.util.UUID;
 public class PointGiftEntityDto {
     private Long id;
     private String message;
+    @Builder.Default
     private PointGiftStatus giftStatus = PointGiftStatus.WAIT;
     private Long sentPointId;
     private Long resultPointId;
@@ -28,10 +29,14 @@ public class PointGiftEntityDto {
 
     //todo EntityAndRequestVoConvertibleDto 리팩토링
 //    private Class<PointGift> entityType = PointGift.class;
+
+    @Builder.Default
     private ModelMapper privateStrictModelMapper = (new ModelMapperBean()).privateStrictModelMapper();
 //    private Class<PoiGif> responseType = PointGiftEntityRes.class;
 // todo 리팩터링 시 db에 entity정보 생성/변경과 관련된 dto는 entity dto로,
 //     여러 db의 정보를 취합해 response에 전달하는 dto는 response dto로 만들어 convertible하게 만들기, 둘다되는 애도 만들기 -> entityDto: entity/entityResVo 모두 변환가능, response변환만 가능한 resDto도 만들기
+
+    @Builder.Default
     private Class<PointGift> entityType = PointGift.class;
 
     public PointGift toEntity() {

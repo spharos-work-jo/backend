@@ -28,12 +28,15 @@ public class PointHistoryServiceImple implements IPointHistoryService {
         if (pointList == null) {
             return new ArrayList<>();
         }
+        log.info(String.valueOf(pointList));
 
         List<PointEntityDto> pointEntitiesDto;
         pointEntitiesDto = pointList.stream()
                 .filter(pointDto -> historyDto.isTypeToSearch(pointDto.getPointType()))
                 .map(point -> modelMapper.map(point, PointEntityDto.class))
                 .collect(Collectors.toList());
+
+        log.info(String.valueOf(pointEntitiesDto));
 
         return pointEntitiesDto;
     }

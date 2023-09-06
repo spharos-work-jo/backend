@@ -36,7 +36,7 @@ public class PointServiceImple implements IPointService {
     }
 
     @Override
-    public int getTotalPoint(UUID userUuid) { //todo consider server cache
+    public int getTotalPoint(UUID userUuid) {
         Point point = pointRepository.findFirstByUserUuidOrderByRegDateDesc(userUuid)
                 .orElse(null);
         if (point == null) {

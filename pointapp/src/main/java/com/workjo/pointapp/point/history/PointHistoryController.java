@@ -1,5 +1,6 @@
 package com.workjo.pointapp.point.history;
 
+import com.workjo.pointapp.auth.AuthUtils;
 import com.workjo.pointapp.common.ApiResponse;
 import com.workjo.pointapp.point.common.domain.PointType;
 import com.workjo.pointapp.point.common.dto.PointEntityDto;
@@ -36,7 +37,10 @@ public class PointHistoryController {
                     Authentication auth
             ) {
 
+//todo 포인트 타입별도 중간테이블에서 id만 조회 후 포인트 내역에서 해당 id 조회하기 - 포인트테이블에 sort 걸리면 락걸릴수도
         GetPointHistoryDto dto = GetPointHistoryDto.builder()
+                .userUuid
+                        (AuthUtils.getCurrentUserUUID(auth))
                 .pointTypesToSearch
                         (mapValueToEnum(request.getPointTypesToSearch()))
                 .historyStartDate
@@ -45,10 +49,7 @@ public class PointHistoryController {
                         (request.getHistoryEndDate().atTime(LocalTime.MAX))
                 .build();
 
-//        log.info(String.format("%s %s", request.getHistoryStartDate().toString(), request.getHistoryEndDate().toString()));
-//        log.info(dto.toString());
 
-        // dto로 찾은 포인트 내역 request Vo로 변환
         List<PointEntityDto> pointHistoryDto =
                 pointHistoryService.getPointHistoryOfUser(dto);
 

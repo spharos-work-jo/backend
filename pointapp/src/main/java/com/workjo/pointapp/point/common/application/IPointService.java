@@ -13,7 +13,7 @@ public interface IPointService {
     public PointEntityDto findPointById(Long pointId);
 
 
-    public int getTotalPoint(UUID userUuid); //todo consider server cache
+    public int getTotalPoint(UUID userUuid);
 
     public PointEntityDto saveTotalRenewedPoint(CreatePointDto createDto);
 
