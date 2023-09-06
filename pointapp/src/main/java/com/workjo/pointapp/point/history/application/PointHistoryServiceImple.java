@@ -32,7 +32,6 @@ public class PointHistoryServiceImple implements IPointHistoryService {
 
         List<PointEntityDto> pointEntitiesDto;
         pointEntitiesDto = pointList.stream()
-                .filter(pointDto -> historyDto.isTypeToSearch(pointDto.getPointType()))
                 .map(point -> modelMapper.map(point, PointEntityDto.class))
                 .collect(Collectors.toList());
 

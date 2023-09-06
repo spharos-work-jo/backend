@@ -8,7 +8,7 @@ public abstract class VoConvertibleEntityDto
         <D extends VoConvertibleEntityDto<D, E, R>, E, R>
         implements IEntityConvertible<E>, IResponseVoConvertible<R> {
 
-    private final static ModelMapper modelMapper = (new ModelMapperBean()).modelMapper();
+    private final ModelMapper modelMapper = (new ModelMapperBean()).modelMapper();
 
 
     private final Class<D> dtoType;
@@ -39,7 +39,7 @@ public abstract class VoConvertibleEntityDto
     protected abstract void additionalResVoDataConvert(R responseVo);
 
 
-    protected  VoConvertibleEntityDto(Class<D> dtoType, ConvertInfo<E> entity, ConvertInfo<R> response) {
+    protected VoConvertibleEntityDto(Class<D> dtoType, ConvertInfo<E> entity, ConvertInfo<R> response) {
         this.dtoType = dtoType;
         this.entity = entity;
         this.response = response;
