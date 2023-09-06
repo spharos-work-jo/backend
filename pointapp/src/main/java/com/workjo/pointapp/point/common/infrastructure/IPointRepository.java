@@ -13,7 +13,7 @@ import java.util.UUID;
 @Repository
 public interface IPointRepository extends JpaRepository<Point, Long> {
     List<Point> findByUserUuidAndPointTypeInAndRegDateBetweenOrderByRegDateDesc
-            (UUID userUuid, List<PointType> pointTypesToSearch, LocalDateTime historyEndDate, LocalDateTime historyStartDate);
+            (UUID userUuid, List<PointType> pointTypes, LocalDateTime historyEndDate, LocalDateTime historyStartDate);
 
     Optional<Point> findFirstByUserUuidOrderByRegDateDesc(UUID userUuid);
 
