@@ -24,5 +24,7 @@ public class CouponPartner extends BaseDateTime {
 	private String name;
 	@Column(length = 255)
 	private String imageUrl;
+	@Column(length = 255)
+	private String thumbnailUrl;
 
 }
