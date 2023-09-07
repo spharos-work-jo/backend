@@ -26,5 +26,9 @@ public class CouponGetRes {
 	private String imageUrl;
 	private CouponType type;
 	private String guideline;
+	private String couponNum;
+	private Boolean isDownloaded;
+	private String partnerImageUrl;
+	private String partnerThumbnailUrl;
 
 }
