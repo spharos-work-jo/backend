@@ -47,10 +47,6 @@ public class Coupon extends BaseDateTime {
 	@Column(length = 500, name = "guideline")
 	private String guideline;
 	@ManyToOne
-	@JoinColumn(name = "partner_id")
-	private CouponPartner couponPartner;
-
-	@ManyToOne
 	@JoinColumn(name = "partner_id", nullable = false)
 	private CouponPartner couponPartner;
 
