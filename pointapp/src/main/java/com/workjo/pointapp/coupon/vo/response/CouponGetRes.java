@@ -30,5 +30,6 @@ public class CouponGetRes {
 	private Boolean isDownloaded;
 	private String partnerImageUrl;
 	private String partnerThumbnailUrl;
+	private Integer remainDay;
 
 }

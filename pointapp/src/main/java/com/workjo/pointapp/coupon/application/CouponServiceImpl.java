@@ -11,7 +11,6 @@ import com.workjo.pointapp.coupon.dto.CouponFindDto;
 import com.workjo.pointapp.coupon.dto.CouponGetDto;
 import com.workjo.pointapp.coupon.dto.CouponIdSliceDto;
 import com.workjo.pointapp.coupon.dto.CouponUserSearchDto;
-import com.workjo.pointapp.coupon.infrastructure.CouponPartnerRepository;
 import com.workjo.pointapp.coupon.infrastructure.CouponRepository;
 import com.workjo.pointapp.coupon.infrastructure.UserCouponRepository;
 import com.workjo.pointapp.user.domain.User;
@@ -34,8 +33,7 @@ public class CouponServiceImpl implements CouponService {
 	private final CouponRepository couponRepository;
 	private final UserCouponRepository userCouponRepository;
 	private final UserRepository userRepository;
-	private final CouponPartnerRepository couponPartnerRepository;
-
+	
 
 	@Override
 	public CouponIdSliceDto getCouponList(Pageable pageable) {
@@ -57,6 +55,7 @@ public class CouponServiceImpl implements CouponService {
 			User user = userRepository.findByUUID(couponFindDto.getUserUuid()).orElseThrow(() -> new CustomException(ErrorCode.DUPLICATE_RESOURCE));
 			userCouponRepository.findByUserAndCoupon(user, coupon).ifPresent(couponGetDto::setUserCouponData);
 		}
+		couponGetDto.setRemainDayAndStatusByEndDate();
 		return couponGetDto;
 	}
 
