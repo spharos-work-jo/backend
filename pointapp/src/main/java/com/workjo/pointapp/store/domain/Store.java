@@ -17,7 +17,7 @@ import org.locationtech.jts.geom.Point;
 @Table(name = "store")
 public class Store {
 
-	@Column
+	@Column(name = "location", nullable = false, columnDefinition = "POINT SRID 4326")
 	Point location;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
