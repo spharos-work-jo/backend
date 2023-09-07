@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "user_coupon")
 public class UserCoupon extends BaseDateTime {
 
 	@Column(columnDefinition = "tinyint default 0", name = "is_used")
