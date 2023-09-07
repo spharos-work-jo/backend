@@ -1,0 +1,71 @@
+package com.workjo.pointapp.coupon.application;
+
+
+import com.workjo.pointapp.config.exception.CustomException;
+import com.workjo.pointapp.config.exception.ErrorCode;
+import com.workjo.pointapp.coupon.domain.Coupon;
+import com.workjo.pointapp.coupon.domain.UserCoupon;
+import com.workjo.pointapp.coupon.infrastructure.CouponRepository;
+import com.workjo.pointapp.coupon.infrastructure.UserCouponRepository;
+import com.workjo.pointapp.user.domain.User;
+import com.workjo.pointapp.user.infrastructure.UserRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.Random;
+import java.util.UUID;
+
+
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class UserCouponServiceImpl implements UserCouponService {
+
+	private final CouponRepository couponRepository;
+	private final UserCouponRepository userCouponRepository;
+	private final UserRepository userRepository;
+
+
+	@Override
+	@Transactional
+	public void userDownloadCoupon(Long couponId, UUID uuid) {
+		// 쿠폰과 유저 정보를 가져옴
+		Coupon coupon = couponRepository.findById(couponId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESOURCE));
+		User user = userRepository.findByUUID(uuid).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESOURCE));
+
+		// 쿠폰이 존재하는지, 유효기간이 지났는지, 이미 다운로드한 쿠폰인지 확인
+		if (userCouponRepository.existsByUserAndCoupon(user, coupon)) {
+			throw new CustomException(ErrorCode.DUPLICATE_RESOURCE);
+		} else if (coupon.getEndDate().isBefore(LocalDate.now())) {
+			throw new CustomException(ErrorCode.BAD_REQUEST);
+		}
+
+		// 쿠폰 번호 생성 길이
+		int couponLength = 12;
+
+		// 쿠폰 번호 생성, 중복 방지
+		String couponNum = makeRandomNum(coupon.getSerialNumber(), couponLength);
+		while (userCouponRepository.existsByCouponAndCouponNum(coupon, couponNum)) {
+			couponNum = makeRandomNum(coupon.getSerialNumber(), couponLength);
+		}
+		userCouponRepository.save(UserCoupon.builder()
+			.coupon(coupon)
+			.user(user)
+			.couponNum(couponNum)
+			.build());
+	}
+
+
+	private String makeRandomNum(int serialNumber, int length) {
+		Random r = new Random();
+		StringBuilder sb = new StringBuilder();
+		while (sb.length() < length) {
+			sb.append(r.nextInt(10));
+		}
+		return serialNumber + sb.toString();
+	}
+
+}

@@ -6,6 +6,7 @@ import com.workjo.pointapp.common.ApiResponse;
 import com.workjo.pointapp.common.BasicDateSortType;
 import com.workjo.pointapp.config.ModelMapperBean;
 import com.workjo.pointapp.coupon.application.CouponService;
+import com.workjo.pointapp.coupon.application.UserCouponService;
 import com.workjo.pointapp.coupon.domain.CouponSearchType;
 import com.workjo.pointapp.coupon.dto.CouponFindDto;
 import com.workjo.pointapp.coupon.dto.CouponGetDto;
@@ -13,6 +14,7 @@ import com.workjo.pointapp.coupon.dto.CouponIdSliceDto;
 import com.workjo.pointapp.coupon.dto.CouponUserSearchDto;
 import com.workjo.pointapp.coupon.vo.response.CouponGetRes;
 import com.workjo.pointapp.coupon.vo.response.CouponIdSliceRes;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,8 +35,10 @@ public class CouponController {
 
 	private final ModelMapperBean modelMapperBean;
 	private final CouponService couponService;
+	private final UserCouponService userCouponService;
 
 
+	@Operation(summary = "쿠폰 id 리스트(메인화면)", description = "쿠폰 id 리스트, first 여부, last 여부")
 	@GetMapping("")
 	public ApiResponse<CouponIdSliceDto> getCouponList(
 		Pageable pageable,
@@ -45,6 +49,7 @@ public class CouponController {
 	}
 
 
+	@Operation(summary = "쿠폰 상세 조회", description = "로그인 했을 경우, 다운로드한 쿠폰 정보 함께 반환")
 	@GetMapping("/{couponId}")
 	public ApiResponse<CouponGetRes> getCoupon(@PathVariable Long couponId, Authentication authentication) {
 		log.info("couponId : {}", couponId);
@@ -62,6 +67,7 @@ public class CouponController {
 	}
 
 
+	@Operation(summary = "유저 다운로드한 쿠폰 리스트", description = "유저가 다운로드한 쿠폰 id 리스트, 검색 조건, first 여부, last 여부")
 	@GetMapping("/my")
 	public ApiResponse<CouponIdSliceRes> getUserCouponList(
 		@RequestParam Pageable pageable,
@@ -73,11 +79,13 @@ public class CouponController {
 		return ApiResponse.ofSuccess(modelMapperBean.privateStrictModelMapper().map(couponIdSliceDto, CouponIdSliceRes.class));
 	}
 
-	//	@PostMapping("/my/{couponId}")
-	//	public ApiResponse<Void> downloadCoupon(@PathVariable Long couponId, Authentication authentication) {
-	//		UUID uuid = AuthUtils.getCurrentUserUUID(authentication);
-	//		couponService.userDownloadCoupon(couponId, uuid);
-	//		return ApiResponse.ofSuccess(null);
-	//	}
+
+	@Operation(summary = "쿠폰 다운로드", description = "유저 쿠폰 생성")
+	@PostMapping("/my/{couponId}")
+	public ApiResponse<Void> downloadCoupon(@PathVariable Long couponId, Authentication authentication) {
+		UUID uuid = AuthUtils.getCurrentUserUUID(authentication);
+		userCouponService.userDownloadCoupon(couponId, uuid);
+		return ApiResponse.ofSuccess(null);
+	}
 
 }
