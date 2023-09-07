@@ -1,11 +1,8 @@
 package com.workjo.pointapp.common;
 
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 import org.springframework.data.domain.Sort;
-
-import java.util.Objects;
 
 
 /**
@@ -17,16 +14,6 @@ public enum BasicDateSortType {
 	DEADLINE;
 
 
-	@JsonCreator(mode = JsonCreator.Mode.DELEGATING)
-	public static BasicDateSortType findByCode(String code) {
-		try {
-			return BasicDateSortType.valueOf(code);
-		} catch (IllegalArgumentException e) {
-			return DEADLINE;
-		}
-	}
-
-
 	/**
 	 * Sort by column startDate or endDate
 	 * recent: Sort by column startDate DESC
@@ -35,10 +22,9 @@ public enum BasicDateSortType {
 	 * @param sortType 정렬 타입
 	 */
 	public static Sort getSortByColumnStartDateOrEndDate(BasicDateSortType sortType) {
-		if (Objects.requireNonNull(sortType) == BasicDateSortType.RECENT) {
-			return Sort.by(Sort.Direction.DESC, "startDate");
-		}
-		return Sort.by(Sort.Direction.ASC, "endDate");
+		if (sortType == null || sortType == DEADLINE)
+			return Sort.by(Sort.Direction.ASC, "endDate");
+		return Sort.by(Sort.Direction.DESC, "startDate");
 	}
 
 }

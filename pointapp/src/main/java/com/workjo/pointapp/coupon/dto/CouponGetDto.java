@@ -8,6 +8,7 @@ import com.workjo.pointapp.coupon.domain.UserCouponStatusType;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 
 @ToString
@@ -33,6 +34,7 @@ public class CouponGetDto {
 	private UserCouponStatusType userCouponStatus;
 	private String partnerImageUrl;
 	private String partnerThumbnailUrl;
+	private Integer remainDay;
 
 
 	public void setUserCouponData(UserCoupon userCoupon) {
@@ -47,6 +49,17 @@ public class CouponGetDto {
 	public void setPartnerDatafromPartner(CouponPartner couponPartner) {
 		this.partnerImageUrl = couponPartner.getImageUrl();
 		this.partnerThumbnailUrl = couponPartner.getThumbnailUrl();
+	}
+
+
+	public void setRemainDayAndStatusByEndDate() {
+
+		Period diff = Period.between(LocalDate.now(), this.endDate);
+		this.remainDay = diff.getDays();
+		if (this.remainDay < 0) {
+			this.userCouponStatus = UserCouponStatusType.EXPIRED;
+			this.remainDay = -1;
+		}
 	}
 
 }
