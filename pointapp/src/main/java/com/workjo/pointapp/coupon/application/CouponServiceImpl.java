@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
@@ -27,13 +28,14 @@ import java.time.LocalDate;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional(readOnly = true)
 public class CouponServiceImpl implements CouponService {
 
 	private final ModelMapperBean modelMapperBean;
 	private final CouponRepository couponRepository;
 	private final UserCouponRepository userCouponRepository;
 	private final UserRepository userRepository;
-	
+
 
 	@Override
 	public CouponIdSliceDto getCouponList(Pageable pageable) {
@@ -62,7 +64,7 @@ public class CouponServiceImpl implements CouponService {
 
 	@Override
 	public CouponIdSliceDto getUserDownloadCouponList(CouponUserSearchDto searchDto) {
-		User user = userRepository.findByUUID(searchDto.getUuid()).orElseThrow(() -> new CustomException(ErrorCode.DUPLICATE_RESOURCE));
+		User user = userRepository.findByUUID(searchDto.getUuid()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESOURCE));
 		Slice<UserCoupon> userCouponList = userCouponRepository.findByUser(user, searchDto.getPageable());
 		//		List<Coupon> userCouponList = couponRepository.getUserCouponList(searchDto.getUuid(), build.getSearchType(),
 		//			BasicDateSortType.getSortByColumnStartDateOrEndDate(searchDto.getSortType()));

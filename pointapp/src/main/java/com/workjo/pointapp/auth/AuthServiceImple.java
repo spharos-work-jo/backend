@@ -69,6 +69,7 @@ public class AuthServiceImple implements AuthService {
 
 
 	@Override
+	@Transactional(readOnly = true)
 	public LoginInfoDto oauthAuthenticate(OauthUserLoginDto oauthUserLoginDto) {
 		UserOauth userOauth = userOauthRepository.findByOauthIdAndProvider(oauthUserLoginDto.getOauthId(), oauthUserLoginDto.getProvider())
 			.orElseThrow(() -> new CustomException(ErrorCode.NEED_INTERGRATED_LOGIN));
