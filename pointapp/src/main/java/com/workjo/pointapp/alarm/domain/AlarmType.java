@@ -13,6 +13,7 @@ public enum AlarmType implements BaseEnum<String, String> {
 	EVENT("E", "이벤트"),
 	GIFT("G", "선물"),
 	COUPON("C", "쿠폰"),
+	AD("A", "광고"),
 	ETC("T", "기타");
 	private final String code;
 	private final String value;
