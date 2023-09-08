@@ -5,16 +5,17 @@ import com.workjo.pointapp.alarm.dto.AlarmCreateDto;
 import com.workjo.pointapp.alarm.dto.AlarmGetDto;
 
 import java.util.List;
+import java.util.UUID;
 
 
 public interface AlarmService {
 
 	void createAlarm(AlarmCreateDto alarmCreateDto);
-	void readAlarm(Long userId, Long alarmId);
-	void readAllAlarm(Long userId);
+	void modifyAlarmIsCheckByUserUUID(UUID uuid, Long alarmId);
+	void modifyAllAlarmIsCheckByUserId(Long userId);
 
 	void deleteOutOfDateAlarm();
 
-	List<AlarmGetDto> findAlarmByUserId(Long id);
+	List<AlarmGetDto> findAlarmByUserId(UUID uuid);
 
 }

@@ -35,4 +35,9 @@ public class Alarm extends BaseRegDateTime {
 	@Column(name = "type", length = 1)
 	private AlarmType type;
 
+
+	public void updateIsCheckTrue() {
+		this.isCheck = true;
+	}
+
 }
