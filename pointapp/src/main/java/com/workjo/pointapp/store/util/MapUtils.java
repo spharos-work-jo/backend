@@ -6,15 +6,15 @@ public class MapUtils {
 	public static String boundToPolygonString(double bottomLat, double topLat, double leftLng, double rightLng) {
 		StringBuilder sb = new StringBuilder()
 			.append("Polygon((")
-			.append(leftLng).append(" ").append(bottomLat)
+			.append(bottomLat).append(" ").append(leftLng)
 			.append(",")
-			.append(leftLng).append(" ").append(topLat)
+			.append(topLat).append(" ").append(leftLng)
 			.append(",")
-			.append(rightLng).append(" ").append(topLat)
+			.append(topLat).append(" ").append(rightLng)
 			.append(",")
-			.append(rightLng).append(" ").append(bottomLat)
+			.append(bottomLat).append(" ").append(rightLng)
 			.append(",")
-			.append(leftLng).append(" ").append(bottomLat)
+			.append(bottomLat).append(" ").append(leftLng)
 			.append("))");
 		return sb.toString();
 	}

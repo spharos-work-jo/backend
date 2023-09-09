@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface StoreRepository extends JpaRepository<Store, Long> {
 
-	@Query(value = "select * from store where MBRContains(ST_GeomFromText( :polygon),location)", nativeQuery = true)
+	@Query(value = "select * from store where MBRContains(ST_GeomFromText( :polygon, 4326),location)", nativeQuery = true)
 	List<Store> getByBound(@Param("polygon") String polygon);
 
 }
