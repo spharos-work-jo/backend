@@ -27,8 +27,8 @@ public class StoreGetDto {
 	private String imageUrl;
 
 	private Point location;
-	private Double la;
-	private Double lo;
+	private Double lat;
+	private Double lng;
 
 
 	public static List<StoreGetDto> setDtoListPartnerImageByPartnerList(List<StoreGetDto> storeDtoList, List<SsgPartnerSimpleDao> partnerImageList) {
@@ -52,8 +52,8 @@ public class StoreGetDto {
 
 
 	public void setLaLoByLocation() {
-		this.la = location.getY();
-		this.lo = location.getX();
+		this.lat = location.getY();
+		this.lng = location.getX();
 	}
 
 }
