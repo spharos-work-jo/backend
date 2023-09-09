@@ -2,11 +2,13 @@ package com.workjo.pointapp.coupon.application;
 
 
 import com.workjo.pointapp.common.domain.dto.SimpleSliceDto;
+import com.workjo.pointapp.config.ModelMapperBean;
 import com.workjo.pointapp.config.exception.CustomException;
 import com.workjo.pointapp.config.exception.ErrorCode;
 import com.workjo.pointapp.coupon.domain.Coupon;
 import com.workjo.pointapp.coupon.domain.UserCoupon;
 import com.workjo.pointapp.coupon.dto.CouponUserSearchDto;
+import com.workjo.pointapp.coupon.dto.UserCouponGetDto;
 import com.workjo.pointapp.coupon.infrastructure.CouponRepository;
 import com.workjo.pointapp.coupon.infrastructure.UserCouponCustomRepository;
 import com.workjo.pointapp.coupon.infrastructure.UserCouponRepository;
@@ -27,6 +29,7 @@ import java.util.UUID;
 @Slf4j
 public class UserCouponServiceImpl implements UserCouponService {
 
+	private final ModelMapperBean modelMapperBean;
 	private final CouponRepository couponRepository;
 	private final UserCouponRepository userCouponRepository;
 	private final UserRepository userRepository;
@@ -69,6 +72,21 @@ public class UserCouponServiceImpl implements UserCouponService {
 		Slice<Long> couponIdSlice = userCouponCustomRepository.findIdListByUserIdFromUserCoupon(user.getId(), searchDto.getSearchType(), searchDto.getBasicDateSortType(),
 			searchDto.getPageable());
 		return SimpleSliceDto.fromSlice(couponIdSlice);
+	}
+
+
+	@Override
+	public UserCouponGetDto getUserCoupon(Long userCouponId, UUID uuid) {
+		User user = userRepository.findByUUID(uuid).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESOURCE));
+		UserCoupon userCoupon = userCouponRepository.findByIdAndUser(userCouponId, user).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESOURCE));
+
+		// 엔티티 -> dto로 변환, 데이터 추가
+		UserCouponGetDto userCouponGetDto = modelMapperBean.privateStrictModelMapper().map(userCoupon.getCoupon(), UserCouponGetDto.class);
+		userCouponGetDto.setPartnerDatafromCouponPartner(userCoupon.getCoupon().getCouponPartner());
+		userCouponGetDto.setRemainDayByEndDate();
+		userCouponGetDto.setUserCouponData(userCoupon);
+		userCouponGetDto.setUserCouponStatusByData();
+		return userCouponGetDto;
 	}
 
 
