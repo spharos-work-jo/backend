@@ -12,8 +12,8 @@ public class StoreMapGetOut {
 	private String sido;
 	private String gungu;
 	private String detailAddress;
-	private Double la;
-	private Double lo;
+	private Double lat;
+	private Double lng;
 	private String imageUrl;
 
 }

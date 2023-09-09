@@ -36,10 +36,10 @@ public class StoreController {
 	@Operation(summary = "위도, 경도로 매장 조회", description = "위도, 경도로 매장 조회, 지도에서 사용")
 	@GetMapping("/find-map")
 	public ApiResponse<List<StoreMapGetOut>> getStoreListMap(
-		@RequestParam("bottom_la") double bottomLat,
-		@RequestParam("top_la") double topLat,
-		@RequestParam("left_lo") double leftLng,
-		@RequestParam("right_lo") double rightLng) {
+		@RequestParam("sw_lat") double bottomLat,
+		@RequestParam("ne_lat") double topLat,
+		@RequestParam("sw_lng") double leftLng,
+		@RequestParam("ne_lng") double rightLng) {
 		List<StoreGetDto> searchStoreList = storeService.getStoreListByLatLng(bottomLat, topLat, leftLng, rightLng);
 		return ApiResponse.ofSuccess(searchStoreList.stream().map(o -> modelMapperBean.modelMapper().map(o, StoreMapGetOut.class)).toList());
 	}
