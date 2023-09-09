@@ -4,13 +4,13 @@ package com.workjo.pointapp.coupon.presentation;
 import com.workjo.pointapp.auth.AuthUtils;
 import com.workjo.pointapp.common.ApiResponse;
 import com.workjo.pointapp.common.BasicDateSortType;
+import com.workjo.pointapp.common.domain.dto.SimpleSliceDto;
 import com.workjo.pointapp.config.ModelMapperBean;
 import com.workjo.pointapp.coupon.application.CouponService;
 import com.workjo.pointapp.coupon.application.UserCouponService;
 import com.workjo.pointapp.coupon.domain.CouponSearchType;
 import com.workjo.pointapp.coupon.dto.CouponFindDto;
 import com.workjo.pointapp.coupon.dto.CouponGetDto;
-import com.workjo.pointapp.coupon.dto.CouponIdSliceDto;
 import com.workjo.pointapp.coupon.dto.CouponUserSearchDto;
 import com.workjo.pointapp.coupon.vo.response.CouponGetRes;
 import com.workjo.pointapp.coupon.vo.response.CouponIdSliceRes;
@@ -40,25 +40,22 @@ public class CouponController {
 
 	@Operation(summary = "쿠폰 id 리스트(메인화면)", description = "쿠폰 id 리스트, first 여부, last 여부")
 	@GetMapping("")
-	public ApiResponse<CouponIdSliceDto> getCouponList(
+	public ApiResponse<CouponIdSliceRes> getCouponList(
 		Pageable pageable,
-		@RequestParam(value = "sortType", required = false) BasicDateSortType sortType) {
+		@RequestParam(value = "sortType", required = false) BasicDateSortType sortType
+	) {
 		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), BasicDateSortType.getSortByColumnStartDateOrEndDate(sortType));
-		CouponIdSliceDto couponIdSliceDto = couponService.getCouponIdList(pageable);
-		return ApiResponse.ofSuccess(couponIdSliceDto);
+		SimpleSliceDto<Long> longIdSimpleSliceDto = couponService.getCouponIdList(pageable);
+		return ApiResponse.ofSuccess(modelMapperBean.privateStrictModelMapper().map(longIdSimpleSliceDto, CouponIdSliceRes.class));
 	}
 
 
-	@Operation(summary = "쿠폰 상세 조회", description = "로그인 했을 경우, 다운로드한 쿠폰 정보 함께 반환")
+	@Operation(summary = "쿠폰 상세 조회", description = "로그인 했을 경우, 다운로드한 쿠폰 정보 함께 반환됨")
 	@GetMapping("/{couponId}")
 	public ApiResponse<CouponGetRes> getCoupon(@PathVariable Long couponId, Authentication authentication) {
-		log.info("couponId : {}", couponId);
-		UUID uuid;
-		try {
-			uuid = AuthUtils.getCurrentUserUUID(authentication);
-		} catch (Exception e) {
-			uuid = null;
-		}
+		UUID uuid = authentication != null ?
+			AuthUtils.getCurrentUserUUID(authentication) : null;
+
 		CouponGetDto couponGetDto = couponService.getCoupon(CouponFindDto.builder()
 			.id(couponId)
 			.userUuid(uuid)
@@ -69,13 +66,13 @@ public class CouponController {
 
 	@Operation(summary = "유저 다운로드한 쿠폰의 id 리스트", description = "유저 쿠폰에서 쿠폰 id 리스트 조회. 쿠폰 id 리스트, 검색 조건, first 여부, last 여부 return")
 	@GetMapping("/my")
-	public ApiResponse<CouponIdSliceRes> getCouponListFromUserCoupon(
+	public ApiResponse<CouponIdSliceRes> getUserCouponList(
 		Pageable pageable,
 		@RequestParam(value = "searchType", required = false) CouponSearchType searchType,
 		@RequestParam(value = "sortType", required = false) BasicDateSortType sortType,
 		Authentication authentication) {
 		UUID uuid = AuthUtils.getCurrentUserUUID(authentication);
-		CouponIdSliceDto couponIdSliceDto = couponService.getCouponIdListfromUserCouponAndCoupon(
+		SimpleSliceDto<Long> longIdSimpleSliceDto = userCouponService.getUserCouponList(
 			CouponUserSearchDto.builder()
 				.pageable(pageable)
 				.searchType(searchType)
@@ -83,7 +80,7 @@ public class CouponController {
 				.uuid(uuid)
 				.build()
 		);
-		return ApiResponse.ofSuccess(modelMapperBean.privateStrictModelMapper().map(couponIdSliceDto, CouponIdSliceRes.class));
+		return ApiResponse.ofSuccess(modelMapperBean.privateStrictModelMapper().map(longIdSimpleSliceDto, CouponIdSliceRes.class));
 	}
 
 
