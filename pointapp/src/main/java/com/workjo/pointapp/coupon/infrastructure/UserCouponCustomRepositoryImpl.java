@@ -29,27 +29,13 @@ public class UserCouponCustomRepositoryImpl implements UserCouponCustomRepositor
 	private final JPAQueryFactory queryFactory;
 
 
-	/**
-	 * 쿠폰 검색 타입에 따라 쿠폰을 조회하는 BooleanExpression 반환
-	 */
-	private BooleanExpression findByCouponSearchType(CouponSearchType searchType) {
-		return switch (searchType) {
-			case EXPIRED -> isCouponExpired(true);
-			case USED -> isUserCouponUsed(true);
-			case NON_AVAILABLE -> isCouponExpired(true).or(isUserCouponUsed(true));
-			case AVAILABLE -> isCouponExpired(false).and(isUserCouponUsed(false));
-			default -> throw new IllegalStateException("Unexpected value: " + searchType);
-		};
-	}
-
-
 	@Override
-	public Slice<Long> findCouponIdListByUserIdFromUserCoupon(Long userId, CouponSearchType searchType, BasicDateSortType basicDateSortType, Pageable pageable) {
+	public Slice<Long> findIdListByUserIdFromUserCoupon(Long userId, CouponSearchType searchType, BasicDateSortType basicDateSortType, Pageable pageable) {
 		BooleanExpression expression = findByCouponSearchType(searchType);
 		log.debug("expression : {}", expression);
 
 		List<Long> couponIdList = queryFactory
-			.select(userCoupon.coupon.id)
+			.select(userCoupon.id)
 			.from(userCoupon)
 			.leftJoin(userCoupon.coupon, coupon)
 			.where(userCoupon.user.id.eq(userId))
@@ -69,6 +55,20 @@ public class UserCouponCustomRepositoryImpl implements UserCouponCustomRepositor
 
 	private BooleanExpression isUserCouponUsed(Boolean isUsed) {
 		return userCoupon.isUsed.eq(isUsed);
+	}
+
+
+	/**
+	 * 쿠폰 검색 타입에 따라 쿠폰을 조회하는 BooleanExpression 반환
+	 */
+	private BooleanExpression findByCouponSearchType(CouponSearchType searchType) {
+		return switch (searchType) {
+			case EXPIRED -> isCouponExpired(true);
+			case USED -> isUserCouponUsed(true);
+			case NON_AVAILABLE -> isCouponExpired(true).or(isUserCouponUsed(true));
+			case AVAILABLE -> isCouponExpired(false).and(isUserCouponUsed(false));
+			default -> throw new IllegalStateException("Unexpected value: " + searchType);
+		};
 	}
 
 

@@ -11,10 +11,8 @@ import java.time.LocalDate;
 import java.time.Period;
 
 
-@ToString
 @Builder
 @Getter
-@Setter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CouponGetDto {
@@ -37,27 +35,36 @@ public class CouponGetDto {
 	private Integer remainDay;
 
 
+	public void setUserCouponStatus(UserCouponStatusType userCouponStatus) {
+		this.userCouponStatus = userCouponStatus;
+	}
+
+
+	/**
+	 * 유저 쿠폰 정보를 쿠폰 상세 정보에 추가
+	 * 사용한 쿠폰일 경우 userCouponStatus를 USED로 변경
+	 */
 	public void setUserCouponData(UserCoupon userCoupon) {
 		if (userCoupon != null) {
 			this.isDownloaded = true;
 			this.couponNum = userCoupon.getCouponNum();
-			this.userCouponStatus = userCoupon.getIsUsed() ? UserCouponStatusType.USED : UserCouponStatusType.AVAILABLE;
+			if (userCoupon.getIsUsed()) {
+				this.userCouponStatus = UserCouponStatusType.USED;
+			}
 		}
 	}
 
 
-	public void setPartnerDatafromPartner(CouponPartner couponPartner) {
+	public void setPartnerDatafromCouponPartner(CouponPartner couponPartner) {
 		this.partnerImageUrl = couponPartner.getImageUrl();
 		this.partnerThumbnailUrl = couponPartner.getThumbnailUrl();
 	}
 
 
-	public void setRemainDayAndStatusByEndDate() {
-
+	public void setRemainDayByEndDate() {
 		Period diff = Period.between(LocalDate.now(), this.endDate);
 		this.remainDay = diff.getDays();
 		if (this.remainDay < 0) {
-			this.userCouponStatus = UserCouponStatusType.EXPIRED;
 			this.remainDay = -1;
 		}
 	}

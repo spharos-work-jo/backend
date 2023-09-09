@@ -1,16 +1,20 @@
 package com.workjo.pointapp.coupon.application;
 
 
+import com.workjo.pointapp.common.domain.dto.SimpleSliceDto;
 import com.workjo.pointapp.config.exception.CustomException;
 import com.workjo.pointapp.config.exception.ErrorCode;
 import com.workjo.pointapp.coupon.domain.Coupon;
 import com.workjo.pointapp.coupon.domain.UserCoupon;
+import com.workjo.pointapp.coupon.dto.CouponUserSearchDto;
 import com.workjo.pointapp.coupon.infrastructure.CouponRepository;
+import com.workjo.pointapp.coupon.infrastructure.UserCouponCustomRepository;
 import com.workjo.pointapp.coupon.infrastructure.UserCouponRepository;
 import com.workjo.pointapp.user.domain.User;
 import com.workjo.pointapp.user.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +30,7 @@ public class UserCouponServiceImpl implements UserCouponService {
 	private final CouponRepository couponRepository;
 	private final UserCouponRepository userCouponRepository;
 	private final UserRepository userRepository;
+	private final UserCouponCustomRepository userCouponCustomRepository;
 
 
 	@Override
@@ -55,6 +60,15 @@ public class UserCouponServiceImpl implements UserCouponService {
 			.user(user)
 			.couponNum(couponNum)
 			.build());
+	}
+
+
+	@Override
+	public SimpleSliceDto<Long> getUserCouponList(CouponUserSearchDto searchDto) {
+		User user = userRepository.findByUUID(searchDto.getUuid()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESOURCE));
+		Slice<Long> couponIdSlice = userCouponCustomRepository.findIdListByUserIdFromUserCoupon(user.getId(), searchDto.getSearchType(), searchDto.getBasicDateSortType(),
+			searchDto.getPageable());
+		return SimpleSliceDto.fromSlice(couponIdSlice);
 	}
 
 
