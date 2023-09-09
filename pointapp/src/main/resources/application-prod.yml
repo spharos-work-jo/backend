@@ -37,6 +37,6 @@ spring:
 
 JWT:
   secret-key: ${JWT_SECRET}
-  expiration-time: 14400000
+  expiration-time: 1440000000
   header: Authorization
   prefix: Bearer

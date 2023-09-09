@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.Random;
 import java.util.UUID;
 
@@ -31,15 +30,15 @@ public class UserCouponServiceImpl implements UserCouponService {
 
 	@Override
 	@Transactional
-	public void userDownloadCoupon(Long couponId, UUID uuid) {
+	public void createUserCoupon(Long couponId, UUID uuid) {
 		// 쿠폰과 유저 정보를 가져옴
 		Coupon coupon = couponRepository.findById(couponId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESOURCE));
 		User user = userRepository.findByUUID(uuid).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESOURCE));
 
-		// 쿠폰이 존재하는지, 유효기간이 지났는지, 이미 다운로드한 쿠폰인지 확인
+		// 이미 다운로드한 쿠폰인지, 쿠폰 유효기간이 지났는지 확인
 		if (userCouponRepository.existsByUserAndCoupon(user, coupon)) {
 			throw new CustomException(ErrorCode.DUPLICATE_RESOURCE);
-		} else if (coupon.getEndDate().isBefore(LocalDate.now())) {
+		} else if (coupon.getIsExpired()) {
 			throw new CustomException(ErrorCode.BAD_REQUEST);
 		}
 

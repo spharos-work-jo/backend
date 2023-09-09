@@ -6,6 +6,6 @@ import java.util.UUID;
 
 public interface UserCouponService {
 
-	void userDownloadCoupon(Long couponId, UUID uuid);
+	void createUserCoupon(Long couponId, UUID uuid);
 
 }

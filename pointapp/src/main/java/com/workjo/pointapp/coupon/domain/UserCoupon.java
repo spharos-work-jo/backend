@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "user_coupon")
 public class UserCoupon extends BaseDateTime {
 
-	@Column(columnDefinition = "tinyint default 0", name = "is_used")
+	@Column(columnDefinition = "boolean default false", name = "is_used")
 	private Boolean isUsed;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
