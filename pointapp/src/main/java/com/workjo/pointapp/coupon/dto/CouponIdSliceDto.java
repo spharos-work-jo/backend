@@ -2,7 +2,6 @@ package com.workjo.pointapp.coupon.dto;
 
 
 import com.workjo.pointapp.coupon.dao.CouponIdDao;
-import com.workjo.pointapp.coupon.domain.UserCoupon;
 import lombok.*;
 import org.springframework.data.domain.Slice;
 
@@ -34,10 +33,10 @@ public class CouponIdSliceDto {
 	}
 
 
-	public static CouponIdSliceDto fromUserCouponSlice(Slice<UserCoupon> userCouponSlice) {
-		List<Long> content = userCouponSlice.getContent().stream().map(userCoupon -> userCoupon.getCoupon().getId()).toList();
-		Boolean first = userCouponSlice.isFirst();
-		Boolean last = userCouponSlice.isLast();
+	public static CouponIdSliceDto fromUserCouponSlice(Slice<Long> userCouponIdSlice) {
+		List<Long> content = userCouponIdSlice.getContent();
+		Boolean first = userCouponIdSlice.isFirst();
+		Boolean last = userCouponIdSlice.isLast();
 
 		return CouponIdSliceDto.builder()
 			.content(content)

@@ -44,7 +44,7 @@ public class CouponController {
 		Pageable pageable,
 		@RequestParam(value = "sortType", required = false) BasicDateSortType sortType) {
 		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), BasicDateSortType.getSortByColumnStartDateOrEndDate(sortType));
-		CouponIdSliceDto couponIdSliceDto = couponService.getCouponList(pageable);
+		CouponIdSliceDto couponIdSliceDto = couponService.getCouponIdList(pageable);
 		return ApiResponse.ofSuccess(couponIdSliceDto);
 	}
 
@@ -67,24 +67,31 @@ public class CouponController {
 	}
 
 
-	@Operation(summary = "유저 다운로드한 쿠폰 리스트", description = "유저가 다운로드한 쿠폰 id 리스트, 검색 조건, first 여부, last 여부")
+	@Operation(summary = "유저 다운로드한 쿠폰의 id 리스트", description = "유저 쿠폰에서 쿠폰 id 리스트 조회. 쿠폰 id 리스트, 검색 조건, first 여부, last 여부 return")
 	@GetMapping("/my")
-	public ApiResponse<CouponIdSliceRes> getUserCouponList(
-		@RequestParam Pageable pageable,
+	public ApiResponse<CouponIdSliceRes> getCouponListFromUserCoupon(
+		Pageable pageable,
 		@RequestParam(value = "searchType", required = false) CouponSearchType searchType,
+		@RequestParam(value = "sortType", required = false) BasicDateSortType sortType,
 		Authentication authentication) {
-
 		UUID uuid = AuthUtils.getCurrentUserUUID(authentication);
-		CouponIdSliceDto couponIdSliceDto = couponService.getUserDownloadCouponList(CouponUserSearchDto.builder().pageable(pageable).searchType(searchType).uuid(uuid).build());
+		CouponIdSliceDto couponIdSliceDto = couponService.getCouponIdListfromUserCouponAndCoupon(
+			CouponUserSearchDto.builder()
+				.pageable(pageable)
+				.searchType(searchType)
+				.basicDateSortType(sortType)
+				.uuid(uuid)
+				.build()
+		);
 		return ApiResponse.ofSuccess(modelMapperBean.privateStrictModelMapper().map(couponIdSliceDto, CouponIdSliceRes.class));
 	}
 
 
 	@Operation(summary = "쿠폰 다운로드", description = "유저 쿠폰 생성")
 	@PostMapping("/my/{couponId}")
-	public ApiResponse<Void> downloadCoupon(@PathVariable Long couponId, Authentication authentication) {
+	public ApiResponse<Void> createUserCoupon(@PathVariable Long couponId, Authentication authentication) {
 		UUID uuid = AuthUtils.getCurrentUserUUID(authentication);
-		userCouponService.userDownloadCoupon(couponId, uuid);
+		userCouponService.createUserCoupon(couponId, uuid);
 		return ApiResponse.ofSuccess(null);
 	}
 

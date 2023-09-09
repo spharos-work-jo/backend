@@ -6,12 +6,12 @@ import com.workjo.pointapp.config.exception.CustomException;
 import com.workjo.pointapp.config.exception.ErrorCode;
 import com.workjo.pointapp.coupon.dao.CouponIdDao;
 import com.workjo.pointapp.coupon.domain.Coupon;
-import com.workjo.pointapp.coupon.domain.UserCoupon;
 import com.workjo.pointapp.coupon.dto.CouponFindDto;
 import com.workjo.pointapp.coupon.dto.CouponGetDto;
 import com.workjo.pointapp.coupon.dto.CouponIdSliceDto;
 import com.workjo.pointapp.coupon.dto.CouponUserSearchDto;
 import com.workjo.pointapp.coupon.infrastructure.CouponRepository;
+import com.workjo.pointapp.coupon.infrastructure.UserCouponCustomRepository;
 import com.workjo.pointapp.coupon.infrastructure.UserCouponRepository;
 import com.workjo.pointapp.user.domain.User;
 import com.workjo.pointapp.user.infrastructure.UserRepository;
@@ -34,11 +34,12 @@ public class CouponServiceImpl implements CouponService {
 	private final ModelMapperBean modelMapperBean;
 	private final CouponRepository couponRepository;
 	private final UserCouponRepository userCouponRepository;
+	private final UserCouponCustomRepository userCouponCustomRepository;
 	private final UserRepository userRepository;
 
 
 	@Override
-	public CouponIdSliceDto getCouponList(Pageable pageable) {
+	public CouponIdSliceDto getCouponIdList(Pageable pageable) {
 		Slice<CouponIdDao> couponSlice = couponRepository.getByStartDateIsLessThanEqualAndEndDateIsGreaterThanEqual(LocalDate.now(), LocalDate.now(),
 			pageable);
 		return CouponIdSliceDto.fromCouponIdSlice(couponSlice);
@@ -63,12 +64,11 @@ public class CouponServiceImpl implements CouponService {
 
 
 	@Override
-	public CouponIdSliceDto getUserDownloadCouponList(CouponUserSearchDto searchDto) {
+	public CouponIdSliceDto getCouponIdListfromUserCouponAndCoupon(CouponUserSearchDto searchDto) {
 		User user = userRepository.findByUUID(searchDto.getUuid()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESOURCE));
-		Slice<UserCoupon> userCouponList = userCouponRepository.findByUser(user, searchDto.getPageable());
-		//		List<Coupon> userCouponList = couponRepository.getUserCouponList(searchDto.getUuid(), build.getSearchType(),
-		//			BasicDateSortType.getSortByColumnStartDateOrEndDate(searchDto.getSortType()));
-		return CouponIdSliceDto.fromUserCouponSlice(userCouponList);
+		Slice<Long> couponIdList = userCouponCustomRepository.findCouponIdListByUserIdFromUserCoupon(user.getId(), searchDto.getSearchType(), searchDto.getBasicDateSortType(),
+			searchDto.getPageable());
+		return CouponIdSliceDto.fromUserCouponSlice(couponIdList);
 	}
 
 }
