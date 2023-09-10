@@ -1,6 +1,5 @@
-package com.workjo.pointapp.event.vo.response;
+package com.workjo.pointapp.event.common.vo.response;
 
-import com.workjo.pointapp.event.domain.EventType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -13,11 +12,21 @@ import java.time.LocalDateTime;
 @Slf4j
 @ToString
 public class EventEntityRes {
+
     private Long id;
+
     private Long partnerId;
+
     private String name;
+
     private LocalDateTime startDate;
+
     private LocalDateTime endDate;
-    private EventType type;
-    private String imageUrl;
+
+    private LocalDateTime rewardDate;
+
+    private String thumbnailUrl;
+
+    //    private String status;
+
 }
