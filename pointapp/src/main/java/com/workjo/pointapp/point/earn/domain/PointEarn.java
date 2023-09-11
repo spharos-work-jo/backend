@@ -10,6 +10,7 @@ import java.util.UUID;
 
 @Entity
 @Getter
+@Table(name = "point_earn")
 public class PointEarn {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

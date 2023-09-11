@@ -16,7 +16,4 @@ public class GetPointHistoryDto {
     private LocalDateTime historyStartDate;
     private LocalDateTime historyEndDate;
 
-    public boolean isTypeToSearch(PointType type) {
-        return this.pointTypesToSearch.contains(type);
-    }
 }

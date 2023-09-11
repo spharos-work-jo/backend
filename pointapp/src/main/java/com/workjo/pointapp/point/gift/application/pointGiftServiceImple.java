@@ -34,24 +34,27 @@ public class pointGiftServiceImple implements IPointGiftService {
 
     @Override
     public void findReceivedUnrepliedGifts(GetReceivedPointGiftsDto dto, IPointService pointService) {//todo findReceivedGifts로 수정 후 dto(giftStatus필드 추가), dao(giftStatus고려 찾기) 수정
+
         List<PointGiftEntityDto> receivedGiftsDto =
                 this.findReceivedPointGifts(dto.getUserUuid());
 
-        List<PointGiftInfoDto> receivedGiftsInfo = receivedGiftsDto.stream().map(
-                receivedGiftDto -> {
-                    Integer pointAmount =
-                            -pointService.findPointById(receivedGiftDto.getSentPointId()).getPoint();
+        List<PointGiftInfoDto> receivedGiftsInfo =
+                receivedGiftsDto.stream().map(
+                        receivedGiftDto -> {
+                            Integer pointAmount =
+                                    -pointService.findPointById(receivedGiftDto.getSentPointId()).getPoint();
 
-                    return new PointGiftInfoDto(pointAmount, receivedGiftDto);
-                }
-        ).collect(Collectors.toList());
+                            return new PointGiftInfoDto(pointAmount, receivedGiftDto);
+                        }
+                ).collect(Collectors.toList());
 
         dto.setResult(receivedGiftsInfo);
     }
 
     @Override
     public void givePointGift(CreatePointGiftDto giftCreateDto, IPointService pointService) {
-        PointGiftEntityDto giftEntityDto = giftCreateDto.getPointGiftEntityDto();
+        PointGiftEntityDto giftEntityDto =
+                giftCreateDto.getPointGiftEntityDto();
 
         PointEntityDto sentPoint = pointService.saveTotalRenewedPoint(
                 new CreatePointDto(

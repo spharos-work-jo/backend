@@ -1,19 +1,22 @@
-package com.workjo.pointapp.event.domain;
+package com.workjo.pointapp.event.common.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 
-@Builder
+@SuppressWarnings("DefaultAnnotationParam")
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Slf4j
+@Table(name = "event")
 public class Event {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,10 +33,13 @@ public class Event {
     @Column(name = "end_date", nullable = false)
     private LocalDateTime endDate;
 
-    @Column(name = "type", nullable = false,length = 3)
-    private EventType type;
+    @Column(name = "draw_date", nullable = true)
+    private LocalDateTime drawDate;
 
-    @Column(name = "image_url")
-    private String imageUrl;
+    @Column(name = "thumbnail_url", nullable = true)
+    private String thumbnailUrl;
+
+//    @Column(name = "status", length = 1)
+//    private String status;
 
 }

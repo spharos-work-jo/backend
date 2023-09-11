@@ -17,8 +17,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class PointHistoryServiceImple implements IPointHistoryService {
+
     private final ModelMapper modelMapper;
     private final IPointRepository pointRepository;
+
 
     @Override
     public List<PointEntityDto> getPointHistoryOfUser(GetPointHistoryDto historyDto) {
@@ -32,7 +34,6 @@ public class PointHistoryServiceImple implements IPointHistoryService {
 
         List<PointEntityDto> pointEntitiesDto;
         pointEntitiesDto = pointList.stream()
-                .filter(pointDto -> historyDto.isTypeToSearch(pointDto.getPointType()))
                 .map(point -> modelMapper.map(point, PointEntityDto.class))
                 .collect(Collectors.toList());
 

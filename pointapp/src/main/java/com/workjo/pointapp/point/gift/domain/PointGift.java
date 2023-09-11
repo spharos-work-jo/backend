@@ -14,6 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name="point_gift")
 public class PointGift extends BaseDateTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
