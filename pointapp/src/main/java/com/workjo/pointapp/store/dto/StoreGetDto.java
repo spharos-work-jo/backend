@@ -19,9 +19,8 @@ public class StoreGetDto {
 
 	private Long id;
 	private String storeName;
-	private String sido;
-	private String gungu;
-	private String detailAddress;
+	private String gunguCode;
+	private String address;
 	private Integer partnerId;
 	private Boolean used;
 	private String imageUrl;
