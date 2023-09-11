@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class EventApplyService implements IEventApplyService {
+public class EventApplyServiceImple implements IEventApplyService {
 
     private final IEventApplyRepository eventApplyRepository;
     private final ModelMapper modelMapper;

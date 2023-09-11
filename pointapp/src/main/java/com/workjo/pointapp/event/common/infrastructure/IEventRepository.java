@@ -9,8 +9,10 @@ import java.util.Optional;
 
 public interface IEventRepository extends JpaRepository<Event, Long> {
 
-    List<Event> findByEndDateBetween(LocalDateTime minEndDate, LocalDateTime maxEndDate);
+    List<Event> findByEndDateBefore(LocalDateTime endDate);
 
-    List<Event> findByDrawDateAfter(LocalDateTime minDrawDate);
+    List<Event> findByEndDateAfter(LocalDateTime endDate);
+
+    List<Event> findByDrawDateBefore(LocalDateTime drawDate);
 }
 

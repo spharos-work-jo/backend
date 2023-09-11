@@ -14,9 +14,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("RedundantLabeledSwitchRuleCodeBlock")
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -38,19 +41,44 @@ public class EventServiceImple implements IEventService {
 
     @Override
     public List<EventDto> findByStatus(FindEventByStatusDto findDto) {
-        List<Event> events =
-                findDto.getMinDrawDate() != null
-                        ?
-                        eventRepository.findByDrawDateAfter(findDto.getMinDrawDate())
-                        :
-                        eventRepository.findByEndDateBetween(findDto.getMinEndDate(), findDto.getMaxEndDate());
+        List<Event> events;
+        switch (findDto.getEventStatus()) {
+            case "ongoing" -> {
+                events =
+                        eventRepository.findByEndDateAfter(LocalDateTime.now());
+            }
+            case "end" -> {
+                events =
+                        eventRepository.findByEndDateBefore(LocalDateTime.now());
+            }
+            case "drawn" -> {
+                events =
+                        eventRepository.findByDrawDateBefore(LocalDateTime.now());
+            }
+            default -> throw new CustomException(ErrorCode.BAD_REQUEST);
+        }
 
+
+        log.info(String.valueOf(events));
+
+        if (Objects.equals(findDto.getSortedBy(), "endDate")) {
+
+            events.sort((o1, o2) -> {
+                if (o1.getEndDate().isBefore(o2.getEndDate())) {
+                    return 1;
+                } else if (o1.getEndDate().equals(o2.getEndDate())) {
+                    return 0;
+                }
+                return -1;
+            });
+        }
 
         List<EventDto> eventDtos =
                 events.stream()
                         .map(event -> modelMapper.map(event, EventDto.class))
                         .collect(Collectors.toList());
 
+        log.info(String.valueOf(eventDtos));
         return eventDtos;
     }
 

@@ -1,9 +1,11 @@
 package com.workjo.pointapp.common.domain.dto;
 
 import com.workjo.pointapp.config.ModelMapperBean;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 
 
+@Slf4j
 public abstract class VoConvertibleEntityDto
         <D extends VoConvertibleEntityDto<D, E, R>, E, R>
         implements IEntityConvertible<E>, IResponseVoConvertible<R> {
@@ -17,7 +19,7 @@ public abstract class VoConvertibleEntityDto
 
 
     //todo 리플렉션 변수에 constructor 지정하면 변수 넣을 수 있게 수정
-    // entity,vo 어노테이션으로도 Entity,Vo의 생성자지정할 수 있도록 수정
+    // entity,vo(Value) 어노테이션으로도 Entity,Vo의 생성자 지정할 수 있도록 수정
 
     @Override
     public final E toEntity() {
@@ -31,8 +33,11 @@ public abstract class VoConvertibleEntityDto
 
     @Override
     public final R toResponseVo() {
-        R responseVo = modelMapper.map(dtoType.cast(this), response.type());
+        R responseVo =
+                modelMapper.map(dtoType.cast(this), response.type());
+
         additionalResVoDataConvert(responseVo);
+
         return responseVo;
     }
 

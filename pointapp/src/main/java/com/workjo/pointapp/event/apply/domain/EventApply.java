@@ -21,7 +21,7 @@ public class EventApply extends BaseDateTime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "status", nullable = false)
+    @Column(name = "status", nullable = false,length = 3)
     private EventApplyStatus status;
 
     @Column(name = "user_uuid", nullable = false)

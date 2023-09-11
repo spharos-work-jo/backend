@@ -1,8 +1,6 @@
 package com.workjo.pointapp.event.common.vo.response;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
@@ -10,7 +8,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Slf4j
-@ToString
+@Data
 public class EventEntityRes {
 
     private Long id;
@@ -28,5 +26,4 @@ public class EventEntityRes {
     private String thumbnailUrl;
 
     //    private String status;
-
 }

@@ -2,7 +2,6 @@ package com.workjo.pointapp.event.apply.domain;
 
 import com.workjo.pointapp.common.AbstractBaseEnumConverter;
 import com.workjo.pointapp.common.BaseEnum;
-import jakarta.persistence.Converter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -21,19 +20,19 @@ public enum EventApplyStatus implements BaseEnum<String, String> {
 
     @Override
     public String getCode() {
-        return null;
+        return code;
     }
 
     @Override
     public String getValue() {
-        return null;
+        return value;
     }
 
 
-    @Converter(autoApply = true)
-    public static class StatusConverter extends AbstractBaseEnumConverter<EventApplyStatus, String, String> {
-        public StatusConverter(Class<EventApplyStatus> clazz) {
-            super(clazz);
+    @jakarta.persistence.Converter(autoApply = true)
+    public static class Converter extends AbstractBaseEnumConverter<EventApplyStatus, String, String> {
+        public Converter() {
+            super(EventApplyStatus.class);
         }
     }
 }

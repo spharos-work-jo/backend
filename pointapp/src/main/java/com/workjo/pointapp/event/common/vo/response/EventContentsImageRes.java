@@ -1,11 +1,10 @@
 package com.workjo.pointapp.event.common.vo.response;
 
 
-import lombok.Value;
+import lombok.Data;
 
 
-@SuppressWarnings("RedundantModifiersValueLombok")
-@Value
+@Data
 public class EventContentsImageRes {
     private Long id;
     private String imageUrl;

@@ -5,12 +5,14 @@ import com.workjo.pointapp.common.domain.dto.ConvertInfo;
 import com.workjo.pointapp.event.common.domain.Event;
 import com.workjo.pointapp.event.common.vo.response.EventEntityRes;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
 
 @Getter
 @ToString
 @Setter
+@Slf4j
 public class EventDto extends VoConvertibleEntityDto<EventDto, Event, EventEntityRes> {
 
     private Long id;
@@ -18,7 +20,7 @@ public class EventDto extends VoConvertibleEntityDto<EventDto, Event, EventEntit
     private String name;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private LocalDateTime rewardDate;
+    private LocalDateTime drawDate;
     private String thumbnailUrl;
 
     @Builder
@@ -31,14 +33,14 @@ public class EventDto extends VoConvertibleEntityDto<EventDto, Event, EventEntit
     }
 
     @Builder
-    public EventDto(Long id, Long partnerId, String name, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime rewardDate, String thumbnailUrl) {
+    public EventDto(Long id, Long partnerId, String name, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime drawDate, String thumbnailUrl) {
         this();
         this.id = id;
         this.partnerId = partnerId;
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.rewardDate = rewardDate;
+        this.drawDate = drawDate;
         this.thumbnailUrl = thumbnailUrl;
     }
 

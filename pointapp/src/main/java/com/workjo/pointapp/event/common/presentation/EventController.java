@@ -33,21 +33,22 @@ public class EventController {
     @GetMapping
     public ApiResponse<EventEntityRes> findById
             (
-                    @RequestParam Long id
+                    @RequestParam("id") Long id
             ) {
 
         EventDto eventDto =
                 eventService.findById(id);
 
-
-        return ApiResponse.ofSuccess(eventDto.toResponseVo());
+        EventEntityRes eventEntityRes = eventDto.toResponseVo();
+        log.info(String.valueOf(eventEntityRes));
+        return ApiResponse.ofSuccess(eventEntityRes);
     }
 
 
     @GetMapping("/{id}/contents")
     public ApiResponse<List<EventContentsImageRes>> findEventContentsImages
             (
-                    @RequestParam Long eventId
+                    @PathVariable("id") Long eventId
             ) {
         List<EventContentsImageDto> imageDtos =
                 eventService.findEventContentsImages(eventId);
@@ -62,15 +63,17 @@ public class EventController {
 
 
     @GetMapping("/{eventStatus}")
-
     public ApiResponse<List<EventEntityRes>> findByEventStatus
             (
-                    @PathVariable String eventStatus,
-                    @RequestParam(required = false) String sortedBy
+                    @PathVariable("eventStatus") String eventStatus,
+                    @RequestParam(required = false, name = "sortedBy") String sortedBy
             ) {
 
         FindEventByStatusDto findDto =
-                new FindEventByStatusDto(eventStatus);
+                FindEventByStatusDto.builder()
+                        .eventStatus(eventStatus)
+                        .sortedBy(sortedBy)
+                        .build();
 
         List<EventDto> eventsDto =
                 eventService.findByStatus(findDto);

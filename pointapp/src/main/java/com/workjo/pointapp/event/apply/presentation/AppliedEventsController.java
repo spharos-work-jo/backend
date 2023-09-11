@@ -28,19 +28,16 @@ public class AppliedEventsController {
     @GetMapping
     public ApiResponse<EventApplyRes> findById
             (
-                    @RequestParam Long id,
-                    Authentication auth
+                    @RequestParam Long id
             ) {
 
         EventApplyDto eventApplyDto = eventApplyService.findById(id);
 
-        if (eventApplyDto.getUserUuid() != AuthUtils.getCurrentUserUUID(auth)) {
-            throw new CustomException(ErrorCode.NOT_FOUND_RESOURCE);
-        }
 
         return ApiResponse.ofSuccess
                 (eventApplyDto.toResponseVo());
     }
+
 
     @GetMapping("/{applyStatus}")
     public ApiResponse<List<EventApplyRes>> findByStatus
@@ -72,6 +69,7 @@ public class AppliedEventsController {
                         eventApplyService.findByUserUuidAndStatus(findDto);
 
             } catch (Exception e) {
+                log.info(e.getMessage());
                 throw new CustomException(ErrorCode.BAD_REQUEST);
             }
         }

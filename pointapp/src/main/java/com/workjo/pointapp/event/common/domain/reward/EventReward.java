@@ -9,6 +9,7 @@ import lombok.Getter;
 @Getter
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "type")
+@Table(name="event_reward")
 public abstract class EventReward {
 
     @Id
@@ -18,10 +19,10 @@ public abstract class EventReward {
     @Column(name = "event_id", nullable = false)
     private Long eventId;
 
-    @Column(name = "rank", nullable = false)
-    private int rank;
+    @Column(name = "ranking", nullable = false)
+    private Integer ranking;
 
     @Column(name = "num_winners", nullable = false)
-    private int numWinners;
+    private Integer numWinners;
 
 }
