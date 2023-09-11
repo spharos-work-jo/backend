@@ -13,6 +13,7 @@ import com.workjo.pointapp.store.infrastructure.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -31,6 +32,7 @@ public class FavoriteStoreServiceImple implements FavoriteStoreService {
 
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<StoreGetDto> getFavoriteStoreListByUserUUID(UUID uuid) {
 		List<StoreGetDto> resultList;
 		List<FavoriteStore> favoriteStoreList = favoriteStoreRepository.getByUUID(uuid);
@@ -49,6 +51,7 @@ public class FavoriteStoreServiceImple implements FavoriteStoreService {
 
 
 	@Override
+	@Transactional
 	public void createFavoriteStore(Long id, UUID uuid) {
 		Store store = storeRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESOURCE));
 		if (favoriteStoreRepository.existsByStoreAndUUID(store, uuid)) {
@@ -63,6 +66,7 @@ public class FavoriteStoreServiceImple implements FavoriteStoreService {
 
 
 	@Override
+	@Transactional
 	public void deleteFavoriteStore(Long storeId, UUID uuid) {
 		favoriteStoreRepository.deleteByUUIDAndStoreId(uuid, storeId);
 	}
