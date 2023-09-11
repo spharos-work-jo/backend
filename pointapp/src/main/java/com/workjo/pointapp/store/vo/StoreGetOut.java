@@ -11,7 +11,7 @@ public class StoreGetOut {
 	private String storeName;
 	private String sido;
 	private String gungu;
-	private String detailAddress;
+	private String address;
 	private Integer partnerId;
 	private String imageUrl;
 
