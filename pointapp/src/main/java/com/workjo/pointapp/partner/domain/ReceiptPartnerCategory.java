@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name="receipt_partner_category")
 public class ReceiptPartnerCategory {
 
 	@Id

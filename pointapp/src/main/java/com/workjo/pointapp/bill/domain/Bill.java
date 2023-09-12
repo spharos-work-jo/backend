@@ -15,6 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name="bill")
 public class Bill extends BaseRegDateTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,4 +1,4 @@
-package com.workjo.pointapp.point.earn;
+package com.workjo.pointapp.point.earn.presentation;
 
 import com.workjo.pointapp.common.ApiResponse;
 import com.workjo.pointapp.point.common.application.IPointService;
@@ -25,14 +25,10 @@ public class PointEarnController {
     private final ModelMapper modelMapper;
     private IPointEarnService pointEarnService;
 
-    @PostMapping("")
+    @PostMapping
     public ApiResponse<PointEarnRes> earnPoint
             (@RequestBody PointEarnReq request) {
 
-        //todo bill db 연결하기
-        //find bill from db,
-        // check if already saved point from bill
-        // else get paidPrice from bill
         EarnPointDto dto = new EarnPointDto();
         modelMapper.map(request, dto);
         dto.setUserUuid(UUID.fromString(request.getUserUuid()));
@@ -40,8 +36,6 @@ public class PointEarnController {
 
         PointEarnRes response = new PointEarnRes(dto);
         return ApiResponse.ofSuccess(response);
-        //todo 어차피 dto 받이서 responseVo 생성해서 ApiResponse 생성해줄거라면, 다형적으로 dto랑 responseVo.class 인자로 받아서 안에서 modelMapper로 자동처리 해주는것도 구현하고 싶다....
-        //todo dto super abstract class에 dto의 선언타입.class를 변수로 받아서 들고있고, 이를 이용해 AbstractDtoClass에서 dto가변인자 또는 dto 리스트를 받아 다형적으로 vo생성 메서드 구현
 
     }
 }
