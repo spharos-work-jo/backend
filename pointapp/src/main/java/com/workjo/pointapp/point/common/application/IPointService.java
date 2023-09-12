@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface IPointService {
 
-    PointEntityDto addPoint(CreatePointDto createDto);//todo test
+    PointEntityDto addPoint(CreatePointDto createDto);//test
 
 
     public PointEntityDto findPointById(Long pointId);

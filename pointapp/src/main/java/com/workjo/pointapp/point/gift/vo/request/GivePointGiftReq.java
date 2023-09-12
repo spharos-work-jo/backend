@@ -13,7 +13,7 @@ import lombok.Value;
 public class GivePointGiftReq {
     private String message;
     private int point;
-    //    private String pointPassword;
+    private String pointPassword;
     private String toUserUuid;
     private String toUserName;
 }

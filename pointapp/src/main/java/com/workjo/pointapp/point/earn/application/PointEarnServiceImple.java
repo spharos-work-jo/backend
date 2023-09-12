@@ -23,33 +23,25 @@ public class PointEarnServiceImple implements IPointEarnService {
 
 
     @Override
-    public void earnPoint(EarnPointDto earnDto, IPointService pointService) {//todo 적립 요청된 포인트 정산 처리 schedule 구현
-//        todo bill이 포인트 적립에 이미 사용되었는지 확인
-        // Bill bill = billRepository.findBillBy(storeId, receiptId, UUID userUuid)
-        // if bill.getIsUsedToPoint
-        // dto.isSaved = false;
-        // return;
+    public void earnPoint(EarnPointDto earnDto, IPointService pointService) {
+        //todo 적립 요청된 포인트 정산 처리 schedule 구현
 
-
-        // 포인트 엔티티 생성 및 포인트 테이블 저장
-//        int pointAmount =  pointPolicy.getPoint(bill.getPaidPrice);
-        int point = pointPolicy.getPoint(earnDto.getPaidPrice());
-
-        CreatePointDto createDto = new CreatePointDto(
-                earnDto.getUserUuid(),
-                point,
-                PointType.EARN,
-                PointType.EARN.getCode()/* change later*/
-        );
-        PointEntityDto createdPoint = pointService.saveTotalNotRenewedPoint(createDto);
+        PointEntityDto createdPoint =
+                pointService.saveTotalNotRenewedPoint(
+                        new CreatePointDto(
+                                earnDto.getUserUuid(),
+                                pointPolicy.getPoint(earnDto.getPaidPrice()),
+                                PointType.EARN,
+                                PointType.EARN.getCode()/* change later*/
+                        )
+                );
 
         earnDto.setPointId(createdPoint.getId());
-        earnDto.setReceiptDisplayable(true);/* todo find from bill db*/
         // 포인트 적립 테이블 저장
-        PointEarn pointEarn = new PointEarn();
-        modelMapper.map(earnDto, pointEarn);
-
-        PointEarn savedEntity = pointEarnRepository.save(pointEarn);//todo pointEarn dao
+        PointEarn pointEarn =
+                modelMapper.map(earnDto, PointEarn.class);
+        PointEarn savedEntity =
+                pointEarnRepository.save(pointEarn);
         earnDto.setIsSucceeded(savedEntity != null);
     }
 }
