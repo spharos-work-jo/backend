@@ -7,12 +7,11 @@ import java.util.UUID;
 @Data
 public class EarnPointDto {
     Long receiptId;
-    int paidPrice; //todo doesn't need if receipt/bill db implemented
+    int paidPrice;
     Long storeId;
     Long pointId;
     Long partnerId;
     UUID userUuid;
-    boolean receiptDisplayable;
     Boolean isSucceeded = null;
 
 }

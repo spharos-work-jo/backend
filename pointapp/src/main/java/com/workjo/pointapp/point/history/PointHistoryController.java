@@ -27,10 +27,12 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequestMapping("/api/v1/point/history")
 public class PointHistoryController {
+
     private final ModelMapper modelMapper;
     private final IPointHistoryService pointHistoryService;
 
-    @PostMapping("")
+
+    @PostMapping()
     public ApiResponse<GetPointHistoryRes> getPointHistory
             (
                     @RequestBody PointHistoryReq request,
@@ -53,8 +55,8 @@ public class PointHistoryController {
         List<PointEntityDto> pointHistoryDto =
                 pointHistoryService.getPointHistoryOfUser(dto);
 
-        List<PointEntityRes> pointHistoryVo = pointHistoryDto.stream()
-                .map(pointEntityDto ->
+        List<PointEntityRes> pointHistoryVo =
+                pointHistoryDto.stream() .map(pointEntityDto ->
                         modelMapper.map(pointEntityDto, PointEntityRes.class))
                 .collect(Collectors.toList());
 

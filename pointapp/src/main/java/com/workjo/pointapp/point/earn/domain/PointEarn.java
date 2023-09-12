@@ -33,7 +33,4 @@ public class PointEarn {
 
     @Column(nullable = false, name = "user_uuid")
     private UUID userUuid;
-
-    @Column(nullable = true, name = "receipt_displayable")
-    private boolean receiptDisplayable;
 }

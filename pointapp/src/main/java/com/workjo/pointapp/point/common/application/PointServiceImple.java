@@ -21,7 +21,7 @@ public class PointServiceImple implements IPointService {
     private final ModelMapper modelMapper;
     private final IPointRepository pointRepository;
 
-    @Override //todo 테스트용 코드
+    @Override //test
     public PointEntityDto addPoint(CreatePointDto dto) {
         return modelMapper.map(
                 this.saveTotalRenewedPoint(dto), PointEntityDto.class);
@@ -88,7 +88,7 @@ public class PointServiceImple implements IPointService {
     private Point savePoint(Point point) {
         Point savedPoint = pointRepository.save(point);
         if (savedPoint == null) {
-            throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR/*todo POINT_SAVE_FAILED 에러코드 정의해서 쓰기*/);
+            throw new CustomException(ErrorCode.ENTITY_SAVE_FAILED);
         }
         return savedPoint;
     }

@@ -1,4 +1,4 @@
-package com.workjo.pointapp.point.common;
+package com.workjo.pointapp.point.common.presentation;
 
 import com.workjo.pointapp.auth.AuthService;
 import com.workjo.pointapp.auth.AuthUtils;

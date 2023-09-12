@@ -27,6 +27,7 @@ public enum ErrorCode {
 	/*포인트*/
 	INVALID_POINT_GIFT_AMOUNT(HttpStatus.BAD_REQUEST, "P001", "유효하지 않은 포인트 선물 입력"),
 	INVALID_POINT_REPLY_TYPE(HttpStatus.INTERNAL_SERVER_ERROR, "P002", "유효하지 않은 포인트 선물 응답"),
+	INVALID_POINT_PASSWORD(HttpStatus.UNAUTHORIZED,"P003","잘못된 포인트 패스워드"),
 
 	/*store*/
 	DUPLICATE_FAV_STORE(HttpStatus.CONFLICT, "T001", "이미 등록된 단골매장입니다"),

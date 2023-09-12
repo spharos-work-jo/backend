@@ -1,4 +1,4 @@
-package com.workjo.pointapp.point.gift;
+package com.workjo.pointapp.point.gift.presentation;
 
 import com.workjo.pointapp.auth.AuthUtils;
 import com.workjo.pointapp.common.ApiResponse;
@@ -38,12 +38,15 @@ public class PointGiftController {
 
 
     @PostMapping("/give")
-    public ApiResponse<GivePointGiftRes> givePointGift
+    public ApiResponse givePointGift
             (
                     @RequestBody GivePointGiftReq request,
                     Authentication auth
             ) {
-        //todo 포인트 패스워드, 프론트와 통신 여러번 오가는것 고려해 리팩토링
+        if (!AuthUtils.isEqualPointPw(request.getPointPassword(), auth)) {
+            return ApiResponse.ofError(ErrorCode.INVALID_POINT_PASSWORD);
+        }
+
         UUID fromUserUuid = AuthUtils.getCurrentUserUUID(auth);
         UUID toUserUuid = UUID.fromString(request.getToUserUuid());
         if (fromUserUuid.equals(toUserUuid) || request.getPoint() <= 0) {
@@ -83,7 +86,7 @@ public class PointGiftController {
         entityDto.setFromUserUuid(UUID.fromString(request.getFromUserUuid()));
 
         log.info(replyDto.toString());
-        pointGiftService.replyPointGift(replyDto,pointService);
+        pointGiftService.replyPointGift(replyDto, pointService);
 
         return ApiResponse.ofSuccess(null);
     }
