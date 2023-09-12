@@ -53,6 +53,7 @@ public class UserCouponGetDto {
 	 * 사용한 쿠폰일 경우 userCouponStatus를 USED로 변경
 	 */
 	public void setUserCouponData(UserCoupon userCoupon) {
+		this.id = userCoupon.getId();
 		this.couponNum = userCoupon.getCouponNum();
 		this.isUsed = userCoupon.getIsUsed();
 	}
