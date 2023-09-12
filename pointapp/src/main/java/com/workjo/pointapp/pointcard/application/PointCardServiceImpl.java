@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.UUID;
 
 
@@ -21,6 +22,9 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class PointCardServiceImpl implements PointCardService {
+
+	private final static int POINT_CARD_PREFIX = 9350;
+	private final static int POINT_CARD_LENGTH = 16;
 
 	private final ModelMapperBean mapperBean;
 	private final PointCardListRepository pointCardListRepository;
@@ -33,6 +37,26 @@ public class PointCardServiceImpl implements PointCardService {
 		PointCardList pointCardList = pointCardListRepository.findByUser(user).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESOURCE));
 		PointCard pointCard = pointCardList.getPointCard();
 		return mapperBean.privateStrictModelMapper().map(pointCard, PointCardDto.class);
+	}
+
+
+	public void createPointCardAtSignUp(UUID uuid) {
+		User user = userRepository.findByUUID(uuid).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESOURCE));
+		String pointCardNum = makePointCardNum();
+		PointCard pointCard = PointCard.builder()
+			.cardNumber(pointCardNum)
+			.build();
+		PointCardList pointCardList = PointCardList.builder()
+			.user(user)
+			.pointCard(pointCard)
+			.build();
+		pointCardListRepository.save(pointCardList);
+	}
+
+
+	private String makePointCardNum() {
+		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+		return POINT_CARD_PREFIX + timestamp.toString();
 	}
 
 }
