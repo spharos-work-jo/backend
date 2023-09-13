@@ -18,6 +18,7 @@ public class BannerController {
 
 	private final ModelMapperBean modelMapperBean;
 	private final BannerService bannerService;
+	private final IBannerRepository bannerRepository;
 
     @GetMapping
     public ApiResponse<List<Banner>> getBanners() {

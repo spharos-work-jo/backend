@@ -10,6 +10,4 @@ import java.util.List;
 
 @Repository
 public interface IPointEarnRepository extends JpaRepository<PointEarn, Long> {
-    @Transactional(readOnly = true)
-    List<PointEarn> findByUsableStartDate(LocalDateTime usableStartDate);
 }

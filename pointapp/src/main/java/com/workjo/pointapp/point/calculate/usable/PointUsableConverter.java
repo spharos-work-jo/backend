@@ -9,7 +9,6 @@ import com.workjo.pointapp.point.calculate.usable.plan.IPointUsableConvertPlanRe
 import com.workjo.pointapp.point.calculate.usable.plan.PointUsableConvertPlan;
 import com.workjo.pointapp.point.common.application.IPointService;
 import com.workjo.pointapp.point.common.dto.PointEntityDto;
-import com.workjo.pointapp.point.observable.INotUsablePointObservable;
 import com.workjo.pointapp.point.common.domain.Point;
 import com.workjo.pointapp.point.common.infrastructure.IPointRepository;
 import com.workjo.pointapp.point.observable.IUsablePointObservable;
@@ -19,11 +18,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("Convert2MethodRef")
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -41,7 +40,7 @@ public class PointUsableConverter {
     public void calculateUsableConvertPlan() {
 
         List<PointUsableConvertPlan> allPlansOrderByUserUuid =
-                usableConvertPlanRepository.findAllOrderByUserUuid();
+                usableConvertPlanRepository.findAllByOrderByUserUuid();
 
         if (allPlansOrderByUserUuid.isEmpty()) return;
 

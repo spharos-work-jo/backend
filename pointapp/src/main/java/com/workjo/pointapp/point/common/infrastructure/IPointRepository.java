@@ -14,11 +14,11 @@ import java.util.UUID;
 @Repository
 public interface IPointRepository extends JpaRepository<Point, Long> {
 
-    @Transactional(readOnly = true)
-    List<Point> findByUserUuidAndPointTypeInAndRegDateBetweenOrderByRegDateDesc
-            (UUID userUuid, List<PointType> pointTypes, LocalDateTime historyEndDate, LocalDateTime historyStartDate);
+//    @Transactional(readOnly = true)
+    List<Point> findByUserUuidAndTypeInAndRegDateBetweenOrderByRegDateDesc
+            (UUID userUuid, List<PointType> types, LocalDateTime historyEndDate, LocalDateTime historyStartDate);
 
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     Optional<Point> findFirstByUserUuidOrderByRegDateDesc(UUID userUuid);
 
 

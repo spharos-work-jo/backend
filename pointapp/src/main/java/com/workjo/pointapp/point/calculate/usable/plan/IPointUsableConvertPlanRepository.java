@@ -7,5 +7,5 @@ import java.util.List;
 
 @Repository
 public interface IPointUsableConvertPlanRepository extends JpaRepository<PointUsableConvertPlan, Long> {
-    List<PointUsableConvertPlan> findAllOrderByUserUuid();
+    List<PointUsableConvertPlan> findAllByOrderByUserUuid();
 }

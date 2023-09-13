@@ -11,7 +11,6 @@ import java.util.UUID;
 @Entity
 @Slf4j
 @Getter
-@Builder
 @NoArgsConstructor
 @Table(name = "point_expire_plan")
 public class PointExpirePlan {

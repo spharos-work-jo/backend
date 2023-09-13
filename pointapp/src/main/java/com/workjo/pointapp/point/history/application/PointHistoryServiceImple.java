@@ -46,7 +46,7 @@ public class PointHistoryServiceImple implements IPointHistoryService {
     private List<Point> getPointHistory(GetPointHistoryDto dto) {
 
         return pointRepository.
-                findByUserUuidAndPointTypeInAndRegDateBetweenOrderByRegDateDesc
+                findByUserUuidAndTypeInAndRegDateBetweenOrderByRegDateDesc
                         (dto.getUserUuid(), dto.getPointTypesToSearch(), dto.getHistoryStartDate(), dto.getHistoryEndDate());
     }
 }
