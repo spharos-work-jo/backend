@@ -10,6 +10,5 @@ import lombok.Getter;
 public class UserCouponSimpleDao {
 
 	private Long couponId;
-	private Long userCouponId;
 
 }
