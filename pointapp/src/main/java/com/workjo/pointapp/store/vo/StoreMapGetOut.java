@@ -9,11 +9,9 @@ public class StoreMapGetOut {
 
 	private Long id;
 	private String storeName;
-	private String sido;
-	private String gungu;
-	private String detailAddress;
-	private Double la;
-	private Double lo;
+	private String address;
+	private Double lat;
+	private Double lng;
 	private String imageUrl;
 
 }

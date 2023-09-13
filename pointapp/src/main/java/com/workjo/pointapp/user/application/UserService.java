@@ -17,5 +17,6 @@ public interface UserService {
 	void updatePasswordLoginUser(UserPwDto userPwDto, Authentication authentication);
 
 	void updatePointPasswordLoginUser(String pointPw, Authentication authentication);
+	Boolean softDeleteUserByUUID(UUID uuid);
 
 }

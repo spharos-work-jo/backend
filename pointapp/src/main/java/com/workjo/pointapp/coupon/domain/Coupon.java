@@ -46,8 +46,10 @@ public class Coupon extends BaseDateTime {
 	private CouponType type;
 	@Column(length = 500, name = "guideline")
 	private String guideline;
+	@Column(columnDefinition = "boolean default false", name = "is_expired", nullable = false)
+	private Boolean isExpired;
 	@ManyToOne
-	@JoinColumn(name = "partner_id")
+	@JoinColumn(name = "partner_id", nullable = false)
 	private CouponPartner couponPartner;
 
 }

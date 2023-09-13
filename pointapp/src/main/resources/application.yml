@@ -3,6 +3,10 @@ spring:
     name: SSGPOINT_APP
   profiles:
     default: local
+  jpa:
+    properties:
+      hibernate:
+        default_batch_fetch_size: 100
 
 server:
   port: 8000

@@ -1,22 +1,30 @@
 package com.workjo.pointapp.coupon.presentation;
 
 
+import com.workjo.pointapp.auth.AuthUtils;
 import com.workjo.pointapp.common.ApiResponse;
 import com.workjo.pointapp.common.BasicDateSortType;
+import com.workjo.pointapp.common.domain.dto.SimpleSliceDto;
 import com.workjo.pointapp.config.ModelMapperBean;
 import com.workjo.pointapp.coupon.application.CouponService;
+import com.workjo.pointapp.coupon.application.UserCouponService;
+import com.workjo.pointapp.coupon.domain.CouponSearchType;
+import com.workjo.pointapp.coupon.dto.CouponFindDto;
 import com.workjo.pointapp.coupon.dto.CouponGetDto;
-import com.workjo.pointapp.coupon.dto.CouponSortParamDto;
+import com.workjo.pointapp.coupon.dto.CouponUserSearchDto;
+import com.workjo.pointapp.coupon.dto.UserCouponSimpleDto;
 import com.workjo.pointapp.coupon.vo.response.CouponGetRes;
+import com.workjo.pointapp.coupon.vo.response.CouponIdSliceRes;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.UUID;
 
 
 @Tag(name = "Coupon Controller", description = "쿠폰 API")
@@ -28,17 +36,61 @@ public class CouponController {
 
 	private final ModelMapperBean modelMapperBean;
 	private final CouponService couponService;
+	private final UserCouponService userCouponService;
 
 
+	@Operation(summary = "쿠폰 id 리스트(메인화면)", description = "쿠폰 id 리스트, first 여부, last 여부")
 	@GetMapping("")
-	public ApiResponse<List<CouponGetRes>> getCouponList(@RequestParam(value = "sortType", required = false) BasicDateSortType sortType) {
-		log.info("sortType: {}", sortType);
-		if (sortType == null) {
-			sortType = BasicDateSortType.DEADLINE;
-		}
+	public ApiResponse<CouponIdSliceRes> getCouponList(
+		Pageable pageable,
+		@RequestParam(value = "sortType", required = false) BasicDateSortType sortType
+	) {
+		pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), BasicDateSortType.getSortByColumnStartDateOrEndDate(sortType));
+		SimpleSliceDto<Long> longIdSimpleSliceDto = couponService.getCouponIdList(pageable);
+		return ApiResponse.ofSuccess(modelMapperBean.privateStrictModelMapper().map(longIdSimpleSliceDto, CouponIdSliceRes.class));
+	}
 
-		List<CouponGetDto> couponGetDtoList = couponService.getCouponList(CouponSortParamDto.builder().sortType(sortType).build());
-		return ApiResponse.ofSuccess(couponGetDtoList.stream().map(o -> modelMapperBean.privateStrictModelMapper().map(o, CouponGetRes.class)).toList());
+
+	@Operation(summary = "쿠폰 상세 조회", description = "로그인 했을 경우, 다운로드한 쿠폰 정보 함께 반환됨")
+	@GetMapping("/{couponId}")
+	public ApiResponse<CouponGetRes> getCoupon(@PathVariable Long couponId, Authentication authentication) {
+		UUID uuid = authentication != null ?
+			AuthUtils.getCurrentUserUUID(authentication) : null;
+
+		CouponGetDto couponGetDto = couponService.getCoupon(CouponFindDto.builder()
+			.id(couponId)
+			.userUuid(uuid)
+			.build());
+		return ApiResponse.ofSuccess(modelMapperBean.privateStrictModelMapper().map(couponGetDto, CouponGetRes.class));
+	}
+
+
+	@Operation(summary = "쿠폰 다운로드", description = "유저 쿠폰 생성")
+	@PostMapping("/{couponId}/download")
+	public ApiResponse<Void> createUserCoupon(@PathVariable Long couponId, Authentication authentication) {
+		UUID uuid = AuthUtils.getCurrentUserUUID(authentication);
+		userCouponService.createUserCoupon(couponId, uuid);
+		return ApiResponse.ofSuccess(null);
+	}
+
+
+	@Operation(summary = "유저 다운로드한 쿠폰의 id 리스트", description = "유저 쿠폰에서 쿠폰 id 리스트 조회. 쿠폰 id 리스트, 검색 조건, first 여부, last 여부 return")
+	@GetMapping("/my")
+	public ApiResponse<SimpleSliceDto<UserCouponSimpleDto>> getUserCouponList(
+		Pageable pageable,
+		@RequestParam(value = "searchType", required = false) CouponSearchType searchType,
+		@RequestParam(value = "sortType", required = false) BasicDateSortType sortType,
+		Authentication authentication) {
+		UUID uuid = AuthUtils.getCurrentUserUUID(authentication);
+		SimpleSliceDto<UserCouponSimpleDto> UserCouponSimpleDtoSlice = userCouponService.getUserCouponList(
+			CouponUserSearchDto.builder()
+				.pageable(pageable)
+				.searchType(searchType)
+				.basicDateSortType(sortType)
+				.uuid(uuid)
+				.build()
+		);
+		return ApiResponse.ofSuccess(UserCouponSimpleDtoSlice);
 	}
 
 }

@@ -19,16 +19,15 @@ public class StoreGetDto {
 
 	private Long id;
 	private String storeName;
-	private String sido;
-	private String gungu;
-	private String detailAddress;
+	private String gunguCode;
+	private String address;
 	private Integer partnerId;
 	private Boolean used;
 	private String imageUrl;
 
 	private Point location;
-	private Double la;
-	private Double lo;
+	private Double lat;
+	private Double lng;
 
 
 	public static List<StoreGetDto> setDtoListPartnerImageByPartnerList(List<StoreGetDto> storeDtoList, List<SsgPartnerSimpleDao> partnerImageList) {
@@ -52,8 +51,8 @@ public class StoreGetDto {
 
 
 	public void setLaLoByLocation() {
-		this.la = location.getY();
-		this.lo = location.getX();
+		this.lat = location.getY();
+		this.lng = location.getX();
 	}
 
 }

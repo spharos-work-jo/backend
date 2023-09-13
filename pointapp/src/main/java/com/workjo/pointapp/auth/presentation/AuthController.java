@@ -60,6 +60,7 @@ public class AuthController {
 	@Operation(summary = "간편로그인", description = "간편로그인, provider : NAVER, KAKAO, APPLE (대문자 필수)")
 	@PostMapping("/oauth-login")
 	public ApiResponse<LoginResponse> oauthLogin(@RequestBody OauthLoginReq oauthLoginReq) {
+		log.debug("INPUT Object Data is : {}", oauthLoginReq);
 		OauthProviderType provider = OauthProviderType.find(oauthLoginReq.getProvider());
 		if (provider == null) {
 			throw new CustomException(ErrorCode.BAD_REQUEST);
@@ -73,6 +74,7 @@ public class AuthController {
 	@Operation(summary = "통합로그인 및 간편로그인 연동", description = "간편로그인 연동되지 않은 유저의 통합로그인시 사용, provider : NAVER, KAKAO, APPLE (대문자 필수)")
 	@PostMapping("/oauth-login-create")
 	public ApiResponse<LoginResponse> oauthLoginCreate(@RequestBody OauthLoginCreateReq oauthLoginCreateReq) {
+		log.debug("INPUT Object Data is : {}", oauthLoginCreateReq);
 		OauthProviderType provider = OauthProviderType.find(oauthLoginCreateReq.getProvider());
 		if (provider == null) {
 			throw new CustomException(ErrorCode.BAD_REQUEST);

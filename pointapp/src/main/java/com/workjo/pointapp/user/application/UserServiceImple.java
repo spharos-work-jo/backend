@@ -7,6 +7,7 @@ import com.workjo.pointapp.config.exception.ErrorCode;
 import com.workjo.pointapp.user.domain.User;
 import com.workjo.pointapp.user.dto.UserFindDto;
 import com.workjo.pointapp.user.dto.UserPwDto;
+import com.workjo.pointapp.user.infrastructure.UserCustomRepository;
 import com.workjo.pointapp.user.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,7 @@ public class UserServiceImple implements UserService {
 
 	private final PasswordEncoder passwordEncoder;
 	private final UserRepository userRepository;
+	private final UserCustomRepository userCustomRepository;
 
 
 	@Override
@@ -64,10 +66,19 @@ public class UserServiceImple implements UserService {
 	@Transactional
 	public void updatePointPasswordLoginUser(String pointPw, Authentication authentication) {
 		if (pointPw.length() != 4) throw new CustomException(ErrorCode.BAD_REQUEST);
-		
+
 		UUID uuid = AuthUtils.getCurrentUserUUID(authentication);
 		User user = userRepository.findByUUID(uuid).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESOURCE));
 		user.encodePointPassword(pointPw);
+	}
+
+
+	@Override
+	@Transactional
+	public Boolean softDeleteUserByUUID(UUID uuid) {
+		User user = userRepository.findByUUID(uuid).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESOURCE));
+		userCustomRepository.updateSoftDeleteUserByUUID(uuid);
+		return true;
 	}
 
 }

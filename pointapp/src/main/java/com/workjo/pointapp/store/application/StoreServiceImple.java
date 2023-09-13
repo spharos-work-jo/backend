@@ -10,6 +10,7 @@ import com.workjo.pointapp.store.util.MapUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,6 +27,7 @@ public class StoreServiceImple implements StoreService {
 
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<StoreGetDto> getStoreListByLatLng(double bottomLat, double topLat, double leftLng, double rightLng) {
 		List<StoreGetDto> resultList;
 		String polygonString = MapUtils.boundToPolygonString(bottomLat, topLat, leftLng, rightLng);

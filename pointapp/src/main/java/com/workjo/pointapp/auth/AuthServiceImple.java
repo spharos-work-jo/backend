@@ -11,6 +11,7 @@ import com.workjo.pointapp.config.ModelMapperBean;
 import com.workjo.pointapp.config.exception.CustomException;
 import com.workjo.pointapp.config.exception.ErrorCode;
 import com.workjo.pointapp.config.security.JwtTokenProvider;
+import com.workjo.pointapp.pointcard.application.PointCardService;
 import com.workjo.pointapp.user.application.UserService;
 import com.workjo.pointapp.user.domain.User;
 import com.workjo.pointapp.user.dto.UserSignUpDto;
@@ -30,6 +31,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AuthServiceImple implements AuthService {
 
+	private final static String DELETE_ID = "-";
+
 	private final ModelMapperBean modelMapperBean;
 
 	private final UserRepository userRepository;
@@ -37,9 +40,11 @@ public class AuthServiceImple implements AuthService {
 	private final JwtTokenProvider jwtTokenProvider;
 	private final AuthenticationManager authenticationManager;
 	private final UserService userService;
+	private final PointCardService pointCardService;
 
 
 	@Override
+	@Transactional
 	public void signUp(UserSignUpDto userSignUpDto) {
 		userService.checkCanUseLoginId(userSignUpDto.getLoginId());
 
@@ -47,13 +52,18 @@ public class AuthServiceImple implements AuthService {
 
 		User user = userSignUpDto.toEntity(uuid);
 		user.encodePassword(userSignUpDto.getPassword());
-		userRepository.save(user);
+		user = userRepository.save(user);
+		pointCardService.createPointCardAtSignUp(uuid);
 	}
 
 
 	@Override
 	@Transactional(readOnly = true)
 	public LoginInfoDto authenticate(LoginDto loginDto) {
+		if (DELETE_ID.equals(loginDto.getLoginId())) {
+			throw new CustomException(ErrorCode.FAIL_LOGIN);
+		}
+		
 		User user = userRepository.findByLoginId(loginDto.getLoginId())
 			.orElseThrow(() -> new CustomException(ErrorCode.FAIL_LOGIN));
 
@@ -69,10 +79,17 @@ public class AuthServiceImple implements AuthService {
 
 
 	@Override
+	@Transactional(readOnly = true)
 	public LoginInfoDto oauthAuthenticate(OauthUserLoginDto oauthUserLoginDto) {
 		UserOauth userOauth = userOauthRepository.findByOauthIdAndProvider(oauthUserLoginDto.getOauthId(), oauthUserLoginDto.getProvider())
 			.orElseThrow(() -> new CustomException(ErrorCode.NEED_INTERGRATED_LOGIN));
-		return this.setLoginInfoDto(userOauth.getUser());
+		User user = userOauth.getUser();
+		if (user == null) {
+			throw new CustomException(ErrorCode.NEED_INTERGRATED_LOGIN);
+		} else if (!user.isEnabled()) {
+			throw new CustomException(ErrorCode.FAIL_LOGIN);
+		}
+		return this.setLoginInfoDto(user);
 	}
 
 

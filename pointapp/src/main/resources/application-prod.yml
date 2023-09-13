@@ -22,21 +22,25 @@ spring:
   datasource:
     master:
       hikari:
-        jdbc-url: jdbc:mysql://master-db/ssgpoint?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+        jdbc-url: ${MASTER_DB_URL}
         read-only: false
         username: ${MASTER_DB_USERNAME}
         password: ${MASTER_DB_PASSWORD}
         driver-class-name: com.mysql.cj.jdbc.Driver
     slave:
       hikari:
-        jdbc-url: jdbc:mysql://slave-db/ssgpoint?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+        jdbc-url: ${SLAVE_DB_URL}
         read-only: true
         username: ${SLAVE_DB_USERNAME}
         password: ${SLAVE_DB_PASSWORD}
         driver-class-name: com.mysql.cj.jdbc.Driver
 
+logging.level: # 서버 디버깅용 임시 설정
+  org.hibernate.orm.jdbc.bind: trace
+  com.workjo.pointapp: DEBUG
+
 JWT:
   secret-key: ${JWT_SECRET}
-  expiration-time: 14400000
+  expiration-time: 1440000000
   header: Authorization
   prefix: Bearer
