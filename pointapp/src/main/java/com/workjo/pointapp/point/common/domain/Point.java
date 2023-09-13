@@ -12,7 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name="point")
+@Table(name = "point")
 public class Point extends BaseDateTime {
 
 
@@ -20,9 +20,7 @@ public class Point extends BaseDateTime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, name = "user_uuid")
-    private UUID userUuid;
-
+    @Setter
     @Column(nullable = true, name = "total_point")
     private Integer totalPoint;
 
@@ -30,9 +28,15 @@ public class Point extends BaseDateTime {
     private Integer point;
 
     @Column(nullable = false, name = "type")
-    private PointType pointType;
+    private PointType type;
 
-    @Column(nullable = true, name = "title",length = 3)
+    @Column(nullable = true, name = "title", length = 3)
     private String title;
 
+    @Column(nullable = false, name = "user_uuid")
+    private UUID userUuid;
+
+//    @Setter
+//    @Column(nullable = false, name = "is_usable")
+//    private boolean isUsable;
 }

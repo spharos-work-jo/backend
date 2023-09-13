@@ -2,6 +2,7 @@ package com.workjo.pointapp.banner;
 
 import com.workjo.pointapp.common.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,6 +15,7 @@ public class BannerController {
 
 
     @GetMapping
+    @Transactional(readOnly = true)
     public ApiResponse<List<Banner>> getBanners() {
         return ApiResponse.ofSuccess(bannerRepository.findAll());
     }

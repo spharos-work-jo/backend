@@ -40,5 +40,5 @@ public class PointController {
         ));
     }
 
-
+//todo 포인트 사용 api 구현
 }
