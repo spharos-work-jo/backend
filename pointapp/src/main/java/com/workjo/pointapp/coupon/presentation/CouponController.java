@@ -9,10 +9,12 @@ import com.workjo.pointapp.config.ModelMapperBean;
 import com.workjo.pointapp.coupon.application.CouponService;
 import com.workjo.pointapp.coupon.application.UserCouponService;
 import com.workjo.pointapp.coupon.domain.CouponSearchType;
-import com.workjo.pointapp.coupon.dto.*;
+import com.workjo.pointapp.coupon.dto.CouponFindDto;
+import com.workjo.pointapp.coupon.dto.CouponGetDto;
+import com.workjo.pointapp.coupon.dto.CouponUserSearchDto;
+import com.workjo.pointapp.coupon.dto.UserCouponSimpleDto;
 import com.workjo.pointapp.coupon.vo.response.CouponGetRes;
 import com.workjo.pointapp.coupon.vo.response.CouponIdSliceRes;
-import com.workjo.pointapp.coupon.vo.response.UserCouponGetRes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -89,15 +91,6 @@ public class CouponController {
 				.build()
 		);
 		return ApiResponse.ofSuccess(UserCouponSimpleDtoSlice);
-	}
-
-
-	@Operation(summary = "유저 쿠폰 상세 조회", description = "마이쿠폰함 -> 쿠폰 조회")
-	@GetMapping("/my/{userCouponId}")
-	public ApiResponse<UserCouponGetRes> getUserCoupon(@PathVariable Long userCouponId, Authentication authentication) {
-		UUID uuid = AuthUtils.getCurrentUserUUID(authentication);
-		UserCouponGetDto usercouponGetDto = userCouponService.getUserCoupon(userCouponId, uuid);
-		return ApiResponse.ofSuccess(modelMapperBean.privateStrictModelMapper().map(usercouponGetDto, UserCouponGetRes.class));
 	}
 
 }

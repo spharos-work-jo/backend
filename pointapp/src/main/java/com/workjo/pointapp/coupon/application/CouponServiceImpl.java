@@ -57,7 +57,8 @@ public class CouponServiceImpl implements CouponService {
 		couponGetDto.setRemainDayByEndDate();
 		if (couponFindDto.getUserUuid() != null) {  // 로그인 했을 경우 유저 쿠폰 정보 추가
 			User user = userRepository.findByUUID(couponFindDto.getUserUuid()).orElseThrow(() -> new CustomException(ErrorCode.DUPLICATE_RESOURCE));
-			userCouponRepository.findByUserAndCouponAndIsUsed(user, coupon, false).ifPresent(couponGetDto::setUserCouponData);
+			userCouponRepository.findByUserAndCoupon(user, coupon).ifPresent(couponGetDto::setUserCouponData);
+			couponGetDto.setUserCouponStatusByData();
 		}
 		return couponGetDto;
 	}

@@ -18,6 +18,7 @@ import java.time.Period;
 public class CouponGetDto {
 
 	private Long id;
+	private Long userCouponId;
 	private String name;
 	private String description;
 	private Integer couponValue;
@@ -27,16 +28,24 @@ public class CouponGetDto {
 	private CouponType type;
 	private String guideline;
 	private String couponNum;
-	@Builder.Default
-	private Boolean isDownloaded = false;
+	private Boolean isUsed;
+	private Boolean isExpired;
 	private UserCouponStatusType userCouponStatus;
 	private String partnerImageUrl;
 	private String partnerThumbnailUrl;
 	private Integer remainDay;
 
 
-	public void setUserCouponStatus(UserCouponStatusType userCouponStatus) {
-		this.userCouponStatus = userCouponStatus;
+	public void setUserCouponStatusByData() {
+		if (this.isUsed) {
+			this.userCouponStatus = UserCouponStatusType.USED;
+			setNonAvaliable();
+		} else if (this.isExpired) {
+			this.userCouponStatus = UserCouponStatusType.EXPIRED;
+			setNonAvaliable();
+		} else {
+			this.userCouponStatus = UserCouponStatusType.AVAILABLE;
+		}
 	}
 
 
@@ -45,13 +54,9 @@ public class CouponGetDto {
 	 * 사용한 쿠폰일 경우 userCouponStatus를 USED로 변경
 	 */
 	public void setUserCouponData(UserCoupon userCoupon) {
-		if (userCoupon != null) {
-			this.isDownloaded = true;
-			this.couponNum = userCoupon.getCouponNum();
-			if (userCoupon.getIsUsed()) {
-				this.userCouponStatus = UserCouponStatusType.USED;
-			}
-		}
+		this.userCouponId = userCoupon.getId();
+		this.couponNum = userCoupon.getCouponNum();
+		this.isUsed = userCoupon.getIsUsed();
 	}
 
 
@@ -67,6 +72,12 @@ public class CouponGetDto {
 		if (this.remainDay < 0) {
 			this.remainDay = -1;
 		}
+	}
+
+
+	private void setNonAvaliable() {
+		this.guideline = "";
+		this.couponNum = "";
 	}
 
 }

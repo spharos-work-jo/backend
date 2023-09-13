@@ -9,7 +9,6 @@ import com.workjo.pointapp.coupon.dao.UserCouponSimpleDao;
 import com.workjo.pointapp.coupon.domain.Coupon;
 import com.workjo.pointapp.coupon.domain.UserCoupon;
 import com.workjo.pointapp.coupon.dto.CouponUserSearchDto;
-import com.workjo.pointapp.coupon.dto.UserCouponGetDto;
 import com.workjo.pointapp.coupon.dto.UserCouponSimpleDto;
 import com.workjo.pointapp.coupon.infrastructure.CouponCustomRepository;
 import com.workjo.pointapp.coupon.infrastructure.CouponRepository;
@@ -80,21 +79,6 @@ public class UserCouponServiceImpl implements UserCouponService {
 		// dao -> dto로 변환
 		Slice<UserCouponSimpleDto> userCouponSimpleDtoSlice = UserCouponSimpleDto.fromSimpleDaoSlice(userCouponSimpleDaoSlice);
 		return SimpleSliceDto.fromSlice(userCouponSimpleDtoSlice);
-	}
-
-
-	@Override
-	public UserCouponGetDto getUserCoupon(Long userCouponId, UUID uuid) {
-		User user = userRepository.findByUUID(uuid).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESOURCE));
-		UserCoupon userCoupon = userCouponRepository.findByIdAndUser(userCouponId, user).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESOURCE));
-
-		// 엔티티 -> dto로 변환, 데이터 추가
-		UserCouponGetDto userCouponGetDto = modelMapperBean.privateStrictModelMapper().map(userCoupon.getCoupon(), UserCouponGetDto.class);
-		userCouponGetDto.setPartnerDatafromCouponPartner(userCoupon.getCoupon().getCouponPartner());
-		userCouponGetDto.setRemainDayByEndDate();
-		userCouponGetDto.setUserCouponData(userCoupon);
-		userCouponGetDto.setUserCouponStatusByData();
-		return userCouponGetDto;
 	}
 
 

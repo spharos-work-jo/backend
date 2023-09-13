@@ -15,7 +15,7 @@ public class UserCouponSimpleDto {
 	private Long userCouponId;
 
 
-	public static UserCouponSimpleDto fromEntity(UserCouponSimpleDao dao) {
+	public static UserCouponSimpleDto fromDao(UserCouponSimpleDao dao) {
 		return UserCouponSimpleDto.builder()
 			.couponId(dao.getCouponId())
 			.userCouponId(dao.getUserCouponId())
@@ -24,7 +24,7 @@ public class UserCouponSimpleDto {
 
 
 	public static Slice<UserCouponSimpleDto> fromSimpleDaoSlice(Slice<UserCouponSimpleDao> userCouponSimpleDaoSlice) {
-		return userCouponSimpleDaoSlice.map(UserCouponSimpleDto::fromEntity);
+		return userCouponSimpleDaoSlice.map(UserCouponSimpleDto::fromDao);
 	}
 
 }
