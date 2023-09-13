@@ -8,6 +8,7 @@ import com.workjo.pointapp.pointcard.domain.PointCard;
 import com.workjo.pointapp.pointcard.domain.PointCardList;
 import com.workjo.pointapp.pointcard.dto.PointCardDto;
 import com.workjo.pointapp.pointcard.infrastructure.PointCardListRepository;
+import com.workjo.pointapp.pointcard.infrastructure.PointCardRepository;
 import com.workjo.pointapp.user.domain.User;
 import com.workjo.pointapp.user.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,7 @@ public class PointCardServiceImpl implements PointCardService {
 
 	private final ModelMapperBean mapperBean;
 	private final PointCardListRepository pointCardListRepository;
+	private final PointCardRepository pointCardRepository;
 	private final UserRepository userRepository;
 
 
@@ -40,12 +42,14 @@ public class PointCardServiceImpl implements PointCardService {
 	}
 
 
+	@Override
 	public void createPointCardAtSignUp(UUID uuid) {
 		User user = userRepository.findByUUID(uuid).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESOURCE));
 		String pointCardNum = makePointCardNum();
 		PointCard pointCard = PointCard.builder()
 			.cardNumber(pointCardNum)
 			.build();
+		pointCard = pointCardRepository.save(pointCard);
 		PointCardList pointCardList = PointCardList.builder()
 			.user(user)
 			.pointCard(pointCard)
@@ -56,7 +60,9 @@ public class PointCardServiceImpl implements PointCardService {
 
 	private String makePointCardNum() {
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-		return POINT_CARD_PREFIX + timestamp.toString();
+		long timestampLong = timestamp.getTime();
+		// 9350 + 12자리 숫자
+		return POINT_CARD_PREFIX + Long.toString(timestampLong).substring(0, POINT_CARD_LENGTH - 4);
 	}
 
 }
