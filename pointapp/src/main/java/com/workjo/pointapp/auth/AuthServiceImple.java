@@ -11,6 +11,7 @@ import com.workjo.pointapp.config.ModelMapperBean;
 import com.workjo.pointapp.config.exception.CustomException;
 import com.workjo.pointapp.config.exception.ErrorCode;
 import com.workjo.pointapp.config.security.JwtTokenProvider;
+import com.workjo.pointapp.pointcard.application.PointCardService;
 import com.workjo.pointapp.user.application.UserService;
 import com.workjo.pointapp.user.domain.User;
 import com.workjo.pointapp.user.dto.UserSignUpDto;
@@ -37,9 +38,11 @@ public class AuthServiceImple implements AuthService {
 	private final JwtTokenProvider jwtTokenProvider;
 	private final AuthenticationManager authenticationManager;
 	private final UserService userService;
+	private final PointCardService pointCardService;
 
 
 	@Override
+	@Transactional
 	public void signUp(UserSignUpDto userSignUpDto) {
 		userService.checkCanUseLoginId(userSignUpDto.getLoginId());
 
@@ -47,7 +50,8 @@ public class AuthServiceImple implements AuthService {
 
 		User user = userSignUpDto.toEntity(uuid);
 		user.encodePassword(userSignUpDto.getPassword());
-		userRepository.save(user);
+		user = userRepository.save(user);
+		pointCardService.createPointCardAtSignUp(uuid);
 	}
 
 
