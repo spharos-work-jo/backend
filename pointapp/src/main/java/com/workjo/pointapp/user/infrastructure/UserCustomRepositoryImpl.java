@@ -25,6 +25,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
 		queryFactory
 			.update(user)
 			.set(user.accountUse, false)
+			.set(user.loginId, "-")
 			.where(user.UUID.eq(uuid))
 			.execute();
 	}
