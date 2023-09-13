@@ -60,9 +60,17 @@ public class AlarmServiceImple implements AlarmService {
 
 
 	@Override
-	public void deleteOutOfDateAlarm() {
-		LocalDateTime dateTime = LocalDateTime.now().minusDays(7L);
-		alarmRepository.deleteAllByRegDateBefore(dateTime);
+	public void deleteOutOfDateAlarm(List<Long> idList) {
+		alarmCustomRepository.deleteOutOfDateAlarm(idList);
+	}
+
+
+	@Override
+	public List<Long> findAlarmIdOutOfDate() {
+		return alarmRepository.findAllByRegDateBefore(LocalDateTime.now().minusDays(7L))
+			.stream()
+			.map(Alarm::getId)
+			.toList();
 	}
 
 

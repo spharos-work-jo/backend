@@ -17,4 +17,6 @@ public interface AlarmRepository extends JpaRepository<Alarm, Long> {
 	@Transactional
 	void deleteAllByRegDateBefore(LocalDateTime time);
 
+	List<Alarm> findAllByRegDateBefore(LocalDateTime time);
+
 }
