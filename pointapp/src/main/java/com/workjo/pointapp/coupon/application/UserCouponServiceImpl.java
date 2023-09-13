@@ -9,6 +9,7 @@ import com.workjo.pointapp.coupon.domain.Coupon;
 import com.workjo.pointapp.coupon.domain.UserCoupon;
 import com.workjo.pointapp.coupon.dto.CouponUserSearchDto;
 import com.workjo.pointapp.coupon.dto.UserCouponGetDto;
+import com.workjo.pointapp.coupon.infrastructure.CouponCustomRepository;
 import com.workjo.pointapp.coupon.infrastructure.CouponRepository;
 import com.workjo.pointapp.coupon.infrastructure.UserCouponCustomRepository;
 import com.workjo.pointapp.coupon.infrastructure.UserCouponRepository;
@@ -34,6 +35,7 @@ public class UserCouponServiceImpl implements UserCouponService {
 	private final UserCouponRepository userCouponRepository;
 	private final UserRepository userRepository;
 	private final UserCouponCustomRepository userCouponCustomRepository;
+	private final CouponCustomRepository couponCustomRepository;
 
 
 	@Override
@@ -64,6 +66,7 @@ public class UserCouponServiceImpl implements UserCouponService {
 			.couponNum(couponNum)
 			.isUsed(false)
 			.build());
+		couponCustomRepository.updateCouponCount(couponId);
 	}
 
 
