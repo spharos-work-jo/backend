@@ -28,6 +28,8 @@ public class CouponGetDto {
 	private CouponType type;
 	private String guideline;
 	private String couponNum;
+	@Builder.Default
+	private Boolean isDownloaded = false;
 	private Boolean isUsed;
 	private Boolean isExpired;
 	private UserCouponStatusType userCouponStatus;
@@ -36,7 +38,7 @@ public class CouponGetDto {
 	private Integer remainDay;
 
 
-	public void setUserCouponStatusByData() {
+	private void setUserCouponStatusByData() {
 		if (this.isUsed) {
 			this.userCouponStatus = UserCouponStatusType.USED;
 			setNonAvaliable();
@@ -54,9 +56,11 @@ public class CouponGetDto {
 	 * 사용한 쿠폰일 경우 userCouponStatus를 USED로 변경
 	 */
 	public void setUserCouponData(UserCoupon userCoupon) {
+		this.isDownloaded = true;
 		this.userCouponId = userCoupon.getId();
 		this.couponNum = userCoupon.getCouponNum();
 		this.isUsed = userCoupon.getIsUsed();
+		this.setUserCouponStatusByData();
 	}
 
 
