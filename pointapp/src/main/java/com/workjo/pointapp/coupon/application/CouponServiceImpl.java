@@ -9,6 +9,7 @@ import com.workjo.pointapp.coupon.dao.CouponIdDao;
 import com.workjo.pointapp.coupon.domain.Coupon;
 import com.workjo.pointapp.coupon.dto.CouponFindDto;
 import com.workjo.pointapp.coupon.dto.CouponGetDto;
+import com.workjo.pointapp.coupon.infrastructure.CouponCustomRepository;
 import com.workjo.pointapp.coupon.infrastructure.CouponRepository;
 import com.workjo.pointapp.coupon.infrastructure.UserCouponRepository;
 import com.workjo.pointapp.user.domain.User;
@@ -32,6 +33,7 @@ public class CouponServiceImpl implements CouponService {
 
 	private final ModelMapperBean modelMapperBean;
 	private final CouponRepository couponRepository;
+	private final CouponCustomRepository couponCustomRepository;
 	private final UserCouponRepository userCouponRepository;
 
 	private final UserRepository userRepository;
@@ -60,6 +62,24 @@ public class CouponServiceImpl implements CouponService {
 			userCouponRepository.findByUserAndCoupon(user, coupon).ifPresent(couponGetDto::setUserCouponData);
 		}
 		return couponGetDto;
+	}
+
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Long> findCouponIdEndDateIsYesterDay() {
+		LocalDate yesterday = LocalDate.now().minusDays(1L);
+		return couponRepository.findByEndDate(yesterday)
+			.stream()
+			.map(Coupon::getId)
+			.toList();
+	}
+
+
+	@Override
+	@Transactional
+	public void modifyCouponIsExpiredByCouponIdList(List<Long> idList) {
+		couponCustomRepository.updateCouponIsExpiredByCouponIdList(idList);
 	}
 
 }
