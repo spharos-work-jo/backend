@@ -12,10 +12,9 @@ import com.workjo.pointapp.coupon.domain.CouponSearchType;
 import com.workjo.pointapp.coupon.dto.CouponFindDto;
 import com.workjo.pointapp.coupon.dto.CouponGetDto;
 import com.workjo.pointapp.coupon.dto.CouponUserSearchDto;
-import com.workjo.pointapp.coupon.dto.UserCouponGetDto;
+import com.workjo.pointapp.coupon.dto.UserCouponSimpleDto;
 import com.workjo.pointapp.coupon.vo.response.CouponGetRes;
 import com.workjo.pointapp.coupon.vo.response.CouponIdSliceRes;
-import com.workjo.pointapp.coupon.vo.response.UserCouponGetRes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -77,13 +76,13 @@ public class CouponController {
 
 	@Operation(summary = "유저 다운로드한 쿠폰의 id 리스트", description = "유저 쿠폰에서 쿠폰 id 리스트 조회. 쿠폰 id 리스트, 검색 조건, first 여부, last 여부 return")
 	@GetMapping("/my")
-	public ApiResponse<CouponIdSliceRes> getUserCouponList(
+	public ApiResponse<SimpleSliceDto<UserCouponSimpleDto>> getUserCouponList(
 		Pageable pageable,
 		@RequestParam(value = "searchType", required = false) CouponSearchType searchType,
 		@RequestParam(value = "sortType", required = false) BasicDateSortType sortType,
 		Authentication authentication) {
 		UUID uuid = AuthUtils.getCurrentUserUUID(authentication);
-		SimpleSliceDto<Long> longIdSimpleSliceDto = userCouponService.getUserCouponList(
+		SimpleSliceDto<UserCouponSimpleDto> UserCouponSimpleDtoSlice = userCouponService.getUserCouponList(
 			CouponUserSearchDto.builder()
 				.pageable(pageable)
 				.searchType(searchType)
@@ -91,16 +90,7 @@ public class CouponController {
 				.uuid(uuid)
 				.build()
 		);
-		return ApiResponse.ofSuccess(modelMapperBean.privateStrictModelMapper().map(longIdSimpleSliceDto, CouponIdSliceRes.class));
-	}
-
-
-	@Operation(summary = "유저 쿠폰 상세 조회", description = "마이쿠폰함 -> 쿠폰 조회")
-	@GetMapping("/my/{userCouponId}")
-	public ApiResponse<UserCouponGetRes> getUserCoupon(@PathVariable Long userCouponId, Authentication authentication) {
-		UUID uuid = AuthUtils.getCurrentUserUUID(authentication);
-		UserCouponGetDto usercouponGetDto = userCouponService.getUserCoupon(userCouponId, uuid);
-		return ApiResponse.ofSuccess(modelMapperBean.privateStrictModelMapper().map(usercouponGetDto, UserCouponGetRes.class));
+		return ApiResponse.ofSuccess(UserCouponSimpleDtoSlice);
 	}
 
 }

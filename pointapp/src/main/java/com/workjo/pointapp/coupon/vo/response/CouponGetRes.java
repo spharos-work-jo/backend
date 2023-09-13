@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.workjo.pointapp.coupon.domain.CouponType;
+import com.workjo.pointapp.coupon.domain.UserCouponStatusType;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 public class CouponGetRes {
 
 	private Long id;
+	private Long userCouponId;
 	private String name;
 	private String description;
 	private Integer couponValue;
@@ -27,7 +29,7 @@ public class CouponGetRes {
 	private CouponType type;
 	private String guideline;
 	private String couponNum;
-	private Boolean isDownloaded;
+	private UserCouponStatusType userCouponStatus;
 	private String partnerImageUrl;
 	private String partnerThumbnailUrl;
 	private Integer remainDay;
