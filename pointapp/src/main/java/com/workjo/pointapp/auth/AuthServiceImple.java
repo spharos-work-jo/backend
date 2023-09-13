@@ -31,6 +31,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AuthServiceImple implements AuthService {
 
+	private final static String DELETE_ID = "-";
+
 	private final ModelMapperBean modelMapperBean;
 
 	private final UserRepository userRepository;
@@ -58,6 +60,10 @@ public class AuthServiceImple implements AuthService {
 	@Override
 	@Transactional(readOnly = true)
 	public LoginInfoDto authenticate(LoginDto loginDto) {
+		if (DELETE_ID.equals(loginDto.getLoginId())) {
+			throw new CustomException(ErrorCode.FAIL_LOGIN);
+		}
+		
 		User user = userRepository.findByLoginId(loginDto.getLoginId())
 			.orElseThrow(() -> new CustomException(ErrorCode.FAIL_LOGIN));
 
@@ -77,7 +83,13 @@ public class AuthServiceImple implements AuthService {
 	public LoginInfoDto oauthAuthenticate(OauthUserLoginDto oauthUserLoginDto) {
 		UserOauth userOauth = userOauthRepository.findByOauthIdAndProvider(oauthUserLoginDto.getOauthId(), oauthUserLoginDto.getProvider())
 			.orElseThrow(() -> new CustomException(ErrorCode.NEED_INTERGRATED_LOGIN));
-		return this.setLoginInfoDto(userOauth.getUser());
+		User user = userOauth.getUser();
+		if (user == null) {
+			throw new CustomException(ErrorCode.NEED_INTERGRATED_LOGIN);
+		} else if (!user.isEnabled()) {
+			throw new CustomException(ErrorCode.FAIL_LOGIN);
+		}
+		return this.setLoginInfoDto(user);
 	}
 
 
