@@ -27,7 +27,6 @@ public class AlarmScheduler {
 		try {
 			// 7일 이전의 알람을 삭제한다.
 			List<Long> alarmIdList = alarmService.findAlarmIdOutOfDate();
-			System.out.println(alarmIdList);
 			alarmService.deleteOutOfDateAlarm(alarmIdList);
 			log.info("[timer scheduler] end");
 		} catch (Exception e) {
