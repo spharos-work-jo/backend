@@ -9,10 +9,7 @@ import com.workjo.pointapp.config.ModelMapperBean;
 import com.workjo.pointapp.coupon.application.CouponService;
 import com.workjo.pointapp.coupon.application.UserCouponService;
 import com.workjo.pointapp.coupon.domain.CouponSearchType;
-import com.workjo.pointapp.coupon.dto.CouponFindDto;
-import com.workjo.pointapp.coupon.dto.CouponGetDto;
-import com.workjo.pointapp.coupon.dto.CouponUserSearchDto;
-import com.workjo.pointapp.coupon.dto.UserCouponGetDto;
+import com.workjo.pointapp.coupon.dto.*;
 import com.workjo.pointapp.coupon.vo.response.CouponGetRes;
 import com.workjo.pointapp.coupon.vo.response.CouponIdSliceRes;
 import com.workjo.pointapp.coupon.vo.response.UserCouponGetRes;
@@ -77,13 +74,13 @@ public class CouponController {
 
 	@Operation(summary = "유저 다운로드한 쿠폰의 id 리스트", description = "유저 쿠폰에서 쿠폰 id 리스트 조회. 쿠폰 id 리스트, 검색 조건, first 여부, last 여부 return")
 	@GetMapping("/my")
-	public ApiResponse<CouponIdSliceRes> getUserCouponList(
+	public ApiResponse<SimpleSliceDto<UserCouponSimpleDto>> getUserCouponList(
 		Pageable pageable,
 		@RequestParam(value = "searchType", required = false) CouponSearchType searchType,
 		@RequestParam(value = "sortType", required = false) BasicDateSortType sortType,
 		Authentication authentication) {
 		UUID uuid = AuthUtils.getCurrentUserUUID(authentication);
-		SimpleSliceDto<Long> longIdSimpleSliceDto = userCouponService.getUserCouponList(
+		SimpleSliceDto<UserCouponSimpleDto> UserCouponSimpleDtoSlice = userCouponService.getUserCouponList(
 			CouponUserSearchDto.builder()
 				.pageable(pageable)
 				.searchType(searchType)
@@ -91,7 +88,7 @@ public class CouponController {
 				.uuid(uuid)
 				.build()
 		);
-		return ApiResponse.ofSuccess(modelMapperBean.privateStrictModelMapper().map(longIdSimpleSliceDto, CouponIdSliceRes.class));
+		return ApiResponse.ofSuccess(UserCouponSimpleDtoSlice);
 	}
 
 

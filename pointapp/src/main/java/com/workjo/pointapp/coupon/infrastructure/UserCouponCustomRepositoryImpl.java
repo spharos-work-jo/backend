@@ -3,10 +3,12 @@ package com.workjo.pointapp.coupon.infrastructure;
 
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.workjo.pointapp.common.BasicDateSortType;
 import com.workjo.pointapp.common.CustomRepositorySliceUtil;
+import com.workjo.pointapp.coupon.dao.UserCouponSimpleDao;
 import com.workjo.pointapp.coupon.domain.CouponSearchType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,12 +32,12 @@ public class UserCouponCustomRepositoryImpl implements UserCouponCustomRepositor
 
 
 	@Override
-	public Slice<Long> findIdListByUserIdFromUserCoupon(Long userId, CouponSearchType searchType, BasicDateSortType basicDateSortType, Pageable pageable) {
+	public Slice<UserCouponSimpleDao> findIdListByUserIdFromUserCoupon(Long userId, CouponSearchType searchType, BasicDateSortType basicDateSortType, Pageable pageable) {
 		BooleanExpression expression = findByCouponSearchType(searchType);
 		log.debug("expression : {}", expression);
 
-		List<Long> couponIdList = queryFactory
-			.select(userCoupon.id)
+		List<UserCouponSimpleDao> userCouponSimpleDaoList = queryFactory
+			.select(Projections.constructor(UserCouponSimpleDao.class, userCoupon.coupon.id, userCoupon.id))
 			.from(userCoupon)
 			.leftJoin(userCoupon.coupon, coupon)
 			.where(userCoupon.user.id.eq(userId))
@@ -44,7 +46,7 @@ public class UserCouponCustomRepositoryImpl implements UserCouponCustomRepositor
 			.offset(pageable.getOffset())
 			.limit(pageable.getPageSize() + 1)
 			.fetch();
-		return CustomRepositorySliceUtil.toSlice(couponIdList, pageable);
+		return CustomRepositorySliceUtil.toSlice(userCouponSimpleDaoList, pageable);
 	}
 
 
