@@ -62,6 +62,7 @@ public class UserCouponServiceImpl implements UserCouponService {
 			.coupon(coupon)
 			.user(user)
 			.couponNum(couponNum)
+			.isUsed(false)
 			.build());
 	}
 
