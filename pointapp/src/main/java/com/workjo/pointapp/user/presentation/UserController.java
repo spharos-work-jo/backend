@@ -21,6 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 
 @Tag(name = "User Controller", description = "유저 기능")
 @RestController
@@ -32,6 +34,15 @@ public class UserController {
 	private final ModelMapperBean modelMapperBean;
 
 	private final UserService userService;
+
+
+	@Operation(summary = "유저 탈퇴", description = "유저 탈퇴")
+	@DeleteMapping("")
+	public ApiResponse<Void> deleteUser(Authentication authentication) {
+		UUID uuid = AuthUtils.getCurrentUserUUID(authentication);
+		userService.softDeleteUserByUUID(uuid);
+		return ApiResponse.ofSuccess(null);
+	}
 
 
 	@Operation(summary = "선물할 유저 UUID 찾기", description = "핸드폰 번호와 실명으로 다른 유저의 UUID 조회, 선물하기에서 사용")
