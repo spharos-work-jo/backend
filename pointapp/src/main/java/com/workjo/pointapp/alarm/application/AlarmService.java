@@ -14,7 +14,9 @@ public interface AlarmService {
 	void modifyAlarmIsCheckByUserUUID(UUID uuid, Long alarmId);
 	void modifyAllAlarmIsCheckByUserId(Long userId);
 
-	void deleteOutOfDateAlarm();
+	void deleteOutOfDateAlarm(List<Long> idList);
+
+	List<Long> findAlarmIdOutOfDate();
 
 	List<AlarmGetDto> findAlarmByUserId(UUID uuid);
 

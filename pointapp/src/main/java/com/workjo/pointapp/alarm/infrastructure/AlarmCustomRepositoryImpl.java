@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static com.workjo.pointapp.alarm.domain.QAlarm.alarm;
 
 
@@ -24,6 +26,17 @@ public class AlarmCustomRepositoryImpl implements AlarmCustomRepository {
 			.update(alarm)
 			.set(alarm.isCheck, true)
 			.where(alarm.user.id.eq(id))
+			.execute();
+	}
+
+
+	@Transactional
+	@Modifying(clearAutomatically = true)
+	@Override
+	public void deleteOutOfDateAlarm(List<Long> idList) {
+		queryFactory
+			.delete(alarm)
+			.where(alarm.id.in(idList))
 			.execute();
 	}
 
