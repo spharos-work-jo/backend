@@ -5,7 +5,10 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Value;
+import lombok.extern.slf4j.Slf4j;
+
+
+@Slf4j
 
 @Getter
 @AllArgsConstructor
