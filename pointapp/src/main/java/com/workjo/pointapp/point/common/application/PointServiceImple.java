@@ -2,15 +2,18 @@ package com.workjo.pointapp.point.common.application;
 
 import com.workjo.pointapp.config.exception.CustomException;
 import com.workjo.pointapp.config.exception.ErrorCode;
-import com.workjo.pointapp.point.common.infrastructure.IPointRepository;
+import com.workjo.pointapp.point.observable.INotUsablePointObservable;
+import com.workjo.pointapp.point.observable.IUsablePointObservable;
 import com.workjo.pointapp.point.common.domain.*;
 import com.workjo.pointapp.point.common.dto.CreatePointDto;
 import com.workjo.pointapp.point.common.dto.PointEntityDto;
+import com.workjo.pointapp.point.common.infrastructure.IPointRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -20,6 +23,8 @@ public class PointServiceImple implements IPointService {
 
     private final ModelMapper modelMapper;
     private final IPointRepository pointRepository;
+    private final List<INotUsablePointObservable> notUsablePointObservers;
+    private final List<IUsablePointObservable> usablePointObservers;
 
     @Override //test
     public PointEntityDto addPoint(CreatePointDto dto) {
@@ -54,9 +59,10 @@ public class PointServiceImple implements IPointService {
         if (totalAfterCreate < 0) {
             throw new CustomException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
-        Point point = Point.builder().totalPoint(totalAfterCreate).build();
+        Point point = Point.builder()
+                .totalPoint(totalAfterCreate)
+                .build();
         log.info("total after gift : " + totalAfterCreate);
-
         modelMapper.map(createDto, point);
 //        log.info("\n\n\n mylog");
 //        log.info(point.getTitle());
@@ -64,14 +70,22 @@ public class PointServiceImple implements IPointService {
 //        log.info(String.format("%d", point.getPoint()));
 //        log.info(String.format("%d", point.getTotalPoint()));
 //        log.info(point.getPointType().getValue());
+        Point savedPoint = this.savePoint(point);
+        PointEntityDto savedPointDto = modelMapper.map(savedPoint, PointEntityDto.class);
 
+        if (savedPoint.getPoint() > 0) {
+            usablePointObservers.
+                    forEach(observer ->
+                            observer.observeUsablePointIncreased(savedPointDto));
+        }
 
-        return modelMapper.map(
-                this.savePoint(point), PointEntityDto.class);
+        return savedPointDto;
     }
+
 
     @Override
     public PointEntityDto saveTotalNotRenewedPoint(CreatePointDto createDto) {
+
         Point pointToSave =
                 Point.builder()
                         .totalPoint(this.getTotalPoint(createDto.getUserUuid()))
@@ -79,9 +93,14 @@ public class PointServiceImple implements IPointService {
         modelMapper.map(createDto, pointToSave);
 
         Point savedEntity = this.savePoint(pointToSave);
+        PointEntityDto savedPointDto = modelMapper.map(savedEntity, PointEntityDto.class);
 
-        return modelMapper.map(savedEntity, PointEntityDto.class);
+        notUsablePointObservers
+                .forEach(observer -> {
+                    observer.observeUnusablePointSaved(savedPointDto);
+                });
 
+        return savedPointDto;
     }
 
 

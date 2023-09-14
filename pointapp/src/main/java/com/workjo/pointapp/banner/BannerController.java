@@ -18,19 +18,18 @@ public class BannerController {
 
 	private final ModelMapperBean modelMapperBean;
 	private final BannerService bannerService;
+	private final IBannerRepository bannerRepository;
 
-
-	@GetMapping("")
-	public ApiResponse<List<Banner>> getBanners() {
-		List<BannerGetDto> bannerDtoList = bannerService.getBannerList();
-		return ApiResponse.ofSuccess(bannerDtoList.stream().map(bannerDto -> modelMapperBean.privateStrictModelMapper().map(bannerDto, Banner.class)).collect(Collectors.toList()));
-	}
-
+    @GetMapping
+    public ApiResponse<List<Banner>> getBanners() {
+        return ApiResponse.ofSuccess(bannerRepository.findAll());
+    }
 
 	@DeleteMapping("/{id}")
 	public ApiResponse<Void> deleteBannerById(@PathVariable Long id) {
 		bannerService.deleteBannerById(id);
 		return ApiResponse.ofSuccess(null);
 	}
+
 
 }

@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PointEarnReq {
     Long partnerId;
-    int paidPrice; // doesn't need if receipt/bill db implemented
+    int paidPrice;
     Long storeId;
     Long receiptId;
     String userUuid;

@@ -1,6 +1,7 @@
 package com.workjo.pointapp.point.common.dto;
 
 import com.workjo.pointapp.point.common.domain.PointType;
+import jakarta.persistence.Column;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -14,7 +15,9 @@ public class PointEntityDto {
     private int totalPoint;
     private int point;
     private LocalDateTime regDate;
-    private PointType pointType;
+    private PointType type;
     private String title;
+
+//    private boolean isUsable;
 
 }

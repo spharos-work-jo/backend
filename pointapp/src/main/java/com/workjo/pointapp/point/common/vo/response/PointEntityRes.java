@@ -16,7 +16,7 @@ public class PointEntityRes {
     private int totalPoint;
     private int point;
     private LocalDateTime regDate;
-    private PointType pointType;
+    private PointType type;
     private String title;
 
 }

@@ -3,7 +3,7 @@ package com.workjo.pointapp.point.earn.application;
 import com.workjo.pointapp.point.common.application.IPointService;
 import com.workjo.pointapp.point.common.domain.PointType;
 import com.workjo.pointapp.point.common.dto.CreatePointDto;
-import com.workjo.pointapp.point.common.application.pointpolicy.IPointPolicy;
+import com.workjo.pointapp.point.pointpolicy.IPointPolicy;
 import com.workjo.pointapp.point.common.dto.PointEntityDto;
 import com.workjo.pointapp.point.earn.infrastructure.IPointEarnRepository;
 import com.workjo.pointapp.point.earn.domain.PointEarn;
@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +24,7 @@ public class PointEarnServiceImple implements IPointEarnService {
 
 
     @Override
+    @Transactional
     public void earnPoint(EarnPointDto earnDto, IPointService pointService) {
         //todo 적립 요청된 포인트 정산 처리 schedule 구현
 
@@ -35,8 +37,8 @@ public class PointEarnServiceImple implements IPointEarnService {
                                 PointType.EARN.getCode()/* change later*/
                         )
                 );
-
         earnDto.setPointId(createdPoint.getId());
+
         // 포인트 적립 테이블 저장
         PointEarn pointEarn =
                 modelMapper.map(earnDto, PointEarn.class);

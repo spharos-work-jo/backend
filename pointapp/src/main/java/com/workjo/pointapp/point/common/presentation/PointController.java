@@ -29,6 +29,7 @@ public class PointController {
 	private final ModelMapper modelMapper;
 	private final AuthService authService;
 
+//todo 포인트 선물 전체 조회는 서비스단에 pointHistory 메서드로 기능 구현하기
 
 	@PostMapping("/addtest/{point}")
 	public ApiResponse addPoint(Authentication auth, @PathVariable int point) {

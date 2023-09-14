@@ -9,13 +9,13 @@ public interface IPointService {
 
     PointEntityDto addPoint(CreatePointDto createDto);//test
 
+    PointEntityDto findPointById(Long pointId);
 
-    public PointEntityDto findPointById(Long pointId);
+    int getTotalPoint(UUID userUuid);
 
+    PointEntityDto saveTotalRenewedPoint(CreatePointDto createDto);
 
-    public int getTotalPoint(UUID userUuid);
+    PointEntityDto saveTotalNotRenewedPoint(CreatePointDto createDto);
 
-    public PointEntityDto saveTotalRenewedPoint(CreatePointDto createDto);
-
-    public PointEntityDto saveTotalNotRenewedPoint(CreatePointDto createDto);
+//    void convertPointToUsable(Long unusablePointId, Long lastPointId);
 }
