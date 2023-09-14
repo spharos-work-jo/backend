@@ -2,6 +2,7 @@ package com.workjo.pointapp.batchtask.presentation;
 
 
 import com.workjo.pointapp.batchtask.repository.EventApplyRedisService;
+import com.workjo.pointapp.common.ApiResponse;
 import com.workjo.pointapp.config.exception.CustomException;
 import com.workjo.pointapp.config.exception.ErrorCode;
 import com.workjo.pointapp.event.common.domain.Event;
@@ -36,7 +37,7 @@ public class BatchTestController {
 
 	@GetMapping("")
 	@ResponseBody
-	public void handle() throws Exception {
+	public ApiResponse<Void> handle() {
 
 		LocalDateTime yesterdayStartDateTime = LocalDateTime.now().minusDays(1L).withHour(0).withMinute(0).withSecond(0).withNano(0);
 		LocalDateTime todayStartDateTime = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
@@ -52,7 +53,6 @@ public class BatchTestController {
 
 		eventIdList.forEach(eventId -> {
 			JobParameters jobParameters = new JobParametersBuilder()
-				.addLong("timestamp", System.currentTimeMillis())
 				.addLong("eventId", eventId)
 				.toJobParameters();
 			try {
@@ -65,10 +65,10 @@ public class BatchTestController {
 					eventApplyRedisService.deleteEventApply(eventId);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error(e.getMessage());
 			}
 		});
-
+		return ApiResponse.ofSuccess(null);
 	}
 
 }
