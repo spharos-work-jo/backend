@@ -76,7 +76,7 @@ public class pointGiftServiceImple implements IPointGiftService {
         PointGiftEntityDto repliedGiftDto = giftReplyDto.getPointGiftEntityDto();
         CreatePointDto createPointDto = CreatePointDto.builder()
                 .point(giftReplyDto.getPoint())
-                .pointType(PointType.GIFT)
+                .type(PointType.GIFT)
                 .userUuid(repliedGiftDto.getToUserUuid()).build();
 
         // 선물 응답으로 인한 포인트 생성

@@ -14,6 +14,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -42,6 +44,7 @@ public class PointEarnServiceImple implements IPointEarnService {
         // 포인트 적립 테이블 저장
         PointEarn pointEarn =
                 modelMapper.map(earnDto, PointEarn.class);
+        pointEarn.setEarnedDate(LocalDateTime.now());
         PointEarn savedEntity =
                 pointEarnRepository.save(pointEarn);
         earnDto.setIsSucceeded(savedEntity != null);

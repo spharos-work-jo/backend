@@ -109,10 +109,17 @@ public class PointServiceImple implements IPointService {
 
 
     private Point savePoint(Point point) {
-        Point savedPoint = pointRepository.save(point);
-        if (savedPoint == null) {
-            throw new CustomException(ErrorCode.ENTITY_SAVE_FAILED);
+        Point savedPoint=null;
+        try {
+            savedPoint = pointRepository.save(point);
+//        if (savedPoint == null) {
+//            throw new CustomException(ErrorCode.ENTITY_SAVE_FAILED);
+//        }
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.info(e.getMessage());
         }
+
         return savedPoint;
     }
 

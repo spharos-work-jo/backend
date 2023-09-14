@@ -8,6 +8,7 @@ import java.util.UUID;
 
 @Entity
 @Getter
+@Setter
 @Table(name = "point_earn")
 public class PointEarn {
     @Id

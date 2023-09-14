@@ -8,10 +8,11 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum PointExpiredType implements BaseEnum<String, String> {
-    DECREASED_TOTAL_POINT("D"),
-    LACK_TOTAL_POINT("L");
+    DECREASED_TOTAL_POINT("D", "DECREASED_TOTAL_POINT"),
+    LACK_TOTAL_POINT("L", "LACK_TOTAL_POINT");
 
     private String code;
+    private String value;
 
     @Override
     public String getCode() {
@@ -20,7 +21,7 @@ public enum PointExpiredType implements BaseEnum<String, String> {
 
     @Override
     public String getValue() {
-        return name();
+        return value;
     }
 
 
