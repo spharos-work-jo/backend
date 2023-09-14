@@ -32,7 +32,7 @@ public class Point extends BaseDateTime {
     @Column(nullable = false, name = "type")
     private PointType pointType;
 
-    @Column(nullable = true, name = "title",length = 3)
+    @Column(nullable = true, name = "title",length = 30)
     private String title;
 
 }
