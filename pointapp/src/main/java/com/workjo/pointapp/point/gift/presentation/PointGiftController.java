@@ -43,7 +43,7 @@ public class PointGiftController {
                     @RequestBody GivePointGiftReq request,
                     Authentication auth
             ) {
-        log.info(request.toString());
+        log.info(request.getMessage(), request.getPointPassword(), request.getToUserUuid());
         if (!AuthUtils.isEqualPointPw(request.getPointPassword(), auth)) {
             return ApiResponse.ofError(ErrorCode.INVALID_POINT_PASSWORD);
         }

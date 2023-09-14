@@ -18,6 +18,5 @@ public class PointEntityDto {
     private PointType type;
     private String title;
 
-//    private boolean isUsable;
 
 }

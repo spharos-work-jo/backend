@@ -1,4 +1,4 @@
-package com.workjo.pointapp.point.pointpolicy;
+package com.workjo.pointapp.point.common.application.pointpolicy;
 
 import org.springframework.stereotype.Service;
 

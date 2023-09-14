@@ -1,4 +1,4 @@
-package com.workjo.pointapp.point.calculate.usable.finished;
+package com.workjo.pointapp.point.calculate.usable.calculated;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

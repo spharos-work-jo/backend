@@ -3,15 +3,15 @@ package com.workjo.pointapp.point.calculate.usable;
 
 import com.workjo.pointapp.config.exception.CustomException;
 import com.workjo.pointapp.config.exception.ErrorCode;
-import com.workjo.pointapp.point.calculate.usable.finished.IPointUsableConvertedRepository;
-import com.workjo.pointapp.point.calculate.usable.finished.PointUsableConverted;
-import com.workjo.pointapp.point.calculate.usable.plan.IPointUsableConvertPlanRepository;
-import com.workjo.pointapp.point.calculate.usable.plan.PointUsableConvertPlan;
+import com.workjo.pointapp.point.calculate.usable.calculated.IPointUsableConvertedRepository;
+import com.workjo.pointapp.point.calculate.usable.calculated.PointUsableConverted;
+import com.workjo.pointapp.point.calculate.usable.plan.IConvertPointUsablePlanRepository;
+import com.workjo.pointapp.point.calculate.usable.plan.ConvertPointUsablePlan;
 import com.workjo.pointapp.point.common.application.IPointService;
 import com.workjo.pointapp.point.common.dto.PointEntityDto;
 import com.workjo.pointapp.point.common.domain.Point;
 import com.workjo.pointapp.point.common.infrastructure.IPointRepository;
-import com.workjo.pointapp.point.observable.IUsablePointObservable;
+import com.workjo.pointapp.point.common.domain.observable.IUsablePointObservable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,9 +26,10 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class PointUsableConverter {
+//
+public class ConvertPointUsableCalculator {
 
-    private final IPointUsableConvertPlanRepository usableConvertPlanRepository;
+    private final IConvertPointUsablePlanRepository usableConvertPlanRepository;
     private final IPointUsableConvertedRepository usableConvertedRepository;
     private final IPointRepository pointRepository;
 
@@ -39,7 +40,7 @@ public class PointUsableConverter {
     @Transactional
     public void calculateUsableConvertPlan() {
 
-        List<PointUsableConvertPlan> allPlansOrderByUserUuid =
+        List<ConvertPointUsablePlan> allPlansOrderByUserUuid =
                 usableConvertPlanRepository.findAllByOrderByUserUuid();
 
         if (allPlansOrderByUserUuid.isEmpty()) return;
@@ -51,7 +52,7 @@ public class PointUsableConverter {
         Long lastPointId = -1L;
         allPlansOrderByUserUuid.add(null);
 
-        for (PointUsableConvertPlan plan : allPlansOrderByUserUuid
+        for (ConvertPointUsablePlan plan : allPlansOrderByUserUuid
         ) {
             // 한 유저의 convertPlan 모두 취합해 total 갱신, 다음유저 정보 취합 위해 초기화
             if (plan == null || !nowUserUuid.equals(plan.getUserUuid())) {
@@ -78,11 +79,11 @@ public class PointUsableConverter {
             totalPointToConvert += plan.getPointAmount();
 
             if (!usablePointObservers.isEmpty()) {
-                PointEntityDto convertedUsable
+                PointEntityDto usableConverted
                         = pointService.findPointById(plan.getPointId());
 
                 usablePointObservers.forEach(observer ->
-                        observer.observeUsablePointIncreased(convertedUsable));
+                        observer.observeUsablePointIncreased(usableConverted));
             }
 
             lastPointId = Math.max(plan.getPointId(), lastPointId);
@@ -95,6 +96,7 @@ public class PointUsableConverter {
                 .collect(Collectors.toList());
 
         usableConvertedRepository.saveAll(converteds);
+        usableConvertPlanRepository.deleteAll();
     }
 
 }

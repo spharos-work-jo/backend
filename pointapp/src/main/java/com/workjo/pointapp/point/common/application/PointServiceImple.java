@@ -2,8 +2,8 @@ package com.workjo.pointapp.point.common.application;
 
 import com.workjo.pointapp.config.exception.CustomException;
 import com.workjo.pointapp.config.exception.ErrorCode;
-import com.workjo.pointapp.point.observable.INotUsablePointObservable;
-import com.workjo.pointapp.point.observable.IUsablePointObservable;
+import com.workjo.pointapp.point.common.domain.observable.INotUsablePointObservable;
+import com.workjo.pointapp.point.common.domain.observable.IUsablePointObservable;
 import com.workjo.pointapp.point.common.domain.*;
 import com.workjo.pointapp.point.common.dto.CreatePointDto;
 import com.workjo.pointapp.point.common.dto.PointEntityDto;
@@ -23,8 +23,10 @@ public class PointServiceImple implements IPointService {
 
     private final ModelMapper modelMapper;
     private final IPointRepository pointRepository;
+
     private final List<INotUsablePointObservable> notUsablePointObservers;
     private final List<IUsablePointObservable> usablePointObservers;
+
 
     @Override //test
     public PointEntityDto addPoint(CreatePointDto dto) {
@@ -77,6 +79,12 @@ public class PointServiceImple implements IPointService {
             usablePointObservers.
                     forEach(observer ->
                             observer.observeUsablePointIncreased(savedPointDto));
+        } else if (savedPoint.getType() == PointType.EXPIRE) {
+
+        } else {
+            pointUseObservers.
+                    forEach(observer ->
+                            observer.observePointUse(savedPointDto));
         }
 
         return savedPointDto;

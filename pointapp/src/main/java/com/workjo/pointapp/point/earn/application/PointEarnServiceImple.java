@@ -3,7 +3,7 @@ package com.workjo.pointapp.point.earn.application;
 import com.workjo.pointapp.point.common.application.IPointService;
 import com.workjo.pointapp.point.common.domain.PointType;
 import com.workjo.pointapp.point.common.dto.CreatePointDto;
-import com.workjo.pointapp.point.pointpolicy.IPointPolicy;
+import com.workjo.pointapp.point.common.application.pointpolicy.IPointPolicy;
 import com.workjo.pointapp.point.common.dto.PointEntityDto;
 import com.workjo.pointapp.point.earn.infrastructure.IPointEarnRepository;
 import com.workjo.pointapp.point.earn.domain.PointEarn;

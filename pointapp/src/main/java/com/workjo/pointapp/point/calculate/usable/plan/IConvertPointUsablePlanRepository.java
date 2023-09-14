@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface IPointUsableConvertPlanRepository extends JpaRepository<PointUsableConvertPlan, Long> {
-    List<PointUsableConvertPlan> findAllByOrderByUserUuid();
+public interface IConvertPointUsablePlanRepository extends JpaRepository<ConvertPointUsablePlan, Long> {
+    List<ConvertPointUsablePlan> findAllByOrderByUserUuid();
 }
