@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,7 @@ public class pointGiftServiceImple implements IPointGiftService {
     private final IPointGiftRepository pointGiftRepository;
     private final ModelMapper modelMapper;
 
+    @Transactional
     @Override
     public void findReceivedUnrepliedGifts(GetReceivedPointGiftsDto dto, IPointService pointService) {//todo findReceivedGifts로 수정 후 dto(giftStatus필드 추가), dao(giftStatus고려 찾기) 수정
 
@@ -74,7 +76,7 @@ public class pointGiftServiceImple implements IPointGiftService {
         PointGiftEntityDto repliedGiftDto = giftReplyDto.getPointGiftEntityDto();
         CreatePointDto createPointDto = CreatePointDto.builder()
                 .point(giftReplyDto.getPoint())
-                .pointType(PointType.GIFT)
+                .type(PointType.GIFT)
                 .userUuid(repliedGiftDto.getToUserUuid()).build();
 
         // 선물 응답으로 인한 포인트 생성

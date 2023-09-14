@@ -8,9 +8,10 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public enum BannerContentsType implements BaseEnum<String, String> {
-    EVENT("E");
+    EVENT("E","EVENT");
 
     private String code;
+    private String value;
 
     @Override
     public String getCode() {
@@ -19,7 +20,7 @@ public enum BannerContentsType implements BaseEnum<String, String> {
 
     @Override
     public String getValue() {
-        return name();
+        return value;
     }
 
 

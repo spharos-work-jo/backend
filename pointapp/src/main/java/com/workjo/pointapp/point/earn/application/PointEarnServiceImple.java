@@ -12,6 +12,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +26,7 @@ public class PointEarnServiceImple implements IPointEarnService {
 
 
     @Override
+    @Transactional
     public void earnPoint(EarnPointDto earnDto, IPointService pointService) {
         //todo 적립 요청된 포인트 정산 처리 schedule 구현
 
@@ -35,11 +39,12 @@ public class PointEarnServiceImple implements IPointEarnService {
                                 PointType.EARN.getCode()/* change later*/
                         )
                 );
-
         earnDto.setPointId(createdPoint.getId());
+
         // 포인트 적립 테이블 저장
         PointEarn pointEarn =
                 modelMapper.map(earnDto, PointEarn.class);
+        pointEarn.setEarnedDate(LocalDateTime.now());
         PointEarn savedEntity =
                 pointEarnRepository.save(pointEarn);
         earnDto.setIsSucceeded(savedEntity != null);

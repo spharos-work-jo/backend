@@ -6,16 +6,16 @@ import lombok.Getter;
 
 @AllArgsConstructor
 public enum PointType implements BaseEnum<String, String> {
-    EVENT_REWARD("ER"),
-    GIFT("G"),
-    COUPON("C"),
-    EARN("E"),
-    USE("U"),
-    EXPIRE("EX"),
-    ETC("ET");
+    EVENT_REWARD("ER", "EVENT_REWARD"),
+    GIFT("G", "GIFT"),
+    COUPON("C", "COUPON"),
+    EARN("E", "EARN"),
+    USE("U", "USE"),
+    EXPIRE("EX", "EXPIRE"),
+    ETC("ET", "ETC");
 
     private String code;
-
+    private String value;
 
     @Override
     public String getCode() {
@@ -24,6 +24,6 @@ public enum PointType implements BaseEnum<String, String> {
 
     @Override
     public String getValue() {
-        return name();
+        return value;
     }
 }
