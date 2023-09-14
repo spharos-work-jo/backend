@@ -7,6 +7,7 @@ import com.workjo.pointapp.config.exception.CustomException;
 import com.workjo.pointapp.config.exception.ErrorCode;
 import com.workjo.pointapp.event.common.domain.Event;
 import com.workjo.pointapp.event.common.infrastructure.IEventRepository;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.*;
@@ -14,7 +15,6 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -35,8 +35,8 @@ public class BatchTestController {
 	private final Job job;
 
 
+	@Operation(summary = "이벤트 당첨처리", description = "스프링 배치")
 	@GetMapping("")
-	@ResponseBody
 	public ApiResponse<Void> handle() {
 
 		LocalDateTime yesterdayStartDateTime = LocalDateTime.now().minusDays(1L).withHour(0).withMinute(0).withSecond(0).withNano(0);
