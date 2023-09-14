@@ -81,11 +81,7 @@ public class PointServiceImple implements IPointService {
                             observer.observeUsablePointIncreased(savedPointDto));
         } else if (savedPoint.getType() == PointType.EXPIRE) {
 
-        } else {
-            pointUseObservers.
-                    forEach(observer ->
-                            observer.observePointUse(savedPointDto));
-        }
+        }//todo observer 지우고 point 사용량을 기록하는 ㅌ테이블 하나 새로 만들기
 
         return savedPointDto;
     }
