@@ -12,6 +12,8 @@ import org.springframework.security.config.annotation.web.configurers.CsrfConfig
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 
 @Slf4j
@@ -32,6 +34,7 @@ public class SecurityConfig {
 
 		// TODO: authorizeHttpRequest 추가 필요
 		http
+			.cors(cors -> cors.configurationSource(corsConfigurationSource()))
 			.csrf(CsrfConfigurer::disable)
 			.authorizeHttpRequests(
 				authorizeHttpRequests -> authorizeHttpRequests
@@ -53,6 +56,21 @@ public class SecurityConfig {
 				.accessDeniedHandler(jwtAccessDeniedHandler));
 
 		return http.build();
+	}
+
+
+	@Bean
+	public UrlBasedCorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.addAllowedOrigin(CorsConfiguration.ALL);
+		//		configuration.addAllowedOrigin("http://localhost:3000");
+		configuration.addAllowedMethod("*");
+		configuration.addAllowedHeader("*");
+		//        configuration.setAllowCredentials(true);
+		configuration.setMaxAge(7200L);
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
 	}
 
 }

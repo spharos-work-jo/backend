@@ -5,11 +5,9 @@ import com.workjo.pointapp.common.domain.dto.SimpleSliceDto;
 import com.workjo.pointapp.config.ModelMapperBean;
 import com.workjo.pointapp.config.exception.CustomException;
 import com.workjo.pointapp.config.exception.ErrorCode;
-import com.workjo.pointapp.coupon.dao.UserCouponSimpleDao;
 import com.workjo.pointapp.coupon.domain.Coupon;
 import com.workjo.pointapp.coupon.domain.UserCoupon;
 import com.workjo.pointapp.coupon.dto.CouponUserSearchDto;
-import com.workjo.pointapp.coupon.dto.UserCouponSimpleDto;
 import com.workjo.pointapp.coupon.infrastructure.CouponCustomRepository;
 import com.workjo.pointapp.coupon.infrastructure.CouponRepository;
 import com.workjo.pointapp.coupon.infrastructure.UserCouponCustomRepository;
@@ -72,13 +70,11 @@ public class UserCouponServiceImpl implements UserCouponService {
 
 
 	@Override
-	public SimpleSliceDto<UserCouponSimpleDto> getUserCouponList(CouponUserSearchDto searchDto) {
+	public SimpleSliceDto<Long> getUserCouponList(CouponUserSearchDto searchDto) {
 		User user = userRepository.findByUUID(searchDto.getUuid()).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_RESOURCE));
-		Slice<UserCouponSimpleDao> userCouponSimpleDaoSlice = userCouponCustomRepository.findIdListByUserIdFromUserCoupon(user.getId(), searchDto.getSearchType(), searchDto.getBasicDateSortType(),
+		Slice<Long> couponIdSlice = userCouponCustomRepository.findIdListByUserIdFromUserCoupon(user.getId(), searchDto.getSearchType(), searchDto.getBasicDateSortType(),
 			searchDto.getPageable());
-		// dao -> dto로 변환
-		Slice<UserCouponSimpleDto> userCouponSimpleDtoSlice = UserCouponSimpleDto.fromSimpleDaoSlice(userCouponSimpleDaoSlice);
-		return SimpleSliceDto.fromSlice(userCouponSimpleDtoSlice);
+		return SimpleSliceDto.fromSlice(couponIdSlice);
 	}
 
 
