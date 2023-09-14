@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CreatePointGiftDto {
     private int point;
-    //    private int pointPassword;
+        private int pointPassword;
     private String toUserName;
     private PointGiftEntityDto pointGiftEntityDto;
 
