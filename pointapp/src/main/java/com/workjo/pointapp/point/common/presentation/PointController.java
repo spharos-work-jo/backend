@@ -32,12 +32,13 @@ public class PointController {
 //todo 포인트 선물 전체 조회는 서비스단에 pointHistory 메서드로 기능 구현하기
 
 	@PostMapping("/addtest/{point}")
-	public ApiResponse addPoint(Authentication auth, @PathVariable int point) {
+	public ApiResponse addPoint(Authentication auth, @PathVariable String point) {
+		log.info(point);
 		CreatePointDto createDto = new CreatePointDto(
-			AuthUtils.getCurrentUserUUID(auth),
-			point,
-			PointType.ETC,
-			"테스트"
+				AuthUtils.getCurrentUserUUID(auth),
+				Integer.parseInt(point),
+				PointType.ETC,
+				"테스트"
 		);
 
 		return ApiResponse.ofSuccess(modelMapper.map(

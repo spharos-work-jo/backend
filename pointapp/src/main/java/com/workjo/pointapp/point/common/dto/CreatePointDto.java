@@ -12,6 +12,6 @@ import java.util.UUID;
 public class CreatePointDto {
     private UUID userUuid;
     private int point;
-    private PointType pointType;
+    private PointType type;
     private String title;
 }

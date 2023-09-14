@@ -23,7 +23,7 @@ import java.util.UUID;
 public class PointEarnController {
     private final IPointService pointService;
     private final ModelMapper modelMapper;
-    private IPointEarnService pointEarnService;
+    private final IPointEarnService pointEarnService;
 
     @PostMapping
     public ApiResponse<PointEarnRes> earnPoint

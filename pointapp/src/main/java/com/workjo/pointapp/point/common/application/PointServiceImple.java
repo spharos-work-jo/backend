@@ -2,8 +2,8 @@ package com.workjo.pointapp.point.common.application;
 
 import com.workjo.pointapp.config.exception.CustomException;
 import com.workjo.pointapp.config.exception.ErrorCode;
-import com.workjo.pointapp.point.observable.INotUsablePointObservable;
-import com.workjo.pointapp.point.observable.IUsablePointObservable;
+import com.workjo.pointapp.point.common.domain.observable.INotUsablePointObservable;
+import com.workjo.pointapp.point.common.domain.observable.IUsablePointObservable;
 import com.workjo.pointapp.point.common.domain.*;
 import com.workjo.pointapp.point.common.dto.CreatePointDto;
 import com.workjo.pointapp.point.common.dto.PointEntityDto;
@@ -23,8 +23,10 @@ public class PointServiceImple implements IPointService {
 
     private final ModelMapper modelMapper;
     private final IPointRepository pointRepository;
+
     private final List<INotUsablePointObservable> notUsablePointObservers;
     private final List<IUsablePointObservable> usablePointObservers;
+
 
     @Override //test
     public PointEntityDto addPoint(CreatePointDto dto) {
@@ -77,7 +79,9 @@ public class PointServiceImple implements IPointService {
             usablePointObservers.
                     forEach(observer ->
                             observer.observeUsablePointIncreased(savedPointDto));
-        }
+        } else if (savedPoint.getType() == PointType.EXPIRE) {
+
+        }//todo observer 지우고 point 사용량을 기록하는 ㅌ테이블 하나 새로 만들기
 
         return savedPointDto;
     }
@@ -105,10 +109,17 @@ public class PointServiceImple implements IPointService {
 
 
     private Point savePoint(Point point) {
-        Point savedPoint = pointRepository.save(point);
-        if (savedPoint == null) {
-            throw new CustomException(ErrorCode.ENTITY_SAVE_FAILED);
+        Point savedPoint=null;
+        try {
+            savedPoint = pointRepository.save(point);
+//        if (savedPoint == null) {
+//            throw new CustomException(ErrorCode.ENTITY_SAVE_FAILED);
+//        }
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.info(e.getMessage());
         }
+
         return savedPoint;
     }
 
