@@ -18,17 +18,16 @@ public class PointExpirePlanner implements IUsablePointObservable {
     @Override
     @Async
     public void observePointUsed(PointEntityDto usedPoint) {
-
-        //todo pointExpirePlanRepository.findFirstByUserUuid 해서 사용 포인트 만큼 만료 포인트 없애나가기
     }
 
 
     @Override
     public void observeUsablePointIncreased(PointEntityDto usablePoint) {
-        PointExpirePlan plan = PointExpirePlan.builder()
-                .pointAmount(usablePoint.getPoint())
-                .pointId(usablePoint.getId())
-                .build();
+        PointExpirePlan plan = new PointExpirePlan(
+                usablePoint.getId(),
+                usablePoint.getPoint(),
+                usablePoint.getUserUuid()
+        );
 
         expirePlanRepository.save(plan);
     }

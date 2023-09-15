@@ -28,7 +28,6 @@ public class PointEarnServiceImple implements IPointEarnService {
     @Override
     @Transactional
     public void earnPoint(EarnPointDto earnDto, IPointService pointService) {
-        //todo 적립 요청된 포인트 정산 처리 schedule 구현
 
         PointEntityDto createdPoint =
                 pointService.saveTotalNotRenewedPoint(
