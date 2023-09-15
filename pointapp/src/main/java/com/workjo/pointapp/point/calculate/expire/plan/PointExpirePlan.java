@@ -35,7 +35,6 @@ public class PointExpirePlan {
     private UUID userUuid;
 
 
-    @Builder
     public PointExpirePlan(long pointId, int pointAmount, UUID userUuid) {
         this.expireDate = LocalDate.now().plusMonths(24);
 
@@ -45,13 +44,12 @@ public class PointExpirePlan {
     }
 
 
-    //for test
-    @Builder
-    public PointExpirePlan(long pointId, int pointAmount, UUID userUuid, LocalDate expireDate) {
-        this.expireDate = expireDate;
-
-        this.pointId = pointId;
-        this.pointAmount = pointAmount;
-        this.userUuid = userUuid;
-    }
+//    //for test
+//    public PointExpirePlan(long pointId, int pointAmount, UUID userUuid, LocalDate expireDate) {
+//        this.expireDate = expireDate;
+//
+//        this.pointId = pointId;
+//        this.pointAmount = pointAmount;
+//        this.userUuid = userUuid;
+//    }
 }
