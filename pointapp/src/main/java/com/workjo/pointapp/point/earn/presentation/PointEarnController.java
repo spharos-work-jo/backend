@@ -1,6 +1,8 @@
 package com.workjo.pointapp.point.earn.presentation;
 
 import com.workjo.pointapp.common.ApiResponse;
+import com.workjo.pointapp.config.exception.CustomException;
+import com.workjo.pointapp.config.exception.ErrorCode;
 import com.workjo.pointapp.point.common.application.IPointService;
 import com.workjo.pointapp.point.earn.application.IPointEarnService;
 import com.workjo.pointapp.point.earn.dto.EarnPointDto;
@@ -28,6 +30,10 @@ public class PointEarnController {
     @PostMapping
     public ApiResponse<PointEarnRes> earnPoint
             (@RequestBody PointEarnReq request) {
+        if (request.getPaidPrice() < 0) {
+            throw new CustomException(ErrorCode.BAD_REQUEST);
+        }
+
 
         EarnPointDto dto = new EarnPointDto();
         modelMapper.map(request, dto);
