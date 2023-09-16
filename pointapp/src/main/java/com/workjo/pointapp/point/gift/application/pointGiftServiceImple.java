@@ -117,7 +117,7 @@ public class pointGiftServiceImple implements IPointGiftService {
 
 
     private List<PointGiftEntityDto> findReceivedPointGifts(UUID toUserUuid) {
-        List<PointGift> receivedGifts = pointGiftRepository.findByToUserUuidAndGiftStatus(toUserUuid, PointGiftStatus.WAIT.getCode());
+        List<PointGift> receivedGifts = pointGiftRepository.findByToUserUuidAndGiftStatus(toUserUuid, PointGiftStatus.WAIT);
         if (receivedGifts.isEmpty()) {
             return new ArrayList<>();
         }
