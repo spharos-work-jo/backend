@@ -36,7 +36,7 @@ public class ConvertPointUsableCalculator {
     private final List<IUsablePointObservable> usablePointObservers;
     private final IPointService pointService;
 
-
+    // @Scheduled(cron = "1 0 0 * * *") 
     @Transactional
     public void calculateUsableConvertPlan() {
 
