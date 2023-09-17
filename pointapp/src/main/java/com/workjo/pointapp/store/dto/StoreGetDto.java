@@ -38,10 +38,10 @@ public class StoreGetDto {
 
 			int idx = 0;
 			for (StoreGetDto dto : storeDtoList) {
-				if (!dto.getPartnerId().equals(partnerImageList.get(idx).getId())) {
+				if (dto.getPartnerId() != null && !dto.getPartnerId().equals(partnerImageList.get(idx).getId())) {
 					idx++;
 				}
-				if (dto.partnerId != null && dto.getPartnerId().equals(partnerImageList.get(idx).getId())) {
+				if (dto.getPartnerId() != null && dto.getPartnerId().equals(partnerImageList.get(idx).getId())) {
 					dto.imageUrl = partnerImageList.get(idx).getImageUrl();
 				}
 			}
