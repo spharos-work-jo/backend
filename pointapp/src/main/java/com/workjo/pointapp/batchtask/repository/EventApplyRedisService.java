@@ -42,7 +42,7 @@ public class EventApplyRedisService {
 					connection.setCommands().sAdd(key.getBytes(), v.getBytes())));
 			return null;
 		});
-		return list.size() > 0;
+		return !list.isEmpty();
 	}
 
 
@@ -70,7 +70,7 @@ public class EventApplyRedisService {
 
 		// 이벤트 당첨처리 간단하게 구현
 		eventApplyCustomRepository.updateEventApplyStatusByIdList(winApplyEventIdList);
-		eventApplyCustomRepository.updateEventApplyStatusByIdListNotIn(winApplyEventIdList);
+		eventApplyCustomRepository.updateEventApplyStatusByEventIdAndIdListNotIn(eventId, winApplyEventIdList);
 
 		// 레디스 키 삭제
 		redisCommands.del(key);

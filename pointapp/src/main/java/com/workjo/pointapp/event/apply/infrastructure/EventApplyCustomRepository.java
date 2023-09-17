@@ -33,11 +33,11 @@ public class EventApplyCustomRepository {
 
 	@Transactional
 	@Modifying(clearAutomatically = true)
-	public void updateEventApplyStatusByIdListNotIn(List<Long> idList) {
+	public void updateEventApplyStatusByEventIdAndIdListNotIn(Long eventId, List<Long> idList) {
 		queryFactory
 			.update(eventApply)
 			.set(eventApply.status, EventApplyStatus.FAIL)
-			.where(eventApply.id.notIn(idList))
+			.where(eventApply.eventId.eq(eventId), eventApply.id.notIn(idList))
 			.execute();
 	}
 
